@@ -24,7 +24,7 @@
     }
 
 
-    import '../../node_modules/mapbox-gl/dist/mapbox-gl.css';
+    import '../../../node_modules/mapbox-gl/dist/mapbox-gl.css';
     import mapboxgl from 'mapbox-gl';
     // import { Map } from "mapbox-gl";
     import { onMount } from "svelte";
