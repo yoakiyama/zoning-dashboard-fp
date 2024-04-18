@@ -161,8 +161,8 @@
             'source': 'MBTA_Routes',
             'type': 'line',
             'paint': {
-                'line-color': 'black',
-                'line-opacity': 0.95,
+                'line-color': 'white',
+                'line-opacity': 0.8,
                 'line-width': 4 // 
             },
             'layout': {
@@ -191,7 +191,7 @@
                     ['==', ['get', 'id'], "green-b"], '#00843D', 
                     'black'                       
                 ],
-                'line-opacity': 0.95,
+                'line-opacity': 0.8,
                 'line-width':2,
             },
             'layout': {'visibility': 'none'},
@@ -217,6 +217,7 @@
                 } else {
                     console.log("you can't click that neighborhood")
                 }
+                console.log(clickedNeighborhood)
                     
                 
             }
@@ -288,6 +289,16 @@
                             minCommute, 'hsla(200, 100%, 100%, 0.8)', 
                             maxCommute, 'hsla(200, 100%, 20%, 0.8)' 
                         ]]
+                    ]);
+                    map.setPaintProperty(mbtaLayerId, 'line-opacity', [
+                        'case',
+                        ['in', clickedNeighborhood, ['get', 'neighborhoods']], 0.8,  // High opacity if clickedNeighborhood is in the list
+                        0.4  
+                    ]);
+                    map.setPaintProperty('mbta_routes_outline', 'line-opacity', [
+                        'case',
+                        ['in', clickedNeighborhood, ['get', 'neighborhoods']], 0.8,  // High opacity if clickedNeighborhood is in the list
+                        0  
                     ]);
 
                     var features = map.querySourceFeatures('Boston_Cambridge_Commute');
