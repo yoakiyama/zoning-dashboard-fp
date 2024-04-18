@@ -61,6 +61,8 @@
     // Define layerId as a reactive variable
     let fillLayerId;
     let lineLayerId;
+    let commuteLayerId;
+    let commuteLineLayerId;
     let minRent, maxRent;
     let clickedNeighborhood = null;
 
@@ -90,14 +92,10 @@
             generateId: false
         });
 
-        map.addSource("Boston_Cambridge_Commute", {
-            type: 'geojson',
-            data: 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/transportation/mbta/Boston_Cambridge_commute.geojson',
-            generateId: false
-        });
+        
         
         fillLayerId = 'boston_cambridge_rent';
-        lineLayerId = 'ineligible_region';
+        lineLayerId = 'boston_cambridge_rent_outline';
         map.addLayer({
             'id': 'boston_cambridge_rent',
             'source': 'Boston_Cambridge_Rent',
@@ -105,7 +103,7 @@
             'paint': {
                 'fill-color': 'hsla(135, 100%, 45%, 0.38)'
             },
-            'layout': {},
+            'layout': {'visibility': 'visible'},
         });
         map.addLayer({
             'id': 'boston_cambridge_rent_outline',
@@ -115,14 +113,50 @@
                 'line-color': "hsla(0, 100%, 0%, 0.5)",
                 'line-opacity': 0.95
             },
-            'layout': {},
+            'layout': {'visibility': 'visible'},
         });
+
+        map.addSource("Boston_Cambridge_Commute", {
+            type: 'geojson',
+            data: 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/transportation/mbta/Boston_Cambridge_commute.geojson',
+            generateId: false
+        });
+        commuteLayerId = 'boston_cambridge_commute';
+        commuteLineLayerId = 'boston_cambridge_commute_outline';
+        map.addLayer({
+            'id': 'boston_cambridge_commute',
+            'source': 'Boston_Cambridge_Commute',
+            'type': 'fill',
+            'paint': {
+                'fill-color': 'hsla(400, 100%, 45%, 0.38)'
+            },
+            'layout': {'visibility': 'none'},
+        });
+        map.addLayer({
+            'id': 'boston_cambridge_commute_outline',
+            'source': 'Boston_Cambridge_Commute',
+            'type': 'line',
+            'paint': {
+                'line-color': "hsla(0, 100%, 0%, 0.5)",
+                'line-opacity': 0.95
+            },
+            'layout': {'visibility': 'none'},
+        });
+
         map.on('click', 'boston_cambridge_rent', (e) => {
             if (e.features.length > 0 && rentSlider == null) {
                 const feature = e.features[0];
                 if (rentState[feature.id]){
                     clickedNeighborhood = feature.properties.neighborhood;
                     commuteSlider = true;
+
+                    // change from rent layers visible to commute layers visible
+                    rentColor = false;
+                    commuteColor = true;
+                    map.setLayoutProperty(fillLayerId, 'visibility', 'none');
+                    map.setLayoutProperty(lineLayerId, 'visibility', 'none');
+                    map.setLayoutProperty(commuteLayerId, 'visibility', 'visible');
+                    map.setLayoutProperty(commuteLineLayerId, 'visibility', 'visible');
                 } else {
                     console.log("you can't click that neighborhood")
                 }
@@ -160,6 +194,23 @@
                     }
             });
             
+        }
+    }
+
+    $: {
+        if (map && commuteLayerId && commuteColor) {
+            map.setPaintProperty(commuteLayerId, 'fill-color', [
+                'case',
+                ['==', ['get', clickedNeighborhood], 180],
+                'hsla(0, 80%, 100%, 0.4)',
+                [
+                    'interpolate',
+                    ['linear'],
+                    ['get', clickedNeighborhood],
+                    0, 'hsla(330, 100%, 100%, 0.8)', // Start of your gradient (e.g., $0)
+                    80, 'hsla(330, 100%, 20%, 0.8)' // End of your gradient (e.g., $3000)
+                ]
+            ]);
         }
     }
 
