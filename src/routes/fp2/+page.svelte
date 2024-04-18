@@ -149,7 +149,7 @@
 
         map.addSource("MBTA_Routes", {
             type: 'geojson',
-            data: 'https://raw.githubusercontent.com/singingwolfboy/MBTA-GeoJSON/master/routes.geojson',
+            data: 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/transportation/mbta/routes.geojson',
             generateId: false
         });
         mbtaLayerId = 'mbta_routes'
@@ -161,7 +161,8 @@
                 'line-color': [
                     'case',
                     ['==', ['get', 'id'], "blue"], 'blue', 
-                    ['==', ['get', 'id'], "red"], 'red',  
+                    ['==', ['get', 'id'], "red-a"], 'red',  
+                    ['==', ['get', 'id'], "red-b"], 'red', 
                     ['==', ['get', 'id'], "orange"], 'orange',  
                     ['==', ['get', 'id'], "sl1"], 'gray',    
                     ['==', ['get', 'id'], "sl2"], 'gray',  
