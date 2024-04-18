@@ -76,6 +76,11 @@
           "government-center",
           "bowdoin"
         ],
+        "neighborhoods": [
+          "East Boston",
+          "Downtown",
+          "North End"
+        ],
         "name": "Blue Line"
       }
     },
@@ -166,6 +171,14 @@
           "chinatown",
           "downtown-crossing-at-temple-place",
           "boylston"
+        ],
+        "neighborhoods": [
+          "East Boston",
+          "South Boston Waterfront",
+          "Downtown",
+          "Chinatown",
+          "South End",
+          "Roxbury"
         ],
         "name": "Washington St."
       }
@@ -558,6 +571,14 @@
           "terminals-c-amp-d",
           "terminal-e"
         ],
+        "neighborhoods": [
+          "East Boston",
+          "South Boston Waterfront",
+          "Downtown",
+          "Chinatown",
+          "South End",
+          "Roxbury"
+        ],
         "name": "Airport Terminals"
       }
     },
@@ -764,6 +785,14 @@
           "21-dry-dock-ave",
           "dry-dock-ave-amp-design-center-place"
         ],
+        "neighborhoods": [
+          "East Boston",
+          "South Boston Waterfront",
+          "Downtown",
+          "Chinatown",
+          "South End",
+          "Roxbury"
+        ],
         "name": "Boston Marine Industrial Park"
       }
     },
@@ -849,6 +878,14 @@
           "tufts-medical-center",
           "chinatown",
           "south-station"
+        ],
+        "neighborhoods": [
+          "East Boston",
+          "South Boston Waterfront",
+          "Downtown",
+          "Chinatown",
+          "South End",
+          "Roxbury"
         ],
         "name": "Washington St."
       }
@@ -968,6 +1005,17 @@
           "back-of-the-hill",
           "heath-st"
         ],
+        "neighborhoods": [
+          "East Cambridge",
+          "West End",
+          "Beacon Hill",
+          "Downtown",
+          "Back Bay",
+          "Roxbury",
+          "Longwood",
+          "Mission Hill",
+          "Jamaica Plain"
+        ],
         "name": "Heath St. (E)"
       }
     },
@@ -1076,6 +1124,26 @@
           "quincy-adams",
           "braintree"
         ],
+        "neighborhoods": [
+          "Area 2/MIT",
+          "The Port",
+          "Cambridgeport",
+          "Wellington-Harrington",
+          "Riverside",
+          "Mid-Cambridge",
+          "Baldwin",
+          "Neighborhood Nine",
+          "North Cambridge",
+          "Strawberry Hill",
+          "Cambridge Highlands",
+          "West Cambridge",
+          "East Cambridge",
+          "West End",
+          "Beacon Hill",
+          "Downtown",
+          "South Boston",
+          "Dorchester"
+        ],
         "name": "Braintree"
       }
     },
@@ -1143,6 +1211,26 @@
           "quincy-center",
           "quincy-adams",
           "braintree"
+        ],
+        "neighborhoods": [
+          "Area 2/MIT",
+          "The Port",
+          "Cambridgeport",
+          "Wellington-Harrington",
+          "Riverside",
+          "Mid-Cambridge",
+          "Baldwin",
+          "Neighborhood Nine",
+          "North Cambridge",
+          "Strawberry Hill",
+          "Cambridge Highlands",
+          "West Cambridge",
+          "East Cambridge",
+          "West End",
+          "Beacon Hill",
+          "Downtown",
+          "South Boston",
+          "Dorchester"
         ],
         "name": "Ashmont"
       }
@@ -1256,6 +1344,17 @@
           "stony-brook",
           "green-street",
           "forest-hills"
+        ],
+        "neighborhoods": [
+          "Charlestown",
+          "East Cambridge",
+          "West End",
+          "North End",
+          "Downtown",
+          "South End",
+          "Chinatown",
+          "Roxbury",
+          "Jamaica Plain"
         ],
         "name": "Orange Line"
       }
@@ -1395,6 +1494,14 @@
           "woodland",
           "riverside"
         ],
+        "neighborhoods": [
+          "East Cambridge",
+          "West End",
+          "Beacon Hill",
+          "Downtown",
+          "Back Bay",
+          "Fenway"
+        ],
         "name": "Riverside (D)"
       }
     },
@@ -1522,6 +1629,14 @@
           "dean-rd",
           "englewood-ave",
           "cleveland-circle"
+        ],
+        "neighborhoods": [
+          "East Cambridge",
+          "West End",
+          "Beacon Hill",
+          "Downtown",
+          "Back Bay",
+          "Fenway"
         ],
         "name": "Cleveland Circle (C)"
       }
@@ -1665,6 +1780,16 @@
           "chestnut-hill-ave",
           "south-st",
           "boston-college"
+        ],
+        "neighborhoods": [
+          "East Cambridge",
+          "West End",
+          "Beacon Hill",
+          "Downtown",
+          "Back Bay",
+          "Fenway",
+          "Allston",
+          "Brighton"
         ],
         "name": "Boston College (B)"
       }
