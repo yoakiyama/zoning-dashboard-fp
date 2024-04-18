@@ -231,8 +231,8 @@
                             'interpolate',
                             ['linear'],
                             ['get', clickedNeighborhood],
-                            minCommute, 'hsla(330, 100%, 100%, 0.8)', 
-                            maxCommute, 'hsla(330, 100%, 20%, 0.8)' 
+                            minCommute, 'hsla(200, 100%, 100%, 0.8)', 
+                            maxCommute, 'hsla(200, 100%, 20%, 0.8)' 
                         ]]
                     ]);
 
@@ -288,8 +288,8 @@
 
 {#if commuteColor}
     <div class="container">
-        <ColorLegend color1='hsla(330, 100%, 100%, 1)'
-                    color2='hsla(330, 100%, 20%, 1)'
+        <ColorLegend color1='hsla(200, 100%, 100%, 1)'
+                    color2='hsla(200, 100%, 20%, 1)'
                     title='Average Commute Time from {clickedNeighborhood} (minutes)'/>
     </div>
 {/if}
@@ -318,7 +318,7 @@
 {#if workingNeighborhood}
     <div class='popUp'>
         <p>You've selected to live in <span class="neighborhood-name" style="font-weight: bold; color: hsl(135, 50%, 50%)">{clickedNeighborhood}</span> and to
-            work in <span class="neighborhood-name" style="font-weight: bold; color: hsl(330, 50%, 50%)">{workingNeighborhood}</span>!</p>
+            work in <span class="neighborhood-name" style="font-weight: bold; color: hsl(200, 50%, 50%)">{workingNeighborhood}</span>!</p>
     </div>
 {/if}
 
