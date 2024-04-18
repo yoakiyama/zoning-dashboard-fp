@@ -23,3 +23,11 @@ export async function fetchRentData() {
 
     return { minRent, maxRent };
 }
+
+export function handleRentEnter(rentValue, rentSlider) {
+    const selectedRent = rentValue;
+    rentSlider = null;
+    console.log(selectedRent);
+    return { selectedRent, rentSlider };
+}
+

@@ -15,18 +15,33 @@
 
     let rentValue = 1500;
     let selectedRent = 3000;
-    //let maxRent = 3000;
-    //let minRent = 0;
-    let rentFilter = -1;
-    let rentColor;
+    let commuteValue=20;
+    let selectedCommute = 1000;
+
+    var rentState = {}; // dictionary to keep track of which neighborhoods have valid rent
+    
+    // what to color the neighborhoods by
+    let rentColor = true;
+    let commuteColor = false;
+
+    // slider states
+    let rentSlider = true;
+    let commuteSlider = null;
 
     function handleRentEnter() {
-        console.log(rentValue)
         // Store the current value of the rent slider
         selectedRent = rentValue;
         // Make rent slider disappear
-        rentValue = null;
-        console.log(selectedRent)
+        rentSlider = null;
+        console.log(selectedRent, rentValue)
+    }
+
+    function handleCommuteEnter() {
+        // Store the current value of the rent slider
+        selectedCommute = commuteValue;
+        // Make rent slider disappear
+        commuteSlider = null;
+        console.log(selectedCommute, commuteValue)
     }
 
 
@@ -47,7 +62,7 @@
     let fillLayerId;
     let lineLayerId;
     let minRent, maxRent;
-    let clickedNeighborhood;
+    let clickedNeighborhood = null;
 
 
     onMount(async () => {
@@ -71,7 +86,8 @@
 
         map.addSource("Boston_Cambridge_Rent", {
             type: 'geojson',
-            data: 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/geographic/Boston_Cambridge_rent.geojson'
+            data: 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/geographic/Boston_Cambridge_rent_ids.geojson',
+            generateId: true
         });
         
         fillLayerId = 'boston_cambridge_rent';
@@ -96,18 +112,23 @@
             'layout': {},
         });
         map.on('click', 'boston_cambridge_rent', (e) => {
-            if (e.features.length > 0 && rentValue == null) {
+            if (e.features.length > 0 && rentSlider == null) {
                 const feature = e.features[0];
-                console.log(feature)
-                // Assuming 'name' is the property that contains the neighborhood name
-                clickedNeighborhood = feature.properties.neighborhood;
+                if (rentState[feature.id]){
+                    clickedNeighborhood = feature.properties.neighborhood;
+                    commuteSlider = true;
+                } else {
+                    console.log("you can't click that neighborhood")
+                }
+                    
+                
             }
         });
     });
     
 
     $: {
-        if (map && fillLayerId) {
+        if (map && fillLayerId && rentColor) {
             map.setPaintProperty(fillLayerId, 'fill-color', [
                 'case',
                 ['>', ['get', 'avg_per_bed'], selectedRent],
@@ -120,17 +141,19 @@
                     maxRent, 'hsla(135, 100%, 20%, 0.8)' // End of your gradient (e.g., $3000)
                 ]
             ]);
+
             var features = map.querySourceFeatures('Boston_Cambridge_Rent');
             features.forEach(function(feature) {
-                console.log(feature)
+                var isRentBelowSelected = feature.properties.avg_per_bed < selectedRent;
                 if (feature.id !== undefined) {
                     map.setFeatureState({
                     source: 'Boston_Cambridge_Rent',
                     id: feature.id,
-                    }, {'valid_rent':['case',
-                        ['>', ['get', 'avg_per_bed'], selectedRent],
-                        true, false]});
+                    }, {'valid_rent':isRentBelowSelected});
+                    rentState[feature.id] = isRentBelowSelected;
                     }
+                
+                
             });
             
         }
@@ -145,8 +168,8 @@
 
 
 <div class="slider-container">
-    {#if rentValue !== null}
-        <Slider bind:rentValue={rentValue} />
+    {#if rentSlider}
+        <Slider bind:Value={rentValue} />
         <button on:click={handleRentEnter}>Enter</button>
     {/if}
 </div>
@@ -155,6 +178,13 @@
     <ColorLegend color1='hsla(135, 100%, 90%, 1)'
                  color2='hsla(135, 100%, 20%, 1)'
                  title='Average Rent per Bedroom'/>
+</div>
+
+<div class="slider-container">
+    {#if commuteSlider}
+        <Slider bind:Value={commuteValue} label='Maximum commute time (min):' min=0 max=90/>
+        <button on:click={handleCommuteEnter}>Enter</button>
+    {/if}
 </div>
 
 

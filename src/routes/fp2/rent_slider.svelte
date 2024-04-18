@@ -1,15 +1,16 @@
 <script>
 	// Parameters for the slider
-	export let rentValue = 1500;
-    export let maxRent = 2000;
-    export let minRent = 0;
+	export let Value = 1500;
+    export let max = 2000;
+    export let min = 0;
+	export let label = 'Maximum spending on rent:'
 
 </script>
 
 <div class="slider-container">
-	<label for="rent-slider">Maximum spending on rent: </label>
-	<input type=range bind:value={rentValue} min={minRent} max={maxRent} name='rent-slider'>
-	<span>{ rentValue }</span>
+	<label for="rent-slider">{label}</label>
+	<input type=range bind:value={Value} min={min} max={max} name='rent-slider'>
+	<span>{ Value }</span>
 </div>
 
 <style>
