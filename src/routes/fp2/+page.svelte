@@ -238,7 +238,7 @@
 
                     var features = map.querySourceFeatures('Boston_Cambridge_Commute');
                     features.forEach(function(feature) {
-                        var isCommuteBelowSelected = feature.properties[clickedNeighborhood] < selectedCommute;
+                        var isCommuteBelowSelected = feature.properties[clickedNeighborhood] <= selectedCommute;
                         if (feature.id !== undefined) {
                             map.setFeatureState({
                             source: 'Boston_Cambridge_Commute',
