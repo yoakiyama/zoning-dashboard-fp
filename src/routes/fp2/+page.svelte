@@ -339,7 +339,7 @@
 
 <div class="slider-container">
     {#if rentSlider}
-        <Slider bind:Value={rentValue} />
+        <Slider bind:Value={rentValue} sliderColor='hsl(135, 40%, 50%)'/>
         <button on:click={handleRentEnter}>Enter</button>
     {/if}
 </div>
@@ -354,7 +354,7 @@
 
 <div class="slider-container">
     {#if commuteSlider}
-        <Slider bind:Value={commuteValue} label='Maximum commute time (min):' min={minCommute} max={maxCommute}/>
+        <Slider bind:Value={commuteValue} label='Maximum commute time (min):' min={minCommute} max={maxCommute} sliderColor='hsl(200, 50%, 50%)'/>
         <button on:click={handleCommuteEnter}>Enter</button>
     {/if}
 </div>
@@ -387,7 +387,7 @@
 
 {#if clickedNeighborhood && commuteSlider}
     <div class='popUp'>
-        <p>You've selected to live in <span class="neighborhood-name" style="font-weight: bold; color: hsl(135, 50%, 50%)">{clickedNeighborhood}</span>!</p>
+        <p>You've selected to live in <span class="neighborhood-name" style="font-weight: bold; color: hsl(135, 40%, 50%)">{clickedNeighborhood}</span>!</p>
     </div>
 {/if}
 
@@ -399,7 +399,7 @@
 
 {#if workingNeighborhood}
     <div class='popUp'>
-        <p>You've selected to live in <span class="neighborhood-name" style="font-weight: bold; color: hsl(135, 50%, 50%)">{clickedNeighborhood}</span> and to
+        <p>You've selected to live in <span class="neighborhood-name" style="font-weight: bold; color: hsl(135, 40%, 50%)">{clickedNeighborhood}</span> and to
             work in <span class="neighborhood-name" style="font-weight: bold; color: hsl(200, 50%, 50%)">{workingNeighborhood}</span>!</p>
     </div>
 {/if}
@@ -439,6 +439,10 @@
         position: absolute; /* or 'absolute' if needed */
         z-index: 1000; /* higher than the map's z-index */
         padding: 10px; /* semi-transparent white background */
+    }
+
+    input[type='checkbox'] {
+        accent-color: hsl(200, 50%, 50%);
     }
 
     

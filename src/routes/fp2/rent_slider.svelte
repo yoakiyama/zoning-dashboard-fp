@@ -1,15 +1,22 @@
 <script>
-	// Parameters for the slider
-	export let Value = 1500;
+    import { onMount } from 'svelte';
+
+    // Parameters for the slider
+    export let Value = 1500;
     export let max = 2000;
     export let min = 0;
-	export let label = 'Maximum spending on rent:'
+    export let label = 'Maximum spending on rent:';
+    export let sliderColor = 'hsl(135, 40%, 50%)';
 
+    onMount(() => {
+        document.documentElement.style.setProperty('--sliderColor', sliderColor);
+    });
 </script>
+
 
 <div class="slider-container">
 	<label for="rent-slider">{label}</label>
-	<input type=range bind:value={Value} min={min} max={max} name='rent-slider'>
+	<input type=range bind:value={Value} min={min} max={max} name='rent-slider' class='slider'>
 	<span>{ Value }</span>
 </div>
 
@@ -27,7 +34,62 @@
 	}
 	input[type="range"]{
 		width: 100%;
+		cursor: pointer;
 	}
+
+	.slider {
+	-webkit-appearance: none;
+	appearance: none; 
+	width: 100%;
+	cursor: pointer;
+	outline: none;
+	/*  slider progress trick  */
+	overflow: hidden;
+	border-radius: 16px;
+	}
+
+	/* Track: webkit browsers */
+	.slider::-webkit-slider-runnable-track {
+	height: 12px;
+	background: oklch(95% 2% 200);
+	border-radius: 16px;
+	}
+
+	/* Track: Mozilla Firefox */
+	.slider::-moz-range-track {
+	height: 12px;
+	background: oklch(95% 2% 200);
+	border-radius: 16px;
+	}
+
+	/* Thumb: webkit */
+	.slider::-webkit-slider-thumb {
+	/* removing default appearance */
+	-webkit-appearance: none;
+	appearance: none; 
+	/* creating a custom design */
+	height: 12px;
+	width: 12px;
+	background-color: #fff;
+	border-radius: 50%;
+	border: 2px solid var(--sliderColor);
+	/*  slider progress trick  */
+	box-shadow: -407px 0 0 400px var(--sliderColor);
+	}
+
+
+	/* Thumb: Firefox */
+	.slider::-moz-range-thumb {
+	height: 15px;
+	width: 15px;
+	background-color: #fff;
+	border-radius: 50%;
+	border: 1px solid var(--sliderColor);
+	/*  slider progress trick  */
+	box-shadow: -407px 0 0 400px var(--sliderColor);
+	}
+
+
 	span {
 		display: inline-block;
 		padding: 0 .4em;
