@@ -64,6 +64,7 @@
     let lineLayerId;
     let commuteLayerId;
     let commuteLineLayerId;
+    let mbtaLayerId;
     let minRent, maxRent;
     let minCommute, maxCommute;
     let clickedNeighborhood = null;
@@ -146,6 +147,38 @@
             'layout': {'visibility': 'none'},
         });
 
+        map.addSource("MBTA_Routes", {
+            type: 'geojson',
+            data: 'https://raw.githubusercontent.com/singingwolfboy/MBTA-GeoJSON/master/routes.geojson',
+            generateId: false
+        });
+        mbtaLayerId = 'mbta_routes'
+        map.addLayer({
+            'id': 'mbta_routes',
+            'source': 'MBTA_Routes',
+            'type': 'line',
+            'paint': {
+                'line-color': [
+                    'case',
+                    ['==', ['get', 'id'], "blue"], 'blue', 
+                    ['==', ['get', 'id'], "red"], 'red',  
+                    ['==', ['get', 'id'], "orange"], 'orange',  
+                    ['==', ['get', 'id'], "sl1"], 'gray',    
+                    ['==', ['get', 'id'], "sl2"], 'gray',  
+                    ['==', ['get', 'id'], "sl4"], 'gray',    
+                    ['==', ['get', 'id'], "sl5"], 'gray',  
+                    ['==', ['get', 'id'], "green-e"], 'green',  
+                    ['==', ['get', 'id'], "green-d"], 'green', 
+                    ['==', ['get', 'id'], "green-c"], 'green', 
+                    ['==', ['get', 'id'], "green-b"], 'green', 
+                    'black'                       
+                ],
+                'line-opacity': 0.95,
+                'line-width':2,
+            },
+            'layout': {'visibility': 'none'},
+        });
+
         map.on('click', 'boston_cambridge_rent', (e) => {
             if (e.features.length > 0 && rentSlider == null) {
                 const feature = e.features[0];
@@ -160,6 +193,7 @@
                     map.setLayoutProperty(lineLayerId, 'visibility', 'none');
                     map.setLayoutProperty(commuteLayerId, 'visibility', 'visible');
                     map.setLayoutProperty(commuteLineLayerId, 'visibility', 'visible');
+                    map.setLayoutProperty(mbtaLayerId, 'visibility', 'visible');
                 } else {
                     console.log("you can't click that neighborhood")
                 }
