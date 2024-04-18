@@ -15,7 +15,7 @@
 
 
     let rentValue = 1500;
-    let selectedRent = 3000;
+    let selectedRent = Infinity;
     let commuteValue=20;
     let selectedCommute = 1000;
     let selectedOption = 'commute';
@@ -26,6 +26,11 @@
     // what to color the neighborhoods by
     let rentColor = true;
     let commuteColor = false;
+    let rentVar = 'avg_per_bed';
+    let rentVarOptions = [{ value: 'avg_per_bed', label: 'Average Per Bedroom' }, { value: '0BR', label: 'Studio' },
+                          { value: '1BR', label: '1 bedroom' }, { value: '2BR', label: '2 bedrooms' }, { value: '3BR', label: '3 bedrooms' }, 
+                          { value: '4BR', label: '4 bedrooms' }, { value: '5BR', label: '5 bedrooms' }, { value: '6BR', label: '6 bedrooms' }, 
+                          { value: '7BR', label: '7 bedrooms' }, { value: '8BR', label: '8 bedrooms' }, ];
 
     // slider states
     let rentSlider = true;
@@ -89,14 +94,6 @@
 
     onMount(async () => {
         const initialState = { lng: lng, lat: lat, zoom: zoom };
-
-        // get min and max of rent data
-        const rents = await fetchRentData();
-        minRent = rents.minRent
-        maxRent = rents.maxRent
-        console.log(minRent)
-        console.log(maxRent)
-
         map = new mapboxgl.Map({
             container: mapContainer,
             accessToken: accessToken,
@@ -245,7 +242,7 @@
                     workingNeighborhood = feature.properties.neighborhood;
                     commuteSlider = null;
                     console.log(workingNeighborhood);
-                    selectedRent = 3000;
+                    selectedRent = Infinity; 
                     selectedCommute = 200;
                     dashboard = true;
                 } else {
@@ -279,6 +276,13 @@
         }
     }
 
+    // DASHBOARD FEATURE: user chooses rent var
+    function updateRentVar(event) {
+        const option = event.detail.selectedOption;
+        rentVar = option;
+        console.log(rentVar)
+    }
+
     function colorbyRent() {
         map.setLayoutProperty(fillLayerId, 'visibility', 'visible');
         map.setLayoutProperty(lineLayerId, 'visibility', 'visible');
@@ -301,18 +305,25 @@
     // Coloring of neighborhoods by rent after selecting rent
     $: {
         if (map && fillLayerId && rentColor) {
-            map.setPaintProperty(fillLayerId, 'fill-color', [
-                'case',
-                ['>', ['get', 'avg_per_bed'], selectedRent],
-                'hsla(0, 80%, 100%, 0.4)',
-                [
-                    'interpolate',
-                    ['linear'],
-                    ['get', 'avg_per_bed'],
-                    minRent, 'hsla(135, 100%, 90%, 0.8)', // Start of your gradient (e.g., $0)
-                    maxRent, 'hsla(135, 100%, 20%, 0.8)' // End of your gradient (e.g., $3000)
-                ]
-            ]);
+            (async () => {
+                try {
+                    const rents = await fetchRentData(rentVar);
+                    minRent = rents.minRent
+                    maxRent = rents.maxRent
+                    console.log(minRent, maxRent)
+
+                    map.setPaintProperty(fillLayerId, 'fill-color', [
+                        'case',
+                        ['>', ['get', rentVar], selectedRent],
+                        'hsla(0, 80%, 100%, 0.4)',
+                        [
+                            'interpolate',
+                            ['linear'],
+                            ['get', rentVar],
+                            minRent, 'hsla(135, 100%, 90%, 0.8)', // Start of your gradient (e.g., $0)
+                            maxRent, 'hsla(135, 100%, 20%, 0.8)' // End of your gradient (e.g., $3000)
+                        ]
+                    ]);
 
             var features = map.querySourceFeatures('Boston_Cambridge_Rent');
             features.forEach(function(feature) {
@@ -325,7 +336,7 @@
                     rentState[feature.id] = isRentBelowSelected;
                     }
             });
-
+            
         }
     }
 
@@ -427,6 +438,11 @@
         {#if dashboard}
             <div class="dropdownContainer">
                 <Dropdown bind:selected={selectedOption} on:change={updateMapColoring} />
+            </div>
+        {/if}
+        {#if dashboard && rentColor}
+            <div class="dropdownContainer">
+                <Dropdown bind:selected={selectedOption} on:change={updateRentVar} options={rentVarOptions} labelText='Rent Variable:'/>
             </div>
         {/if}
         {#if commuteColor}

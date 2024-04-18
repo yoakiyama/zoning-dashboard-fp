@@ -1,6 +1,6 @@
 // place files you want to import through the `$lib` alias in this folder.
 
-export async function fetchRentData() {
+export async function fetchRentData(columnName) {
     const url = 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/geographic/Boston_Cambridge_rent.geojson';
 
     // Fetch the GeoJSON data
@@ -16,7 +16,7 @@ export async function fetchRentData() {
 
     // Loop through each feature in the GeoJSON
     geojson.features.forEach(feature => {
-        const rent = feature.properties.avg_per_bed;
+        const rent = feature.properties[columnName];
         if (rent < minRent) minRent = rent;
         if (rent > maxRent) maxRent = rent;
     });

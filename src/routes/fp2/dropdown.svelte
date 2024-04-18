@@ -1,21 +1,27 @@
 <script>
+    import { createEventDispatcher } from 'svelte';
+    const dispatch = createEventDispatcher();
+
+    // Exports 'options' as a prop and sets a default value if not provided
+    export let options = [{ value: 'commute', label: 'Commute Time' }, { value: 'rent', label: 'Rent' }];
+
     // Reactive variable to hold the selected value
-    export let selectedOption = 'commute';
+    export let selectedOption = options[0].value;
+
+    export let labelText = 'Color by'
 
     function handleChange(event) {
         selectedOption = event.target.value;
         dispatch('change', { selectedOption });
     }
-
-    import { createEventDispatcher } from 'svelte';
-    const dispatch = createEventDispatcher();
 </script>
 
 <div class='container'>
-    <label for="options">Color by</label>
+    <label for="options">{labelText}</label>
     <select name="options" bind:value={selectedOption} on:change={handleChange}>
-        <option value="rent">Rent</option>
-        <option value="commute">Commute Time</option>
+        {#each options as option}
+            <option value={option.value}>{option.label}</option>
+        {/each}
     </select>
 </div>
 
@@ -33,11 +39,10 @@
         width: fit-content;
     }
 
-
     select {
         padding: 3px;
         margin-left: 4px; /* Provides a small space between the label and the select box */
-        height:auto;
+        height: auto;
         border: 1px solid #ccc;  
         border-radius: 4px;  
         background-color: #fff; 
@@ -48,5 +53,3 @@
         color: #333;
     }
 </style>
-
-
