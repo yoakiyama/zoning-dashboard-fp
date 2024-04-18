@@ -90,13 +90,12 @@
         });
         await new Promise(resolve => map.on("load", resolve));
 
+        // ADD RENT LAYER
         map.addSource("Boston_Cambridge_Rent", {
             type: 'geojson',
             data: 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/geographic/Boston_Cambridge_rent_ids.geojson',
             generateId: false
         });
-
-        
         
         fillLayerId = 'boston_cambridge_rent';
         lineLayerId = 'boston_cambridge_rent_outline';
@@ -120,6 +119,7 @@
             'layout': {'visibility': 'visible'},
         });
 
+        // ADD COMMUTE LAYER
         map.addSource("Boston_Cambridge_Commute", {
             type: 'geojson',
             data: 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/transportation/mbta/Boston_Cambridge_commute.geojson',
@@ -146,7 +146,8 @@
             },
             'layout': {'visibility': 'none'},
         });
-
+        
+        // ADD MBTA ROUTE LINES
         map.addSource("MBTA_Routes", {
             type: 'geojson',
             data: 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/transportation/mbta/routes.geojson',
@@ -188,6 +189,7 @@
                     commuteSlider = true;
 
                     // change from rent layers visible to commute layers visible
+                    // make MBTA lines visible
                     rentColor = false;
                     commuteColor = true;
                     map.setLayoutProperty(fillLayerId, 'visibility', 'none');
@@ -329,7 +331,7 @@
     </div>
 {/if}
 
-<!-- Pop Ups -->
+<!-- POP UPS -->
 
 {#if rentSlider == null && clickedNeighborhood == null}
     <div class='popUp'>
