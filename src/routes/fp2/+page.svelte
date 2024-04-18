@@ -87,7 +87,13 @@
         map.addSource("Boston_Cambridge_Rent", {
             type: 'geojson',
             data: 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/geographic/Boston_Cambridge_rent_ids.geojson',
-            generateId: true
+            generateId: false
+        });
+
+        map.addSource("Boston_Cambridge_Commute", {
+            type: 'geojson',
+            data: 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/transportation/mbta/Boston_Cambridge_commute.geojson',
+            generateId: false
         });
         
         fillLayerId = 'boston_cambridge_rent';
@@ -152,8 +158,6 @@
                     }, {'valid_rent':isRentBelowSelected});
                     rentState[feature.id] = isRentBelowSelected;
                     }
-                
-                
             });
             
         }
