@@ -148,10 +148,26 @@
         });
         
         // ADD MBTA ROUTE LINES
+        
         map.addSource("MBTA_Routes", {
             type: 'geojson',
             data: 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/transportation/mbta/routes.geojson',
             generateId: false
+        });
+
+        // black outline of MBTA for emphasis
+        map.addLayer({
+            'id': 'mbta_routes_outline',
+            'source': 'MBTA_Routes',
+            'type': 'line',
+            'paint': {
+                'line-color': 'black',
+                'line-opacity': 0.95,
+                'line-width': 4 // 
+            },
+            'layout': {
+                'visibility': 'none' //
+            },
         });
         mbtaLayerId = 'mbta_routes'
         map.addLayer({
@@ -161,18 +177,18 @@
             'paint': {
                 'line-color': [
                     'case',
-                    ['==', ['get', 'id'], "blue"], 'blue', 
-                    ['==', ['get', 'id'], "red-a"], 'red',  
-                    ['==', ['get', 'id'], "red-b"], 'red', 
-                    ['==', ['get', 'id'], "orange"], 'orange',  
-                    ['==', ['get', 'id'], "sl1"], 'gray',    
-                    ['==', ['get', 'id'], "sl2"], 'gray',  
-                    ['==', ['get', 'id'], "sl4"], 'gray',    
-                    ['==', ['get', 'id'], "sl5"], 'gray',  
-                    ['==', ['get', 'id'], "green-e"], 'green',  
-                    ['==', ['get', 'id'], "green-d"], 'green', 
-                    ['==', ['get', 'id'], "green-c"], 'green', 
-                    ['==', ['get', 'id'], "green-b"], 'green', 
+                    ['==', ['get', 'id'], "blue"], '#003DA5', 
+                    ['==', ['get', 'id'], "red-a"], '#DA291C',  
+                    ['==', ['get', 'id'], "red-b"], '#DA291C', 
+                    ['==', ['get', 'id'], "orange"], '#ED8B00',  
+                    ['==', ['get', 'id'], "sl1"], '#7C878E',    
+                    ['==', ['get', 'id'], "sl2"], '#7C878E',  
+                    ['==', ['get', 'id'], "sl4"], '#7C878E',    
+                    ['==', ['get', 'id'], "sl5"], '#7C878E',  
+                    ['==', ['get', 'id'], "green-e"], '#00843D',  
+                    ['==', ['get', 'id'], "green-d"], '#00843D', 
+                    ['==', ['get', 'id'], "green-c"], '#00843D', 
+                    ['==', ['get', 'id'], "green-b"], '#00843D', 
                     'black'                       
                 ],
                 'line-opacity': 0.95,
@@ -197,6 +213,7 @@
                     map.setLayoutProperty(commuteLayerId, 'visibility', 'visible');
                     map.setLayoutProperty(commuteLineLayerId, 'visibility', 'visible');
                     map.setLayoutProperty(mbtaLayerId, 'visibility', 'visible');
+                    map.setLayoutProperty('mbta_routes_outline', 'visibility', 'visible');
                 } else {
                     console.log("you can't click that neighborhood")
                 }
