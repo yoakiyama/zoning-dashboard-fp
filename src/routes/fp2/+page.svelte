@@ -45,6 +45,12 @@
         console.log(selectedCommute, commuteValue)
     }
 
+    function toggleVisibility(event) {
+        const visible = event.target.checked ? 'visible' : 'none';
+        map.setLayoutProperty(mbtaLayerId, 'visibility', visible);
+        map.setLayoutProperty(mbtaOutlineLayerId, 'visibility', visible);
+    }
+
 
     import '../../../node_modules/mapbox-gl/dist/mapbox-gl.css';
     
@@ -65,6 +71,7 @@
     let commuteLayerId;
     let commuteLineLayerId;
     let mbtaLayerId;
+    let mbtaOutlineLayerId;
     let minRent, maxRent;
     let minCommute, maxCommute;
     let clickedNeighborhood = null;
@@ -156,13 +163,14 @@
         });
 
         // black outline of MBTA for emphasis
+        mbtaOutlineLayerId = 'mbta_routes_outline'
         map.addLayer({
             'id': 'mbta_routes_outline',
             'source': 'MBTA_Routes',
             'type': 'line',
             'paint': {
                 'line-color': 'white',
-                'line-opacity': 0.8,
+                'line-opacity': 0,
                 'line-width': 4 // 
             },
             'layout': {
@@ -191,7 +199,7 @@
                     ['==', ['get', 'id'], "green-b"], '#00843D', 
                     'black'                       
                 ],
-                'line-opacity': 0.8,
+                'line-opacity': 0.3,
                 'line-width':2,
             },
             'layout': {'visibility': 'none'},
@@ -213,7 +221,7 @@
                     map.setLayoutProperty(commuteLayerId, 'visibility', 'visible');
                     map.setLayoutProperty(commuteLineLayerId, 'visibility', 'visible');
                     map.setLayoutProperty(mbtaLayerId, 'visibility', 'visible');
-                    map.setLayoutProperty('mbta_routes_outline', 'visibility', 'visible');
+                    map.setLayoutProperty(mbtaOutlineLayerId, 'visibility', 'visible');
                 } else {
                     console.log("you can't click that neighborhood")
                 }
@@ -293,9 +301,9 @@
                     map.setPaintProperty(mbtaLayerId, 'line-opacity', [
                         'case',
                         ['in', clickedNeighborhood, ['get', 'neighborhoods']], 0.8,  // High opacity if clickedNeighborhood is in the list
-                        0.4  
+                        0.3  
                     ]);
-                    map.setPaintProperty('mbta_routes_outline', 'line-opacity', [
+                    map.setPaintProperty(mbtaOutlineLayerId, 'line-opacity', [
                         'case',
                         ['in', clickedNeighborhood, ['get', 'neighborhoods']], 0.8,  // High opacity if clickedNeighborhood is in the list
                         0  
@@ -357,7 +365,16 @@
                     color2='hsla(200, 100%, 20%, 1)'
                     title='Average Commute Time from {clickedNeighborhood} (minutes)'/>
     </div>
+
+    <div class="checkboxContainer">
+        <label style="color: white">
+            <input type="checkbox" id="MBTAtoggle" checked on:change={toggleVisibility}>
+            Show/Hide MBTA Routes
+        </label>
+    </div>    
 {/if}
+
+
 
 <!-- POP UPS -->
 
@@ -418,4 +435,11 @@
         box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Subtle shadow for better readability */
         max-width: 400px;     /* Maximum width to avoid overly wide text block */
     }
+    .checkboxContainer {
+        position: absolute; /* or 'absolute' if needed */
+        z-index: 1000; /* higher than the map's z-index */
+        padding: 10px; /* semi-transparent white background */
+    }
+
+    
 </style>
