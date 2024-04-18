@@ -24,10 +24,29 @@ export async function fetchRentData() {
     return { minRent, maxRent };
 }
 
-export function handleRentEnter(rentValue, rentSlider) {
-    const selectedRent = rentValue;
-    rentSlider = null;
-    console.log(selectedRent);
-    return { selectedRent, rentSlider };
+export async function fetchCommuteData(columnName) {
+    const url = 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/transportation/mbta/Boston_Cambridge_commute.geojson';
+
+    // Fetch the GeoJSON data
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(`Failed to fetch ${url}: ${response.status} ${response.statusText}`);
+    }
+    const geojson = await response.json();
+
+    // Assume 'features' is an array of GeoJSON features
+    let minCommute = 0;
+    let maxCommute = -Infinity;
+
+    // Loop through each feature in the GeoJSON
+    geojson.features.forEach(feature => {
+        const time = feature.properties[columnName];
+        if (time < minCommute) minCommute = time;
+        if (time > maxCommute && time !== 180) maxCommute = time;
+    });
+
+    return { minCommute, maxCommute };
 }
+
+
 

@@ -10,7 +10,7 @@
 <script>
     import Slider from './rent_slider.svelte';
     import ColorLegend from './color_legend.svelte';
-    import { fetchRentData } from '$lib/index';
+    import { fetchRentData, fetchCommuteData } from '$lib/index';
     
 
     let rentValue = 1500;
@@ -19,6 +19,7 @@
     let selectedCommute = 1000;
 
     var rentState = {}; // dictionary to keep track of which neighborhoods have valid rent
+    var commuteState = {}; // dictionary to keep track of which neighborhoods have valid commute
     
     // what to color the neighborhoods by
     let rentColor = true;
@@ -64,7 +65,9 @@
     let commuteLayerId;
     let commuteLineLayerId;
     let minRent, maxRent;
+    let minCommute, maxCommute;
     let clickedNeighborhood = null;
+    let workingNeighborhood = null;
 
 
     onMount(async () => {
@@ -164,6 +167,19 @@
                 
             }
         });
+
+        map.on('click', 'boston_cambridge_commute', (e) => {
+            if (e.features.length > 0 && commuteSlider == null) {
+                const feature = e.features[0];
+                if (commuteState[feature.id]){
+                    workingNeighborhood = feature.properties.neighborhood;
+                    commuteSlider = null;
+                    console.log(workingNeighborhood)
+                } else {
+                    console.log("you can't click that neighborhood")
+                } 
+            }
+        });
     });
     
 
@@ -199,20 +215,45 @@
 
     $: {
         if (map && commuteLayerId && commuteColor) {
-            map.setPaintProperty(commuteLayerId, 'fill-color', [
-                'case',
-                ['==', ['get', clickedNeighborhood], 180],
-                'hsla(0, 80%, 100%, 0.4)',
-                [
-                    'interpolate',
-                    ['linear'],
-                    ['get', clickedNeighborhood],
-                    0, 'hsla(330, 100%, 100%, 0.8)', // Start of your gradient (e.g., $0)
-                    80, 'hsla(330, 100%, 20%, 0.8)' // End of your gradient (e.g., $3000)
-                ]
-            ]);
+            (async () => {
+                try {
+                    const commutes = await fetchCommuteData(clickedNeighborhood);
+                    minCommute = commutes.minCommute;
+                    maxCommute = commutes.maxCommute;
+
+                    map.setPaintProperty(commuteLayerId, 'fill-color', [
+                        'case',
+                        ['==', ['get', clickedNeighborhood], 180],
+                        'hsla(0, 80%, 100%, 0.4)', // Placeholder for NaN, no commute time data so greyed out
+                        ['case', 
+                        ['>', ['get', clickedNeighborhood], selectedCommute],
+                        'hsla(0, 80%, 100%, 0.4)', [
+                            'interpolate',
+                            ['linear'],
+                            ['get', clickedNeighborhood],
+                            minCommute, 'hsla(330, 100%, 100%, 0.8)', 
+                            maxCommute, 'hsla(330, 100%, 20%, 0.8)' 
+                        ]]
+                    ]);
+
+                    var features = map.querySourceFeatures('Boston_Cambridge_Commute');
+                    features.forEach(function(feature) {
+                        var isCommuteBelowSelected = feature.properties[clickedNeighborhood] < selectedCommute;
+                        if (feature.id !== undefined) {
+                            map.setFeatureState({
+                            source: 'Boston_Cambridge_Commute',
+                            id: feature.id,
+                            }, {'valid_commute':isCommuteBelowSelected});
+                            commuteState[feature.id] = isCommuteBelowSelected;
+                            }
+                    });
+                } catch (error) {
+                    console.error('Error processing commute data:', error);
+                }
+            })();
         }
     }
+
 
 
 </script>
@@ -230,18 +271,28 @@
     {/if}
 </div>
 
-<div class="container">
-    <ColorLegend color1='hsla(135, 100%, 90%, 1)'
-                 color2='hsla(135, 100%, 20%, 1)'
-                 title='Average Rent per Bedroom'/>
-</div>
+{#if rentColor}
+    <div class="container">
+        <ColorLegend color1='hsla(135, 100%, 90%, 1)'
+                    color2='hsla(135, 100%, 20%, 1)'
+                    title='Average Rent per Bedroom'/>
+    </div>
+{/if}
 
 <div class="slider-container">
     {#if commuteSlider}
-        <Slider bind:Value={commuteValue} label='Maximum commute time (min):' min=0 max=90/>
+        <Slider bind:Value={commuteValue} label='Maximum commute time (min):' min={minCommute} max={maxCommute}/>
         <button on:click={handleCommuteEnter}>Enter</button>
     {/if}
 </div>
+
+{#if commuteColor}
+    <div class="container">
+        <ColorLegend color1='hsla(330, 100%, 100%, 1)'
+                    color2='hsla(330, 100%, 20%, 1)'
+                    title='Average Commute Time from {clickedNeighborhood} (minutes)'/>
+    </div>
+{/if}
 
 <!-- Pop Ups -->
 
@@ -252,9 +303,22 @@
 {/if}
 
 
-{#if clickedNeighborhood}
+{#if clickedNeighborhood && commuteSlider}
     <div class='popUp'>
         <p>You've selected to live in <span class="neighborhood-name" style="font-weight: bold; color: hsl(135, 50%, 50%)">{clickedNeighborhood}</span>!</p>
+    </div>
+{/if}
+
+{#if clickedNeighborhood && commuteSlider == null && workingNeighborhood == null}
+    <div class='popUp'>
+        <p>Shown are the neighborhoods in your commute range. Please select one of them.</p>
+    </div>
+{/if}
+
+{#if workingNeighborhood}
+    <div class='popUp'>
+        <p>You've selected to live in <span class="neighborhood-name" style="font-weight: bold; color: hsl(135, 50%, 50%)">{clickedNeighborhood}</span> and to
+            work in <span class="neighborhood-name" style="font-weight: bold; color: hsl(330, 50%, 50%)">{workingNeighborhood}</span>!</p>
     </div>
 {/if}
 
