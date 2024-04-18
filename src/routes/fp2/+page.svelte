@@ -186,7 +186,11 @@
         <button on:click={handleCommuteEnter}>Enter</button>
     {/if}
 </div>
-
+{#if clickedNeighborhood}
+    <div class='clickedNeighborhood'>
+        <p>You've selected to live in <span class="neighborhood-name" style="font-weight: bold; color: hsl(135, 50%, 50%)">{clickedNeighborhood}</span>!</p>
+    </div>
+{/if}
 
 
 <style>
@@ -205,5 +209,18 @@
         bottom: 20px;
         left: 65%;
         z-index: 1000;
+    }
+
+    .clickedNeighborhood {
+        position: fixed;   /* Absolute positioning relative to the nearest positioned ancestor */
+        bottom: 0;            /* Aligns the container to the bottom */
+        left: 0;              /* Aligns the container to the left */
+        margin: 20px;         /* Adds some space from the corner edges */
+        padding: 10px;        /* Padding inside the container */
+        background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+        border-radius: 8px;   /* Rounded corners for aesthetics */
+        font-size: 16px;      /* Adequate font size for visibility */
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Subtle shadow for better readability */
+        max-width: 300px;     /* Maximum width to avoid overly wide text block */
     }
 </style>
