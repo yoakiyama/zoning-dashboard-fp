@@ -216,7 +216,7 @@
 
         // When clicking on map colored by rent
         map.on('click', 'boston_cambridge_rent', (e) => {
-            if (e.features.length > 0 && rentSlider == null) {
+            if (e.features.length > 0 && rentSlider == null && !dashboard) {
                 const feature = e.features[0];
                 if (rentState[feature.id]){
                     clickedNeighborhood = feature.properties.neighborhood;
