@@ -48,5 +48,14 @@ export async function fetchCommuteData(columnName) {
     return { minCommute, maxCommute };
 }
 
+export function Dashboard() {
+    let selectedRent = 3000;
+    let selectedCommute = 200;
+    let dashboard = true;
+    let neighborhood = 'Area 2/MIT';
+    return {selectedRent, dashboard}
+    return {selectedRent, selectedCommute, dashboard, neighborhood}
+}
+
 
 

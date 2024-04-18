@@ -10,13 +10,15 @@
 <script>
     import Slider from './rent_slider.svelte';
     import ColorLegend from './color_legend.svelte';
-    import { fetchRentData, fetchCommuteData } from '$lib/index';
+    import { fetchRentData, fetchCommuteData, Dashboard } from '$lib/index';
+    import Dropdown from './dropdown.svelte';
     
 
     let rentValue = 1500;
     let selectedRent = 3000;
     let commuteValue=20;
     let selectedCommute = 1000;
+    let selectedOption = 'commute';
 
     var rentState = {}; // dictionary to keep track of which neighborhoods have valid rent
     var commuteState = {}; // dictionary to keep track of which neighborhoods have valid commute
@@ -51,6 +53,10 @@
         map.setLayoutProperty(mbtaOutlineLayerId, 'visibility', visible);
     }
 
+    function closePopup() {
+        showPopup = false;
+    }
+
 
     import '../../../node_modules/mapbox-gl/dist/mapbox-gl.css';
     
@@ -76,6 +82,9 @@
     let minCommute, maxCommute;
     let clickedNeighborhood = null;
     let workingNeighborhood = null;
+
+    let dashboard = false;
+    let showPopup = true;
 
 
     onMount(async () => {
@@ -139,7 +148,7 @@
             'source': 'Boston_Cambridge_Commute',
             'type': 'fill',
             'paint': {
-                'fill-color': 'hsla(400, 100%, 45%, 0.38)'
+                'fill-color': 'hsla(200, 100%, 100%, 0.8)'
             },
             'layout': {'visibility': 'none'},
         });
@@ -205,6 +214,7 @@
             'layout': {'visibility': 'none'},
         });
 
+        // When clicking on map colored by rent
         map.on('click', 'boston_cambridge_rent', (e) => {
             if (e.features.length > 0 && rentSlider == null) {
                 const feature = e.features[0];
@@ -216,12 +226,7 @@
                     // make MBTA lines visible
                     rentColor = false;
                     commuteColor = true;
-                    map.setLayoutProperty(fillLayerId, 'visibility', 'none');
-                    map.setLayoutProperty(lineLayerId, 'visibility', 'none');
-                    map.setLayoutProperty(commuteLayerId, 'visibility', 'visible');
-                    map.setLayoutProperty(commuteLineLayerId, 'visibility', 'visible');
-                    map.setLayoutProperty(mbtaLayerId, 'visibility', 'visible');
-                    map.setLayoutProperty(mbtaOutlineLayerId, 'visibility', 'visible');
+                    colorbyCommute()
                 } else {
                     console.log("you can't click that neighborhood")
                 }
@@ -231,21 +236,69 @@
             }
         });
 
+        // When clicking on map colored by commute
         map.on('click', 'boston_cambridge_commute', (e) => {
-            if (e.features.length > 0 && commuteSlider == null) {
+            // NARRATIVE MODE
+            if (e.features.length > 0 && commuteSlider == null && !dashboard) {
                 const feature = e.features[0];
                 if (commuteState[feature.id]){
                     workingNeighborhood = feature.properties.neighborhood;
                     commuteSlider = null;
-                    console.log(workingNeighborhood)
+                    console.log(workingNeighborhood);
+                    selectedRent = 3000; 
+                    selectedCommute = 200;
+                    dashboard = true;
                 } else {
                     console.log("you can't click that neighborhood")
                 } 
+            } else if (e.features.length > 0 && dashboard) { // DASHBOARD MODE
+                const feature = e.features[0];
+                if (commuteState[feature.id]){
+                    clickedNeighborhood = feature.properties.neighborhood
+                }
             }
         });
     });
+
+    // DASHBOARD FEATURE: user selects feature to color by
+    function updateMapColoring(event) {
+        const option = event.detail.selectedOption;
+        console.log(option)
+        if (map) {
+            if (option === 'rent') {
+                console.log(selectedRent);
+                colorbyRent();
+                commuteColor=false;
+                rentColor=true;
+            } else if (option === 'commute') {
+                console.log(selectedCommute);
+                colorbyCommute();
+                commuteColor=true;
+                rentColor=false;
+            }
+        }
+    }
+
+    function colorbyRent() {
+        map.setLayoutProperty(fillLayerId, 'visibility', 'visible');
+        map.setLayoutProperty(lineLayerId, 'visibility', 'visible');
+        map.setLayoutProperty(commuteLayerId, 'visibility', 'none');
+        map.setLayoutProperty(commuteLineLayerId, 'visibility', 'none');
+        map.setLayoutProperty(mbtaLayerId, 'visibility', 'none');
+        map.setLayoutProperty(mbtaOutlineLayerId, 'visibility', 'none');
+    }
+
+    function colorbyCommute() {
+        map.setLayoutProperty(fillLayerId, 'visibility', 'none');
+        map.setLayoutProperty(lineLayerId, 'visibility', 'none');
+        map.setLayoutProperty(commuteLayerId, 'visibility', 'visible');
+        map.setLayoutProperty(commuteLineLayerId, 'visibility', 'visible');
+        map.setLayoutProperty(mbtaLayerId, 'visibility', 'visible');
+        map.setLayoutProperty(mbtaOutlineLayerId, 'visibility', 'visible');
+    }
     
 
+    // Coloring of neighborhoods by rent after selecting rent
     $: {
         if (map && fillLayerId && rentColor) {
             map.setPaintProperty(fillLayerId, 'fill-color', [
@@ -276,6 +329,7 @@
         }
     }
 
+    // Coloring of neighborhoods by commute conditional on clicked neighborhood and selected commute time
     $: {
         if (map && commuteLayerId && commuteColor) {
             (async () => {
@@ -365,15 +419,26 @@
                     color2='hsla(200, 100%, 20%, 1)'
                     title='Average Commute Time from {clickedNeighborhood} (minutes)'/>
     </div>
-
-    <div class="checkboxContainer">
-        <label style="color: white">
-            <input type="checkbox" id="MBTAtoggle" checked on:change={toggleVisibility}>
-            Show/Hide MBTA Routes
-        </label>
-    </div>    
 {/if}
 
+<!-- Map Display Options -->
+{#if commuteColor || dashboard}
+    <div class="wrapper">
+        {#if dashboard}
+            <div class="dropdownContainer">
+                <Dropdown bind:selected={selectedOption} on:change={updateMapColoring} />
+            </div>
+        {/if}
+        {#if commuteColor}
+            <div class="checkboxContainer">
+                <label style="color: white">
+                    <input type="checkbox" id="MBTAtoggle" checked on:change={toggleVisibility}>
+                    Show/Hide MBTA Routes
+                </label>
+            </div>    
+        {/if}
+    </div>
+{/if}
 
 
 <!-- POP UPS -->
@@ -399,16 +464,24 @@
 
 {#if workingNeighborhood}
     <div class='popUp'>
-        <p>You've selected to live in <span class="neighborhood-name" style="font-weight: bold; color: hsl(135, 40%, 50%)">{clickedNeighborhood}</span> and to
+        <p style="position:relative;">You've selected to live in <span class="neighborhood-name" style="font-weight: bold; color: hsl(135, 40%, 50%)">{clickedNeighborhood}</span> and to
             work in <span class="neighborhood-name" style="font-weight: bold; color: hsl(200, 50%, 50%)">{workingNeighborhood}</span>!</p>
+    </div>
+{/if}
+
+{#if dashboard && showPopup}
+    <div class='instruction'>
+        <button class="closeButton" on:click={closePopup}>X</button>
+        <p>
+            <span class="neighborhood-name" style="font-weight: bold;">Welcome to the dashboard!</span> You can now explore all the rent and commute data on your own by selecting what to color the map by.
+            When colored by commute time, <span style="text-decoration: underline; font-style: italic;">click</span> on different neighborhoods to get commute time <span style="text-decoration: underline; font-style: italic;">from</span> that neighborhood.
+        </p>        
     </div>
 {/if}
 
 
 <style>
     @import url("$lib/global.css"); 
-
-    
 
     .map {
         position: absolute;
@@ -421,6 +494,43 @@
         bottom: 20px;
         left: 65%;
         z-index: 1000;
+    }
+    .instruction {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 10000; 
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.95); /* Less transparent white background */
+        border-radius: 8px;
+        max-width: 400px;
+        width: 90%; /* Maximum width or percentage-based width */
+        box-sizing: border-box; 
+        text-align: left; 
+    }
+
+    .closeButton {
+        position: absolute;
+        top: 5px; /* Adjust as needed */
+        left: 5px; /* Adjust as needed */
+        background-color: transparent; /* Transparent background */
+        padding: 0.5em; /* Space around the 'X' */
+        cursor: pointer;
+        color: #333; /* Color for the 'X', can be adjusted */
+        display: flex;
+        border: none;
+        font-size: 20px;
+        width: 30px; /* Width of the button */
+        height: 30px; /* Height of the button */
+        transition: background-color 0.2s, color 0.2s; /* Transition for hover effect */
+    }
+
+    .closeButton:hover,
+    .closeButton:focus {
+        font-weight: bold; 
+        color: #d9534f; 
+        outline: none; 
     }
 
     .popUp {
@@ -436,14 +546,28 @@
         max-width: 400px;     /* Maximum width to avoid overly wide text block */
     }
     .checkboxContainer {
-        position: absolute; /* or 'absolute' if needed */
+        position: relative; /* or 'absolute' if needed */
         z-index: 1000; /* higher than the map's z-index */
-        padding: 10px; /* semi-transparent white background */
     }
 
     input[type='checkbox'] {
         accent-color: hsl(200, 50%, 50%);
     }
 
+    .wrapper {
+        position: fixed;
+        top: 5rem;
+        left: 0.3rem;
+        margin: 0px;
+        width: 300px;
+        text-align: left; 
+        margin-top: 15px;
+        padding-left: 15px;
+    }
+
+    .checkboxContainer, .dropdownContainer {
+        margin-bottom: 5px; /* Adds space between the checkbox and dropdown */
+        width: 100%; /* Ensures children stretch to match the wrapper's width */
+    }
     
 </style>
