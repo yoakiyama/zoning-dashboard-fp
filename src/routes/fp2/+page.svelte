@@ -12,7 +12,7 @@
     import ColorLegend from './color_legend.svelte';
     import { fetchRentData, fetchCommuteData, Dashboard } from '$lib/index';
     import Dropdown from './dropdown.svelte';
-    
+
 
     let rentValue = 1500;
     let selectedRent = 3000;
@@ -22,7 +22,7 @@
 
     var rentState = {}; // dictionary to keep track of which neighborhoods have valid rent
     var commuteState = {}; // dictionary to keep track of which neighborhoods have valid commute
-    
+
     // what to color the neighborhoods by
     let rentColor = true;
     let commuteColor = false;
@@ -59,7 +59,7 @@
 
 
     import '../../../node_modules/mapbox-gl/dist/mapbox-gl.css';
-    
+
     import mapboxgl from 'mapbox-gl';
     // import { Map } from "mapbox-gl";
     import { onMount } from "svelte";
@@ -112,7 +112,7 @@
             data: 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/geographic/Boston_Cambridge_rent_ids.geojson',
             generateId: false
         });
-        
+
         fillLayerId = 'boston_cambridge_rent';
         lineLayerId = 'boston_cambridge_rent_outline';
         map.addLayer({
@@ -138,7 +138,7 @@
         // ADD COMMUTE LAYER
         map.addSource("Boston_Cambridge_Commute", {
             type: 'geojson',
-            data: 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/transportation/mbta/Boston_Cambridge_commute.geojson',
+            data: 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/transportation/mbta/map_layers/Boston_Cambridge_commute.geojson',
             generateId: false
         });
         commuteLayerId = 'boston_cambridge_commute';
@@ -162,12 +162,12 @@
             },
             'layout': {'visibility': 'none'},
         });
-        
+
         // ADD MBTA ROUTE LINES
-        
+
         map.addSource("MBTA_Routes", {
             type: 'geojson',
-            data: 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/transportation/mbta/routes.geojson',
+            data: 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/transportation/mbta/map_layers/routes.geojson',
             generateId: false
         });
 
@@ -180,7 +180,7 @@
             'paint': {
                 'line-color': 'white',
                 'line-opacity': 0,
-                'line-width': 4 // 
+                'line-width': 4 //
             },
             'layout': {
                 'visibility': 'none' //
@@ -194,19 +194,19 @@
             'paint': {
                 'line-color': [
                     'case',
-                    ['==', ['get', 'id'], "blue"], '#003DA5', 
-                    ['==', ['get', 'id'], "red-a"], '#DA291C',  
-                    ['==', ['get', 'id'], "red-b"], '#DA291C', 
-                    ['==', ['get', 'id'], "orange"], '#ED8B00',  
-                    ['==', ['get', 'id'], "sl1"], '#7C878E',    
-                    ['==', ['get', 'id'], "sl2"], '#7C878E',  
-                    ['==', ['get', 'id'], "sl4"], '#7C878E',    
-                    ['==', ['get', 'id'], "sl5"], '#7C878E',  
-                    ['==', ['get', 'id'], "green-e"], '#00843D',  
-                    ['==', ['get', 'id'], "green-d"], '#00843D', 
-                    ['==', ['get', 'id'], "green-c"], '#00843D', 
-                    ['==', ['get', 'id'], "green-b"], '#00843D', 
-                    'black'                       
+                    ['==', ['get', 'id'], "blue"], '#003DA5',
+                    ['==', ['get', 'id'], "red-a"], '#DA291C',
+                    ['==', ['get', 'id'], "red-b"], '#DA291C',
+                    ['==', ['get', 'id'], "orange"], '#ED8B00',
+                    ['==', ['get', 'id'], "sl1"], '#7C878E',
+                    ['==', ['get', 'id'], "sl2"], '#7C878E',
+                    ['==', ['get', 'id'], "sl4"], '#7C878E',
+                    ['==', ['get', 'id'], "sl5"], '#7C878E',
+                    ['==', ['get', 'id'], "green-e"], '#00843D',
+                    ['==', ['get', 'id'], "green-d"], '#00843D',
+                    ['==', ['get', 'id'], "green-c"], '#00843D',
+                    ['==', ['get', 'id'], "green-b"], '#00843D',
+                    'black'
                 ],
                 'line-opacity': 0.3,
                 'line-width':2,
@@ -231,8 +231,8 @@
                     console.log("you can't click that neighborhood")
                 }
                 console.log(clickedNeighborhood)
-                    
-                
+
+
             }
         });
 
@@ -245,12 +245,12 @@
                     workingNeighborhood = feature.properties.neighborhood;
                     commuteSlider = null;
                     console.log(workingNeighborhood);
-                    selectedRent = 3000; 
+                    selectedRent = 3000;
                     selectedCommute = 200;
                     dashboard = true;
                 } else {
                     console.log("you can't click that neighborhood")
-                } 
+                }
             } else if (e.features.length > 0 && dashboard) { // DASHBOARD MODE
                 const feature = e.features[0];
                 if (commuteState[feature.id]){
@@ -296,7 +296,7 @@
         map.setLayoutProperty(mbtaLayerId, 'visibility', 'visible');
         map.setLayoutProperty(mbtaOutlineLayerId, 'visibility', 'visible');
     }
-    
+
 
     // Coloring of neighborhoods by rent after selecting rent
     $: {
@@ -325,7 +325,7 @@
                     rentState[feature.id] = isRentBelowSelected;
                     }
             });
-            
+
         }
     }
 
@@ -342,25 +342,25 @@
                         'case',
                         ['==', ['get', clickedNeighborhood], 180],
                         'hsla(0, 80%, 100%, 0.4)', // Placeholder for NaN, no commute time data so greyed out
-                        ['case', 
+                        ['case',
                         ['>', ['get', clickedNeighborhood], selectedCommute],
                         'hsla(0, 80%, 100%, 0.4)', [
                             'interpolate',
                             ['linear'],
                             ['get', clickedNeighborhood],
-                            minCommute, 'hsla(200, 100%, 100%, 0.8)', 
-                            maxCommute, 'hsla(200, 100%, 20%, 0.8)' 
+                            minCommute, 'hsla(200, 100%, 100%, 0.8)',
+                            maxCommute, 'hsla(200, 100%, 20%, 0.8)'
                         ]]
                     ]);
                     map.setPaintProperty(mbtaLayerId, 'line-opacity', [
                         'case',
                         ['in', clickedNeighborhood, ['get', 'neighborhoods']], 0.8,  // High opacity if clickedNeighborhood is in the list
-                        0.3  
+                        0.3
                     ]);
                     map.setPaintProperty(mbtaOutlineLayerId, 'line-opacity', [
                         'case',
                         ['in', clickedNeighborhood, ['get', 'neighborhoods']], 0.8,  // High opacity if clickedNeighborhood is in the list
-                        0  
+                        0
                     ]);
 
                     var features = map.querySourceFeatures('Boston_Cambridge_Commute');
@@ -435,7 +435,7 @@
                     <input type="checkbox" id="MBTAtoggle" checked on:change={toggleVisibility}>
                     Show/Hide MBTA Routes
                 </label>
-            </div>    
+            </div>
         {/if}
     </div>
 {/if}
@@ -475,13 +475,13 @@
         <p>
             <span class="neighborhood-name" style="font-weight: bold;">Welcome to the dashboard!</span> You can now explore all the rent and commute data on your own by selecting what to color the map by.
             When colored by commute time, <span style="text-decoration: underline; font-style: italic;">click</span> on different neighborhoods to get commute time <span style="text-decoration: underline; font-style: italic;">from</span> that neighborhood.
-        </p>        
+        </p>
     </div>
 {/if}
 
 
 <style>
-    @import url("$lib/global.css"); 
+    @import url("$lib/global.css");
 
     .map {
         position: absolute;
@@ -500,14 +500,14 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        z-index: 10000; 
+        z-index: 10000;
         padding: 20px;
         background-color: rgba(255, 255, 255, 0.95); /* Less transparent white background */
         border-radius: 8px;
         max-width: 400px;
         width: 90%; /* Maximum width or percentage-based width */
-        box-sizing: border-box; 
-        text-align: left; 
+        box-sizing: border-box;
+        text-align: left;
     }
 
     .closeButton {
@@ -528,9 +528,9 @@
 
     .closeButton:hover,
     .closeButton:focus {
-        font-weight: bold; 
-        color: #d9534f; 
-        outline: none; 
+        font-weight: bold;
+        color: #d9534f;
+        outline: none;
     }
 
     .popUp {
@@ -560,7 +560,7 @@
         left: 0.3rem;
         margin: 0px;
         width: 300px;
-        text-align: left; 
+        text-align: left;
         margin-top: 15px;
         padding-left: 15px;
     }
@@ -569,5 +569,5 @@
         margin-bottom: 5px; /* Adds space between the checkbox and dropdown */
         width: 100%; /* Ensures children stretch to match the wrapper's width */
     }
-    
+
 </style>
