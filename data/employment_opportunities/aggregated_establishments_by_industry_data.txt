@@ -1,0 +1,16 @@
+NEIGHBORHOOD	Accommodation and food services	Administrative and support and waste management and remediation services	Arts, entertainment, and recreation	Construction	Educational services	Finance and insurance	Health care and social assistance	Industries not classified	Information	Management of companies and enterprises	Manufacturing	Professional, scientific, and technical services	Real estate and rental and leasing	Retail trade	Transportation and warehousing	Utilities	Wholesale trade	Other services (except public administration)	Total for all sectors
+Allston/Brighton	229	46	33	78	33	43	129	4	43	3	16	109	100	163	21	0	33	129	1230
+Back Bay/Beacon Hill	331	162	81	25	60	424	210	8	114	46	24	717	261	405	12	10	52	409	3377
+Central Boston	545	346	71	55	97	891	312	3	254	49	48	1351	313	256	35	4	108	408	5193
+Charlestown	38	20	13	29	8	31	35	0	15	0	23	101	44	41	12	6	18	65	503
+Dorchester	170	73	24	176	36	68	241	3	26	0	21	101	95	272	43	0	24	262	1648
+East Boston	139	71	12	68	4	21	64	4	10	5	11	55	52	102	112	0	22	100	853
+Fenway/Kenmore	285	55	30	7	41	50	107	0	30	11	9	133	119	138	8	0	13	212	1254
+Hyde Park	26	25	8	63	16	9	62	0	8	4	17	29	15	70	16	0	23	64	458
+Jamaica Plain	89	34	21	27	29	19	121	0	15	0	9	76	49	78	7	0	9	114	703
+Mattapan	37	11	3	19	4	11	41	0	0	0	0	12	11	47	6	0	0	34	242
+Roslindale	60	26	6	43	11	16	48	0	9	3	5	32	24	76	12	0	9	75	455
+Roxbury	90	40	12	62	21	21	173	0	6	0	7	38	74	125	23	0	20	139	865
+South Boston	200	80	33	77	27	157	100	0	85	27	42	377	120	136	57	0	109	164	1798
+South End	184	28	13	23	14	31	109	3	9	3	18	143	75	94	8	0	52	87	894
+West Roxbury	50	23	6	44	15	28	81	0	5	0	7	56	23	62	6	0	3	82	493
