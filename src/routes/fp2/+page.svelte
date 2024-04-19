@@ -1,6 +1,3 @@
-<h1> Minimal Viable Product </h1>
-<p> </p>
-
 <svelte:head>
 	<title>FP2</title>
 	<meta name="description" content="FP2 interactive map" />
@@ -28,8 +25,8 @@
     let commuteColor = false;
     let rentVar = 'avg_per_bed';
     // let rentVarOptions = [{ value: 'avg_per_bed', label: 'Average Per Bedroom' }, { value: '0BR', label: 'Studio' },
-    //                      { value: '1BR', label: '1 bedroom' }, { value: '2BR', label: '2 bedrooms' }, { value: '3BR', label: '3 bedrooms' }, 
-    //                      { value: '4BR', label: '4 bedrooms' }, { value: '5BR', label: '5 bedrooms' }, { value: '6BR', label: '6 bedrooms' }, 
+    //                      { value: '1BR', label: '1 bedroom' }, { value: '2BR', label: '2 bedrooms' }, { value: '3BR', label: '3 bedrooms' },
+    //                      { value: '4BR', label: '4 bedrooms' }, { value: '5BR', label: '5 bedrooms' }, { value: '6BR', label: '6 bedrooms' },
     //                      { value: '7BR', label: '7 bedrooms' }, { value: '8BR', label: '8 bedrooms' }, ];
 
     // slider states
@@ -52,10 +49,11 @@
         console.log(selectedCommute, commuteValue)
     }
 
-    function toggleVisibility(event) {
+    function toggleTransitVisibility(event) {
         const visible = event.target.checked ? 'visible' : 'none';
-        map.setLayoutProperty(mbtaLayerId, 'visibility', visible);
-        map.setLayoutProperty(mbtaOutlineLayerId, 'visibility', visible);
+        for (const layerId of transitLayers) {
+            map.setLayoutProperty(layerId, 'visibility', visible);
+        }
     }
 
     function closePopup() {
@@ -83,6 +81,21 @@
     let commuteLineLayerId;
     let mbtaLayerId;
     let mbtaOutlineLayerId;
+    let commuterRailLayerId;
+    let commuterRailOutlineLayerId;
+
+    let transitLayers;
+    $: {
+        transitLayers = [
+            mbtaLayerId,
+            mbtaOutlineLayerId,
+            commuterRailLayerId,
+            commuterRailOutlineLayerId,
+        ];
+    }
+
+
+
     let minRent, maxRent;
     let minCommute, maxCommute;
     let clickedNeighborhood = null;
@@ -168,7 +181,14 @@
             generateId: false
         });
 
-        // black outline of MBTA for emphasis
+
+        map.addSource("Commuter_Rail_Routes", {
+            type: 'geojson',
+            data: 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/transportation/mbta/map_layers/MBTA_Commuter_Rail_lines_w_hoods_collapsed.geojson',
+            generateId: false
+        });
+
+        // white outline of MBTA for emphasis
         mbtaOutlineLayerId = 'mbta_routes_outline'
         map.addLayer({
             'id': 'mbta_routes_outline',
@@ -206,7 +226,35 @@
                     'black'
                 ],
                 'line-opacity': 0.3,
-                'line-width':2,
+                'line-width': 2,
+            },
+            'layout': {'visibility': 'none'},
+        });
+
+        // Same as above but for commuter rail lines
+        commuterRailOutlineLayerId = "cr_routes_outline"
+        map.addLayer({
+            'id': commuterRailOutlineLayerId,
+            'source': 'Commuter_Rail_Routes',
+            'type': 'line',
+            'paint': {
+                'line-color': 'white',
+                'line-opacity': 0,
+                'line-width': 4 //
+            },
+            'layout': {
+                'visibility': 'none' //
+            },
+        });
+        commuterRailLayerId = "commuter_rail_routes";
+        map.addLayer({
+            'id': commuterRailLayerId,
+            'source': 'Commuter_Rail_Routes',
+            'type': 'line',
+            'paint': {
+                'line-color': "purple",
+                'line-opacity': 0.3,
+                'line-width': 2,
             },
             'layout': {'visibility': 'none'},
         });
@@ -242,7 +290,7 @@
                     workingNeighborhood = feature.properties.neighborhood;
                     commuteSlider = null;
                     console.log(workingNeighborhood);
-                    selectedRent = Infinity; 
+                    selectedRent = Infinity;
                     selectedCommute = 200;
                     dashboard = true;
                 } else {
@@ -288,8 +336,9 @@
         map.setLayoutProperty(lineLayerId, 'visibility', 'visible');
         map.setLayoutProperty(commuteLayerId, 'visibility', 'none');
         map.setLayoutProperty(commuteLineLayerId, 'visibility', 'none');
-        map.setLayoutProperty(mbtaLayerId, 'visibility', 'none');
-        map.setLayoutProperty(mbtaOutlineLayerId, 'visibility', 'none');
+        for (const layerId of transitLayers) {
+            map.setLayoutProperty(layerId, 'visibility', 'none');
+        }
     }
 
     function colorbyCommute() {
@@ -297,21 +346,15 @@
         map.setLayoutProperty(lineLayerId, 'visibility', 'none');
         map.setLayoutProperty(commuteLayerId, 'visibility', 'visible');
         map.setLayoutProperty(commuteLineLayerId, 'visibility', 'visible');
-        map.setLayoutProperty(mbtaLayerId, 'visibility', 'visible');
-        map.setLayoutProperty(mbtaOutlineLayerId, 'visibility', 'visible');
+        for (const layerId of transitLayers) {
+            map.setLayoutProperty(layerId, 'visibility', 'visible');
+        }
     }
 
 
     // Coloring of neighborhoods by rent after selecting rent
     $: {
         if (map && fillLayerId && rentColor) {
-            (async () => {
-                try {
-                    const rents = await fetchRentData(rentVar);
-                    minRent = rents.minRent
-                    maxRent = rents.maxRent
-                    console.log(minRent, maxRent)
-
                     map.setPaintProperty(fillLayerId, 'fill-color', [
                         'case',
                         ['>', ['get', rentVar], selectedRent],
@@ -336,7 +379,6 @@
                     rentState[feature.id] = isRentBelowSelected;
                     }
             });
-            
         }
     }
 
@@ -363,16 +405,15 @@
                             maxCommute, 'hsla(200, 100%, 20%, 0.8)'
                         ]]
                     ]);
-                    map.setPaintProperty(mbtaLayerId, 'line-opacity', [
-                        'case',
-                        ['in', clickedNeighborhood, ['get', 'neighborhoods']], 0.8,  // High opacity if clickedNeighborhood is in the list
-                        0.3
-                    ]);
-                    map.setPaintProperty(mbtaOutlineLayerId, 'line-opacity', [
-                        'case',
-                        ['in', clickedNeighborhood, ['get', 'neighborhoods']], 0.8,  // High opacity if clickedNeighborhood is in the list
-                        0
-                    ]);
+                    console.log(mbtaLayerId);
+                    console.log(transitLayers);
+                    for (const layerId of transitLayers) {
+                        map.setPaintProperty(layerId, 'line-opacity', [
+                            'case',
+                            ['in', clickedNeighborhood, ['get', 'neighborhoods']], 0.8,  // High opacity if clickedNeighborhood is in the list
+                            0.3
+                        ]);
+                    }
 
                     var features = map.querySourceFeatures('Boston_Cambridge_Commute');
                     features.forEach(function(feature) {
@@ -395,6 +436,9 @@
 
 
 </script>
+
+<h1> Minimal Viable Product </h1>
+<p> </p>
 
 <div class="map-wrap">
     <div class="map" bind:this={mapContainer} />
@@ -449,7 +493,7 @@
         {#if commuteColor}
             <div class="checkboxContainer">
                 <label style="color: white">
-                    <input type="checkbox" id="MBTAtoggle" checked on:change={toggleVisibility}>
+                    <input type="checkbox" id="MBTAtoggle" checked on:change={toggleTransitVisibility}>
                     Show/Hide MBTA Routes
                 </label>
             </div>
