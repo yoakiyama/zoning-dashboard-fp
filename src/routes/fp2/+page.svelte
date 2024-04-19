@@ -27,10 +27,10 @@
     let rentColor = true;
     let commuteColor = false;
     let rentVar = 'avg_per_bed';
-    let rentVarOptions = [{ value: 'avg_per_bed', label: 'Average Per Bedroom' }, { value: '0BR', label: 'Studio' },
-                          { value: '1BR', label: '1 bedroom' }, { value: '2BR', label: '2 bedrooms' }, { value: '3BR', label: '3 bedrooms' }, 
-                          { value: '4BR', label: '4 bedrooms' }, { value: '5BR', label: '5 bedrooms' }, { value: '6BR', label: '6 bedrooms' }, 
-                          { value: '7BR', label: '7 bedrooms' }, { value: '8BR', label: '8 bedrooms' }, ];
+    // let rentVarOptions = [{ value: 'avg_per_bed', label: 'Average Per Bedroom' }, { value: '0BR', label: 'Studio' },
+    //                      { value: '1BR', label: '1 bedroom' }, { value: '2BR', label: '2 bedrooms' }, { value: '3BR', label: '3 bedrooms' }, 
+    //                      { value: '4BR', label: '4 bedrooms' }, { value: '5BR', label: '5 bedrooms' }, { value: '6BR', label: '6 bedrooms' }, 
+    //                      { value: '7BR', label: '7 bedrooms' }, { value: '8BR', label: '8 bedrooms' }, ];
 
     // slider states
     let rentSlider = true;
@@ -440,11 +440,12 @@
                 <Dropdown bind:selected={selectedOption} on:change={updateMapColoring} />
             </div>
         {/if}
+        <!--
         {#if dashboard && rentColor}
             <div class="dropdownContainer">
                 <Dropdown bind:selected={selectedOption} on:change={updateRentVar} options={rentVarOptions} labelText='Rent Variable:'/>
             </div>
-        {/if}
+        {/if} -->
         {#if commuteColor}
             <div class="checkboxContainer">
                 <label style="color: white">
