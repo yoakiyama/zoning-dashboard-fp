@@ -25,7 +25,7 @@ export async function fetchRentData() {
 }
 
 export async function fetchCommuteData(columnName) {
-    const url = 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/transportation/mbta/Boston_Cambridge_commute.geojson';
+    const url = 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/transportation/mbta/map_layers/Boston_Cambridge_commute.geojson';
 
     // Fetch the GeoJSON data
     const response = await fetch(url);
