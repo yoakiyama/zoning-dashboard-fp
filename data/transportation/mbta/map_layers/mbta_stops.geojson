@@ -1,0 +1,1188 @@
+{
+   "type": "FeatureCollection",
+   "features": [
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.133246,42.238405 ]
+    },
+    "properties": {
+    "stop_id":"place-DB-0095",
+    "stop_name":"Readville",
+    "zipcode":2136,
+    "neighborhood":"Hyde Park"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.11927,42.253638 ]
+    },
+    "properties": {
+    "stop_id":"place-DB-2205",
+    "stop_name":"Fairmount",
+    "zipcode":2136,
+    "neighborhood":"Hyde Park"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.085475,42.280994 ]
+    },
+    "properties": {
+    "stop_id":"place-DB-2230",
+    "stop_name":"Morton Street",
+    "zipcode":2126,
+    "neighborhood":"Mattapan"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.07814,42.292246 ]
+    },
+    "properties": {
+    "stop_id":"place-DB-2240",
+    "stop_name":"Talbot Avenue",
+    "zipcode":2124,
+    "neighborhood":"Dorchester"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.076833,42.305037 ]
+    },
+    "properties": {
+    "stop_id":"place-DB-2249",
+    "stop_name":"Four Corners/Geneva",
+    "zipcode":2121,
+    "neighborhood":"Roxbury"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.068627,42.319125 ]
+    },
+    "properties": {
+    "stop_id":"place-DB-2258",
+    "stop_name":"Uphams Corner",
+    "zipcode":2125,
+    "neighborhood":"Dorchester"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.065674,42.327415 ]
+    },
+    "properties": {
+    "stop_id":"place-DB-2265",
+    "stop_name":"Newmarket",
+    "zipcode":2125,
+    "neighborhood":"Dorchester"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.130283,42.287442 ]
+    },
+    "properties": {
+    "stop_id":"place-NB-0064",
+    "stop_name":"Roslindale Village",
+    "zipcode":2131,
+    "neighborhood":"Roslindale"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.145557,42.286588 ]
+    },
+    "properties": {
+    "stop_id":"place-NB-0072",
+    "stop_name":"Bellevue",
+    "zipcode":2131,
+    "neighborhood":"Roslindale"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.153937,42.284969 ]
+    },
+    "properties": {
+    "stop_id":"place-NB-0076",
+    "stop_name":"Highland",
+    "zipcode":2132,
+    "neighborhood":"West Roxbury"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.160065,42.281358 ]
+    },
+    "properties": {
+    "stop_id":"place-NB-0080",
+    "stop_name":"West Roxbury",
+    "zipcode":2132,
+    "neighborhood":"West Roxbury"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.125526,42.25503 ]
+    },
+    "properties": {
+    "stop_id":"place-NEC-2203",
+    "stop_name":"Hyde Park",
+    "zipcode":2136,
+    "neighborhood":"Hyde Park"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.099974,42.347581 ]
+    },
+    "properties": {
+    "stop_id":"place-WML-0025",
+    "stop_name":"Lansdowne",
+    "zipcode":2215,
+    "neighborhood":"Fenway"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.139883,42.357293 ]
+    },
+    "properties": {
+    "stop_id":"place-WML-0035",
+    "stop_name":"Boston Landing",
+    "zipcode":2134,
+    "neighborhood":"Allston"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.141287,42.39583 ]
+    },
+    "properties": {
+    "stop_id":"place-alfcl",
+    "stop_name":"Alewife",
+    "zipcode":2140,
+    "neighborhood":"North Cambridge"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.137955,42.348701 ]
+    },
+    "properties": {
+    "stop_id":"place-alsgr",
+    "stop_name":"Allston Street",
+    "zipcode":2134,
+    "neighborhood":"Allston"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.114748,42.350992 ]
+    },
+    "properties": {
+    "stop_id":"place-amory",
+    "stop_name":"Amory Street",
+    "zipcode":2215,
+    "neighborhood":"Fenway"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.057655,42.330154 ]
+    },
+    "properties": {
+    "stop_id":"place-andrw",
+    "stop_name":"Andrew",
+    "zipcode":2127,
+    "neighborhood":"South Boston"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.030395,42.374262 ]
+    },
+    "properties": {
+    "stop_id":"place-aport",
+    "stop_name":"Airport",
+    "zipcode":2128,
+    "neighborhood":"East Boston"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.051652,42.359784 ]
+    },
+    "properties": {
+    "stop_id":"place-aqucl",
+    "stop_name":"Aquarium",
+    "zipcode":2109,
+    "neighborhood":"Downtown"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.070893,42.351902 ]
+    },
+    "properties": {
+    "stop_id":"place-armnl",
+    "stop_name":"Arlington",
+    "zipcode":2116,
+    "neighborhood":"Back Bay"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.063777,42.28452 ]
+    },
+    "properties": {
+    "stop_id":"place-asmnl",
+    "stop_name":"Ashmont",
+    "zipcode":2124,
+    "neighborhood":"Dorchester"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.119924,42.351616 ]
+    },
+    "properties": {
+    "stop_id":"place-babck",
+    "stop_name":"Babcock Street",
+    "zipcode":2215,
+    "neighborhood":"Fenway"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.075727,42.34735 ]
+    },
+    "properties": {
+    "stop_id":"place-bbsta",
+    "stop_name":"Back Bay",
+    "zipcode":2116,
+    "neighborhood":"Back Bay"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.111313,42.330139 ]
+    },
+    "properties": {
+    "stop_id":"place-bckhl",
+    "stop_name":"Back of the Hill",
+    "zipcode":2130,
+    "neighborhood":"Jamaica Plain"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.100258,42.349293 ]
+    },
+    "properties": {
+    "stop_id":"place-bland",
+    "stop_name":"Blandford Street",
+    "zipcode":2215,
+    "neighborhood":"Fenway"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.062037,42.361365 ]
+    },
+    "properties": {
+    "stop_id":"place-bomnl",
+    "stop_name":"Bowdoin",
+    "zipcode":2114,
+    "neighborhood":"West End"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.06459,42.35302 ]
+    },
+    "properties": {
+    "stop_id":"place-boyls",
+    "stop_name":"Boylston",
+    "zipcode":2116,
+    "neighborhood":"Back Bay"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.056967,42.342622 ]
+    },
+    "properties": {
+    "stop_id":"place-brdwy",
+    "stop_name":"Broadway",
+    "zipcode":2127,
+    "neighborhood":"South Boston"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.125031,42.351967 ]
+    },
+    "properties": {
+    "stop_id":"place-brico",
+    "stop_name":"Packard's Corner",
+    "zipcode":2134,
+    "neighborhood":"Allston"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.104609,42.334229 ]
+    },
+    "properties": {
+    "stop_id":"place-brmnl",
+    "stop_name":"Brigham Circle",
+    "zipcode":2115,
+    "neighborhood":"Longwood"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.106865,42.350082 ]
+    },
+    "properties": {
+    "stop_id":"place-bucen",
+    "stop_name":"Boston University Central",
+    "zipcode":2215,
+    "neighborhood":"Fenway"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.103889,42.349735 ]
+    },
+    "properties": {
+    "stop_id":"place-buest",
+    "stop_name":"Boston University East",
+    "zipcode":2215,
+    "neighborhood":"Fenway"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.062519,42.272429 ]
+    },
+    "properties": {
+    "stop_id":"place-butlr",
+    "stop_name":"Butler",
+    "zipcode":2124,
+    "neighborhood":"Dorchester"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.069533,42.373622 ]
+    },
+    "properties": {
+    "stop_id":"place-ccmnl",
+    "stop_name":"Community College",
+    "zipcode":2129,
+    "neighborhood":"Charlestown"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.060394,42.279629 ]
+    },
+    "properties": {
+    "stop_id":"place-cedgr",
+    "stop_name":"Cedar Grove",
+    "zipcode":2124,
+    "neighborhood":"Dorchester"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.15316,42.338169 ]
+    },
+    "properties": {
+    "stop_id":"place-chill",
+    "stop_name":"Chestnut Hill Avenue",
+    "zipcode":2135,
+    "neighborhood":"Brighton"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.070628,42.361166 ]
+    },
+    "properties": {
+    "stop_id":"place-chmnl",
+    "stop_name":"Charles/MGH",
+    "zipcode":2114,
+    "neighborhood":"West End"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.062752,42.352547 ]
+    },
+    "properties": {
+    "stop_id":"place-chncl",
+    "stop_name":"Chinatown",
+    "zipcode":2111,
+    "neighborhood":"Chinatown"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.150711,42.340805 ]
+    },
+    "properties": {
+    "stop_id":"place-chswk",
+    "stop_name":"Chiswick Road",
+    "zipcode":2135,
+    "neighborhood":"Brighton"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.149326,42.336142 ]
+    },
+    "properties": {
+    "stop_id":"place-clmnl",
+    "stop_name":"Cleveland Circle",
+    "zipcode":2135,
+    "neighborhood":"Brighton"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.103802,42.365486 ]
+    },
+    "properties": {
+    "stop_id":"place-cntsq",
+    "stop_name":"Central",
+    "zipcode":2139,
+    "neighborhood":"Mid-Cambridge"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.077447,42.349974 ]
+    },
+    "properties": {
+    "stop_id":"place-coecl",
+    "stop_name":"Copley",
+    "zipcode":2116,
+    "neighborhood":"Back Bay"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.060225,42.355518 ]
+    },
+    "properties": {
+    "stop_id":"place-dwnxg",
+    "stop_name":"Downtown Crossing",
+    "zipcode":2110,
+    "neighborhood":"Downtown"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.105728,42.333706 ]
+    },
+    "properties": {
+    "stop_id":"place-fenwd",
+    "stop_name":"Fenwood Road",
+    "zipcode":2115,
+    "neighborhood":"Longwood"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.104213,42.345403 ]
+    },
+    "properties": {
+    "stop_id":"place-fenwy",
+    "stop_name":"Fenway",
+    "zipcode":2215,
+    "neighborhood":"Fenway"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.061667,42.300093 ]
+    },
+    "properties": {
+    "stop_id":"place-fldcr",
+    "stop_name":"Fields Corner",
+    "zipcode":2122,
+    "neighborhood":"Dorchester"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.113943,42.300713 ]
+    },
+    "properties": {
+    "stop_id":"place-forhl",
+    "stop_name":"Forest Hills",
+    "zipcode":2130,
+    "neighborhood":"Jamaica Plain"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.059215,42.359705 ]
+    },
+    "properties": {
+    "stop_id":"place-gover",
+    "stop_name":"Government Center",
+    "zipcode":2114,
+    "neighborhood":"West End"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.134949,42.348545 ]
+    },
+    "properties": {
+    "stop_id":"place-grigg",
+    "stop_name":"Griggs Street",
+    "zipcode":2134,
+    "neighborhood":"Allston"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.107414,42.310525 ]
+    },
+    "properties": {
+    "stop_id":"place-grnst",
+    "stop_name":"Green Street",
+    "zipcode":2130,
+    "neighborhood":"Jamaica Plain"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.05829,42.363021 ]
+    },
+    "properties": {
+    "stop_id":"place-haecl",
+    "stop_name":"Haymarket",
+    "zipcode":2114,
+    "neighborhood":"West End"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.118956,42.373362 ]
+    },
+    "properties": {
+    "stop_id":"place-harsq",
+    "stop_name":"Harvard",
+    "zipcode":2138,
+    "neighborhood":"Strawberry Hill"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.131355,42.350243 ]
+    },
+    "properties": {
+    "stop_id":"place-harvd",
+    "stop_name":"Harvard Avenue",
+    "zipcode":2134,
+    "neighborhood":"Allston"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.110252,42.328316 ]
+    },
+    "properties": {
+    "stop_id":"place-hsmnl",
+    "stop_name":"Heath Street",
+    "zipcode":2130,
+    "neighborhood":"Jamaica Plain"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.087903,42.347888 ]
+    },
+    "properties": {
+    "stop_id":"place-hymnl",
+    "stop_name":"Hynes Convention Center",
+    "zipcode":2115,
+    "neighborhood":"Longwood"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.099592,42.323132 ]
+    },
+    "properties": {
+    "stop_id":"place-jaksn",
+    "stop_name":"Jackson Square",
+    "zipcode":2119,
+    "neighborhood":"Roxbury"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.052391,42.320685 ]
+    },
+    "properties": {
+    "stop_id":"place-jfk",
+    "stop_name":"JFK/UMass",
+    "zipcode":2125,
+    "neighborhood":"Dorchester"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.095169,42.348949 ]
+    },
+    "properties": {
+    "stop_id":"place-kencl",
+    "stop_name":"Kenmore",
+    "zipcode":2215,
+    "neighborhood":"Fenway"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.166769,42.340081 ]
+    },
+    "properties": {
+    "stop_id":"place-lake",
+    "stop_name":"Boston College",
+    "zipcode":2135,
+    "neighborhood":"Brighton"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.076584,42.371572 ]
+    },
+    "properties": {
+    "stop_id":"place-lech",
+    "stop_name":"Lechmere",
+    "zipcode":2141,
+    "neighborhood":"Wellington-Harrington"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.100052,42.33596 ]
+    },
+    "properties": {
+    "stop_id":"place-lngmd",
+    "stop_name":"Longwood Medical Area",
+    "zipcode":2115,
+    "neighborhood":"Longwood"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.083423,42.341512 ]
+    },
+    "properties": {
+    "stop_id":"place-masta",
+    "stop_name":"Massachusetts Avenue",
+    "zipcode":2115,
+    "neighborhood":"Longwood"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.092486,42.26762 ]
+    },
+    "properties": {
+    "stop_id":"place-matt",
+    "stop_name":"Mattapan",
+    "zipcode":2126,
+    "neighborhood":"Mattapan"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.095512,42.337711 ]
+    },
+    "properties": {
+    "stop_id":"place-mfa",
+    "stop_name":"Museum of Fine Arts",
+    "zipcode":2115,
+    "neighborhood":"Longwood"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.109756,42.333195 ]
+    },
+    "properties": {
+    "stop_id":"place-mispk",
+    "stop_name":"Mission Park",
+    "zipcode":2115,
+    "neighborhood":"Longwood"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.03953,42.369119 ]
+    },
+    "properties": {
+    "stop_id":"place-mvbcl",
+    "stop_name":"Maverick",
+    "zipcode":2128,
+    "neighborhood":"East Boston"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.06129,42.365577 ]
+    },
+    "properties": {
+    "stop_id":"place-north",
+    "stop_name":"North Station",
+    "zipcode":2114,
+    "neighborhood":"West End"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.088806,42.340401 ]
+    },
+    "properties": {
+    "stop_id":"place-nuniv",
+    "stop_name":"Northeastern University",
+    "zipcode":2115,
+    "neighborhood":"Longwood"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.004736,42.386867 ]
+    },
+    "properties": {
+    "stop_id":"place-orhte",
+    "stop_name":"Orient Heights",
+    "zipcode":2128,
+    "neighborhood":"East Boston"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.062424,42.356395 ]
+    },
+    "properties": {
+    "stop_id":"place-pktrm",
+    "stop_name":"Park Street",
+    "zipcode":2116,
+    "neighborhood":"Back Bay"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.119149,42.3884 ]
+    },
+    "properties": {
+    "stop_id":"place-portr",
+    "stop_name":"Porter",
+    "zipcode":2140,
+    "neighborhood":"North Cambridge"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.081696,42.34557 ]
+    },
+    "properties": {
+    "stop_id":"place-prmnl",
+    "stop_name":"Prudential",
+    "zipcode":2199,
+    "neighborhood":"Downtown"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.095451,42.331397 ]
+    },
+    "properties": {
+    "stop_id":"place-rcmnl",
+    "stop_name":"Roxbury Crossing",
+    "zipcode":2120,
+    "neighborhood":"Mission Hill"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.088961,42.336377 ]
+    },
+    "properties": {
+    "stop_id":"place-rugg",
+    "stop_name":"Ruggles",
+    "zipcode":2115,
+    "neighborhood":"Longwood"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.111931,42.331684 ]
+    },
+    "properties": {
+    "stop_id":"place-rvrwy",
+    "stop_name":"Riverway",
+    "zipcode":2130,
+    "neighborhood":"Jamaica Plain"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.104248,42.317062 ]
+    },
+    "properties": {
+    "stop_id":"place-sbmnl",
+    "stop_name":"Stony Brook",
+    "zipcode":2130,
+    "neighborhood":"Jamaica Plain"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -70.997123,42.390501 ]
+    },
+    "properties": {
+    "stop_id":"place-sdmnl",
+    "stop_name":"Suffolk Downs",
+    "zipcode":2128,
+    "neighborhood":"East Boston"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.053331,42.31129 ]
+    },
+    "properties": {
+    "stop_id":"place-shmnl",
+    "stop_name":"Savin Hill",
+    "zipcode":2125,
+    "neighborhood":"Dorchester"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.065738,42.293126 ]
+    },
+    "properties": {
+    "stop_id":"place-smmnl",
+    "stop_name":"Shawmut",
+    "zipcode":2124,
+    "neighborhood":"Dorchester"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.157661,42.3396 ]
+    },
+    "properties": {
+    "stop_id":"place-sougr",
+    "stop_name":"South Street",
+    "zipcode":2135,
+    "neighborhood":"Brighton"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.067666,42.366664 ]
+    },
+    "properties": {
+    "stop_id":"place-spmnl",
+    "stop_name":"Science Park/West End",
+    "zipcode":2114,
+    "neighborhood":"West End"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.055242,42.352271 ]
+    },
+    "properties": {
+    "stop_id":"place-sstat",
+    "stop_name":"South Station",
+    "zipcode":2111,
+    "neighborhood":"Chinatown"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.057598,42.358978 ]
+    },
+    "properties": {
+    "stop_id":"place-state",
+    "stop_name":"State",
+    "zipcode":2109,
+    "neighborhood":"Downtown"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.146202,42.341614 ]
+    },
+    "properties": {
+    "stop_id":"place-sthld",
+    "stop_name":"Sutherland Road",
+    "zipcode":2135,
+    "neighborhood":"Brighton"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.076994,42.383975 ]
+    },
+    "properties": {
+    "stop_id":"place-sull",
+    "stop_name":"Sullivan Square",
+    "zipcode":2129,
+    "neighborhood":"Charlestown"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.085056,42.342687 ]
+    },
+    "properties": {
+    "stop_id":"place-symcl",
+    "stop_name":"Symphony",
+    "zipcode":2115,
+    "neighborhood":"Longwood"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.063917,42.349662 ]
+    },
+    "properties": {
+    "stop_id":"place-tumnl",
+    "stop_name":"Tufts Medical Center",
+    "zipcode":2111,
+    "neighborhood":"Chinatown"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.142853,42.343864 ]
+    },
+    "properties": {
+    "stop_id":"place-wascm",
+    "stop_name":"Washington Street",
+    "zipcode":2135,
+    "neighborhood":"Brighton"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.022865,42.37964 ]
+    },
+    "properties": {
+    "stop_id":"place-wimnl",
+    "stop_name":"Wood Island",
+    "zipcode":2128,
+    "neighborhood":"East Boston"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.140457,42.348343 ]
+    },
+    "properties": {
+    "stop_id":"place-wrnst",
+    "stop_name":"Warren Street",
+    "zipcode":2135,
+    "neighborhood":"Brighton"
+    }
+  }
+]
+}
