@@ -79,10 +79,12 @@
     let lineLayerId;
     let commuteLayerId;
     let commuteLineLayerId;
+
     let mbtaLayerId;
     let mbtaOutlineLayerId;
     let commuterRailLayerId;
     let commuterRailOutlineLayerId;
+    let transitStopsLayerId;
 
     let transitLayers;
     $: {
@@ -181,10 +183,15 @@
             generateId: false
         });
 
-
         map.addSource("Commuter_Rail_Routes", {
             type: 'geojson',
             data: 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/transportation/mbta/map_layers/MBTA_Commuter_Rail_lines_w_hoods_collapsed.geojson',
+            generateId: false
+        });
+
+        map.addSource("transit_stops", {
+            type: 'geojson',
+            data: 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/transportation/mbta/map_layers/mbta_stops.geojson',
             generateId: false
         });
 
@@ -258,6 +265,23 @@
             },
             'layout': {'visibility': 'none'},
         });
+
+        transitStopsLayerId = "transit_stops";
+        map.addLayer({
+            'id': transitStopsLayerId,
+            'source': 'transit_stops',
+            'type': 'circle',
+            'paint': {
+                'circle-color': 'white',
+                'circle-opacity': 0.3,
+                'circle-radius': 5 ,
+                'circle-stroke-color': 'black',
+                'circle-stroke-width': 1,
+                'circle-stroke-opacity': 0.3,
+            },
+            'layout': {'visibility': 'none'},
+        });
+
 
         // When clicking on map colored by rent
         map.on('click', 'boston_cambridge_rent', (e) => {
@@ -339,6 +363,8 @@
         for (const layerId of transitLayers) {
             map.setLayoutProperty(layerId, 'visibility', 'none');
         }
+        map.setLayoutProperty(transitStopsLayerId, 'visibility', 'none');
+
     }
 
     function colorbyCommute() {
@@ -349,6 +375,7 @@
         for (const layerId of transitLayers) {
             map.setLayoutProperty(layerId, 'visibility', 'visible');
         }
+        map.setLayoutProperty(transitStopsLayerId, 'visibility', 'visible');
     }
 
 
@@ -405,8 +432,6 @@
                             maxCommute, 'hsla(200, 100%, 20%, 0.8)'
                         ]]
                     ]);
-                    console.log(mbtaLayerId);
-                    console.log(transitLayers);
                     for (const layerId of transitLayers) {
                         map.setPaintProperty(layerId, 'line-opacity', [
                             'case',
@@ -414,6 +439,16 @@
                             0.3
                         ]);
                     }
+                    map.setPaintProperty(transitStopsLayerId, 'circle-opacity', [
+                            'case',
+                            ['==', clickedNeighborhood, ['get', 'neighborhood']], 0.8,  // High opacity if clickedNeighborhood is in the list
+                            0.3
+                    ]);
+                    map.setPaintProperty(transitStopsLayerId, 'circle-stroke-opacity', [
+                            'case',
+                            ['==', clickedNeighborhood, ['get', 'neighborhood']], 0.8,  // High opacity if clickedNeighborhood is in the list
+                            0.3
+                    ]);
 
                     var features = map.querySourceFeatures('Boston_Cambridge_Commute');
                     features.forEach(function(feature) {
