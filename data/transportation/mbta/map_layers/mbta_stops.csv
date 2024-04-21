@@ -1,92 +1,92 @@
-stop_id,stop_name,zipcode,neighborhood,latitude,longitude
-place-DB-0095,Readville,02136,Hyde Park,42.238405,-71.133246
-place-DB-2205,Fairmount,02136,Hyde Park,42.253638,-71.11927
-place-DB-2230,Morton Street,02126,Mattapan,42.280994,-71.085475
-place-DB-2240,Talbot Avenue,02124,Dorchester,42.292246,-71.07814
-place-DB-2249,Four Corners/Geneva,02121,Roxbury,42.305037,-71.076833
-place-DB-2258,Uphams Corner,02125,Dorchester,42.319125,-71.068627
-place-DB-2265,Newmarket,02125,Dorchester,42.327415,-71.065674
-place-NB-0064,Roslindale Village,02131,Roslindale,42.287442,-71.130283
-place-NB-0072,Bellevue,02131,Roslindale,42.286588,-71.145557
-place-NB-0076,Highland,02132,West Roxbury,42.284969,-71.153937
-place-NB-0080,West Roxbury,02132,West Roxbury,42.281358,-71.160065
-place-NEC-2203,Hyde Park,02136,Hyde Park,42.25503,-71.125526
-place-WML-0025,Lansdowne,02215,Fenway,42.347581,-71.099974
-place-WML-0035,Boston Landing,02134,Allston,42.357293,-71.139883
-place-alfcl,Alewife,02140,North Cambridge,42.39583,-71.141287
-place-alsgr,Allston Street,02134,Allston,42.348701,-71.137955
-place-amory,Amory Street,02215,Fenway,42.350992,-71.114748
-place-andrw,Andrew,02127,South Boston,42.330154,-71.057655
-place-aport,Airport,02128,East Boston,42.374262,-71.030395
-place-aqucl,Aquarium,02109,Downtown,42.359784,-71.051652
-place-armnl,Arlington,02116,Back Bay,42.351902,-71.070893
-place-asmnl,Ashmont,02124,Dorchester,42.28452,-71.063777
-place-babck,Babcock Street,02215,Fenway,42.351616,-71.119924
-place-bbsta,Back Bay,02116,Back Bay,42.34735,-71.075727
-place-bckhl,Back of the Hill,02130,Jamaica Plain,42.330139,-71.111313
-place-bland,Blandford Street,02215,Fenway,42.349293,-71.100258
-place-bomnl,Bowdoin,02114,West End,42.361365,-71.062037
-place-boyls,Boylston,02116,Back Bay,42.35302,-71.06459
-place-brdwy,Broadway,02127,South Boston,42.342622,-71.056967
-place-brico,Packard's Corner,02134,Allston,42.351967,-71.125031
-place-brmnl,Brigham Circle,02115,Longwood,42.334229,-71.104609
-place-bucen,Boston University Central,02215,Fenway,42.350082,-71.106865
-place-buest,Boston University East,02215,Fenway,42.349735,-71.103889
-place-butlr,Butler,02124,Dorchester,42.272429,-71.062519
-place-ccmnl,Community College,02129,Charlestown,42.373622,-71.069533
-place-cedgr,Cedar Grove,02124,Dorchester,42.279629,-71.060394
-place-chill,Chestnut Hill Avenue,02135,Brighton,42.338169,-71.15316
-place-chmnl,Charles/MGH,02114,West End,42.361166,-71.070628
-place-chncl,Chinatown,02111,Chinatown,42.352547,-71.062752
-place-chswk,Chiswick Road,02135,Brighton,42.340805,-71.150711
-place-clmnl,Cleveland Circle,02135,Brighton,42.336142,-71.149326
-place-cntsq,Central,02139,Mid-Cambridge,42.365486,-71.103802
-place-coecl,Copley,02116,Back Bay,42.349974,-71.077447
-place-dwnxg,Downtown Crossing,02110,Downtown,42.355518,-71.060225
-place-fenwd,Fenwood Road,02115,Longwood,42.333706,-71.105728
-place-fenwy,Fenway,02215,Fenway,42.345403,-71.104213
-place-fldcr,Fields Corner,02122,Dorchester,42.300093,-71.061667
-place-forhl,Forest Hills,02130,Jamaica Plain,42.300713,-71.113943
-place-gover,Government Center,02114,West End,42.359705,-71.059215
-place-grigg,Griggs Street,02134,Allston,42.348545,-71.134949
-place-grnst,Green Street,02130,Jamaica Plain,42.310525,-71.107414
-place-haecl,Haymarket,02114,West End,42.363021,-71.05829
-place-harsq,Harvard,02138,Strawberry Hill,42.373362,-71.118956
-place-harvd,Harvard Avenue,02134,Allston,42.350243,-71.131355
-place-hsmnl,Heath Street,02130,Jamaica Plain,42.328316,-71.110252
-place-hymnl,Hynes Convention Center,02115,Longwood,42.347888,-71.087903
-place-jaksn,Jackson Square,02119,Roxbury,42.323132,-71.099592
-place-jfk,JFK/UMass,02125,Dorchester,42.320685,-71.052391
-place-kencl,Kenmore,02215,Fenway,42.348949,-71.095169
-place-lake,Boston College,02135,Brighton,42.340081,-71.166769
-place-lech,Lechmere,02141,Wellington-Harrington,42.371572,-71.076584
-place-lngmd,Longwood Medical Area,02115,Longwood,42.33596,-71.100052
-place-masta,Massachusetts Avenue,02115,Longwood,42.341512,-71.083423
-place-matt,Mattapan,02126,Mattapan,42.26762,-71.092486
-place-mfa,Museum of Fine Arts,02115,Longwood,42.337711,-71.095512
-place-mispk,Mission Park,02115,Longwood,42.333195,-71.109756
-place-mvbcl,Maverick,02128,East Boston,42.369119,-71.03953
-place-north,North Station,02114,West End,42.365577,-71.06129
-place-nuniv,Northeastern University,02115,Longwood,42.340401,-71.088806
-place-orhte,Orient Heights,02128,East Boston,42.386867,-71.004736
-place-pktrm,Park Street,02116,Back Bay,42.356395,-71.062424
-place-portr,Porter,02140,North Cambridge,42.3884,-71.119149
-place-prmnl,Prudential,02199,Downtown,42.34557,-71.081696
-place-rcmnl,Roxbury Crossing,02120,Mission Hill,42.331397,-71.095451
-place-rugg,Ruggles,02115,Longwood,42.336377,-71.088961
-place-rvrwy,Riverway,02130,Jamaica Plain,42.331684,-71.111931
-place-sbmnl,Stony Brook,02130,Jamaica Plain,42.317062,-71.104248
-place-sdmnl,Suffolk Downs,02128,East Boston,42.390501,-70.997123
-place-shmnl,Savin Hill,02125,Dorchester,42.31129,-71.053331
-place-smmnl,Shawmut,02124,Dorchester,42.293126,-71.065738
-place-sougr,South Street,02135,Brighton,42.3396,-71.157661
-place-spmnl,Science Park/West End,02114,West End,42.366664,-71.067666
-place-sstat,South Station,02111,Chinatown,42.352271,-71.055242
-place-state,State,02109,Downtown,42.358978,-71.057598
-place-sthld,Sutherland Road,02135,Brighton,42.341614,-71.146202
-place-sull,Sullivan Square,02129,Charlestown,42.383975,-71.076994
-place-symcl,Symphony,02115,Longwood,42.342687,-71.085056
-place-tumnl,Tufts Medical Center,02111,Chinatown,42.349662,-71.063917
-place-wascm,Washington Street,02135,Brighton,42.343864,-71.142853
-place-wimnl,Wood Island,02128,East Boston,42.37964,-71.022865
-place-wrnst,Warren Street,02135,Brighton,42.348343,-71.140457
+stop_id,stop_name,neighborhood,latitude,longitude
+place-alsgr,Allston Street,Allston,42.348701,-71.137955
+place-amory,Amory Street,Allston,42.350992,-71.114748
+place-babck,Babcock Street,Allston,42.351616,-71.119924
+place-brico,Packard's Corner,Allston,42.351967,-71.125031
+place-grigg,Griggs Street,Allston,42.348545,-71.134949
+place-harvd,Harvard Avenue,Allston,42.350243,-71.131355
+place-wrnst,Warren Street,Allston,42.348343,-71.140457
+place-armnl,Arlington,Back Bay,42.351902,-71.070893
+place-coecl,Copley,Back Bay,42.349974,-71.077447
+place-hymnl,Hynes Convention Center,Back Bay,42.347888,-71.087903
+place-prmnl,Prudential,Back Bay,42.34557,-71.081696
+place-boyls,Boylston,Beacon Hill,42.35302,-71.06459
+place-pktrm,Park Street,Beacon Hill,42.356395,-71.062424
+place-WML-0035,Boston Landing,Brighton,42.357293,-71.139883
+place-chill,Chestnut Hill Avenue,Brighton,42.338169,-71.15316
+place-chswk,Chiswick Road,Brighton,42.340805,-71.150711
+place-clmnl,Cleveland Circle,Brighton,42.336142,-71.149326
+place-sougr,South Street,Brighton,42.3396,-71.157661
+place-sthld,Sutherland Road,Brighton,42.341614,-71.146202
+place-wascm,Washington Street,Brighton,42.343864,-71.142853
+place-ccmnl,Community College,Charlestown,42.373622,-71.069533
+place-sull,Sullivan Square,Charlestown,42.383975,-71.076994
+place-DB-2230,Morton Street,Dorchester,42.280994,-71.085475
+place-DB-2240,Talbot Avenue,Dorchester,42.292246,-71.07814
+place-DB-2249,Four Corners/Geneva,Dorchester,42.305037,-71.076833
+place-DB-2258,Uphams Corner,Dorchester,42.319125,-71.068627
+place-DB-2265,Newmarket,Dorchester,42.327415,-71.065674
+place-asmnl,Ashmont,Dorchester,42.28452,-71.063777
+place-butlr,Butler,Dorchester,42.272429,-71.062519
+place-cedgr,Cedar Grove,Dorchester,42.279629,-71.060394
+place-fldcr,Fields Corner,Dorchester,42.300093,-71.061667
+place-jfk,JFK/UMass,Dorchester,42.320685,-71.052391
+place-shmnl,Savin Hill,Dorchester,42.31129,-71.053331
+place-smmnl,Shawmut,Dorchester,42.293126,-71.065738
+place-aqucl,Aquarium,Downtown,42.359784,-71.051652
+place-bomnl,Bowdoin,Downtown,42.361365,-71.062037
+place-chncl,Chinatown,Downtown,42.352547,-71.062752
+place-dwnxg,Downtown Crossing,Downtown,42.355518,-71.060225
+place-gover,Government Center,Downtown,42.359705,-71.059215
+place-haecl,Haymarket,Downtown,42.363021,-71.05829
+place-sstat,South Station,Downtown,42.352271,-71.055242
+place-state,State,Downtown,42.358978,-71.057598
+place-tumnl,Tufts Medical Center,Downtown,42.349662,-71.063917
+place-aport,Airport,East Boston,42.374262,-71.030395
+place-mvbcl,Maverick,East Boston,42.369119,-71.03953
+place-orhte,Orient Heights,East Boston,42.386867,-71.004736
+place-sdmnl,Suffolk Downs,East Boston,42.390501,-70.997123
+place-wimnl,Wood Island,East Boston,42.37964,-71.022865
+place-WML-0025,Lansdowne,Fenway,42.347581,-71.099974
+place-bland,Blandford Street,Fenway,42.349293,-71.100258
+place-bucen,Boston University Central,Fenway,42.350082,-71.106865
+place-buest,Boston University East,Fenway,42.349735,-71.103889
+place-fenwy,Fenway,Fenway,42.345403,-71.104213
+place-kencl,Kenmore,Fenway,42.348949,-71.095169
+place-masta,Massachusetts Avenue,Fenway,42.341512,-71.083423
+place-mfa,Museum of Fine Arts,Fenway,42.337711,-71.095512
+place-nuniv,Northeastern University,Fenway,42.340401,-71.088806
+place-symcl,Symphony,Fenway,42.342687,-71.085056
+place-DB-0095,Readville,Hyde Park,42.238405,-71.133246
+place-DB-2205,Fairmount,Hyde Park,42.253638,-71.11927
+place-NEC-2203,Hyde Park,Hyde Park,42.25503,-71.125526
+place-forhl,Forest Hills,Jamaica Plain,42.300713,-71.113943
+place-grnst,Green Street,Jamaica Plain,42.310525,-71.107414
+place-hsmnl,Heath Street,Jamaica Plain,42.328316,-71.110252
+place-jaksn,Jackson Square,Jamaica Plain,42.323132,-71.099592
+place-sbmnl,Stony Brook,Jamaica Plain,42.317062,-71.104248
+place-matt,Mattapan,Mattapan,42.26762,-71.092486
+place-bckhl,Back of the Hill,Mission Hill,42.330139,-71.111313
+place-brmnl,Brigham Circle,Mission Hill,42.334229,-71.104609
+place-fenwd,Fenwood Road,Mission Hill,42.333706,-71.105728
+place-lngmd,Longwood Medical Area,Mission Hill,42.33596,-71.100052
+place-mispk,Mission Park,Mission Hill,42.333195,-71.109756
+place-rvrwy,Riverway,Mission Hill,42.331684,-71.111931
+place-NB-0064,Roslindale Village,Roslindale,42.287442,-71.130283
+place-NB-0072,Bellevue,Roslindale,42.286588,-71.145557
+place-rcmnl,Roxbury Crossing,Roxbury,42.331397,-71.095451
+place-rugg,Ruggles,Roxbury,42.336377,-71.088961
+place-andrw,Andrew,South Boston,42.330154,-71.057655
+place-brdwy,Broadway,South Boston,42.342622,-71.056967
+place-bbsta,Back Bay,South End,42.34735,-71.075727
+place-chmnl,Charles/MGH,West End,42.361166,-71.070628
+place-north,North Station,West End,42.365577,-71.06129
+place-spmnl,Science Park/West End,West End,42.366664,-71.067666
+place-NB-0076,Highland,West Roxbury,42.284969,-71.153937
+place-NB-0080,West Roxbury,West Roxbury,42.281358,-71.160065
+place-cntsq,Central,The Port,42.365486,-71.103802
+place-portr,Porter,North Cambridge,42.3884,-71.119149
+place-alfcl,Alewife,North Cambridge,42.39583,-71.141287
+place-knncl,Kendall/MIT,Area 2/MIT,42.362491,-71.086176
+place-harsq,Harvard,Riverside,42.373362,-71.118956
+place-lech,Lechmere,East Cambridge,42.371572,-71.076584
