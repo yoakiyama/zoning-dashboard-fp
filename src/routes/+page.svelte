@@ -1,6 +1,6 @@
 <script>
 function goToDashboard(){
-    window.location.href = '/dashboard';
+    window.location.href = '/zoning-dashboard-fp/dashboard';
     return false;
 }
 </script>
