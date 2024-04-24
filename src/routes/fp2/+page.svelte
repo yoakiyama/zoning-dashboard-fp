@@ -467,9 +467,6 @@
             })();
         }
     }
-
-
-
 </script>
 
 <h1> Minimal Viable Product </h1>
@@ -480,13 +477,12 @@
 </div>
 
 <!-- Sliders and Color Bars -->
-
-<div class="slider-container">
-    {#if rentSlider}
-        <Slider bind:Value={rentValue} sliderColor='hsl(135, 40%, 50%)'/>
-        <button on:click={handleRentEnter}>Enter</button>
-    {/if}
-</div>
+{#if rentSlider}
+    <div class="slider-container">
+            <Slider bind:Value={rentValue} sliderColor='hsl(135, 40%, 50%)'/>
+            <button on:click={handleRentEnter}>Enter</button>
+    </div>
+{/if}
 
 {#if rentColor}
     <div class="container">
@@ -496,12 +492,12 @@
     </div>
 {/if}
 
-<div class="slider-container">
-    {#if commuteSlider}
-        <Slider bind:Value={commuteValue} label='Maximum commute time (min):' min={minCommute} max={maxCommute} sliderColor='hsl(200, 50%, 50%)'/>
-        <button on:click={handleCommuteEnter}>Enter</button>
-    {/if}
-</div>
+{#if commuteSlider}
+    <div class="slider-container">
+            <Slider bind:Value={commuteValue} label='Maximum commute time (min):' min={minCommute} max={maxCommute} sliderColor='hsl(200, 50%, 50%)'/>
+            <button on:click={handleCommuteEnter}>Enter</button>
+    </div>
+{/if}
 
 {#if commuteColor}
     <div class="container">
