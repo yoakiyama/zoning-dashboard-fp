@@ -18,23 +18,23 @@
 
 <style>
 	.container {
-        position: fixed;
+        /* position: fixed;
         top: 5rem;
-        right: 0.3rem;
+        right: 0.3rem; */
         margin: 5px;
         width: 200px;
-        text-align: center; 
+        text-align: center;
     }
 
     .colorbar-container {
-		position: relative;
-		width: 100%; 
+		/* position: relative; */
+		width: 100%;
 		height: 30px;
 		background: linear-gradient(var(--deg), var(--gradient-1), var(--gradient-2));
 	}
 
 	.text-label {
-		font-size: 14px; 
-		color: white; 
+		font-size: 16px;
+		color: white;
 	}
 </style>

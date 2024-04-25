@@ -10,6 +10,8 @@
     import { fetchRentData, fetchCommuteData, Dashboard } from '$lib/index';
     import Dropdown from './dropdown.svelte';
 
+    import * as d3 from "d3";
+
 
     let rentValue = 1500;
     let selectedRent = Infinity;
@@ -128,7 +130,7 @@
         fillLayerId = 'boston_cambridge_rent';
         lineLayerId = 'boston_cambridge_rent_outline';
         map.addLayer({
-            'id': 'boston_cambridge_rent',
+            'id': fillLayerId,
             'source': 'Boston_Cambridge_Rent',
             'type': 'fill',
             'paint': {
@@ -137,7 +139,7 @@
             'layout': {'visibility': 'visible'},
         });
         map.addLayer({
-            'id': 'boston_cambridge_rent_outline',
+            'id': lineLayerId,
             'source': 'Boston_Cambridge_Rent',
             'type': 'line',
             'paint': {
@@ -156,7 +158,7 @@
         commuteLayerId = 'boston_cambridge_commute';
         commuteLineLayerId = 'boston_cambridge_commute_outline';
         map.addLayer({
-            'id': 'boston_cambridge_commute',
+            'id': commuteLayerId,
             'source': 'Boston_Cambridge_Commute',
             'type': 'fill',
             'paint': {
@@ -165,7 +167,7 @@
             'layout': {'visibility': 'none'},
         });
         map.addLayer({
-            'id': 'boston_cambridge_commute_outline',
+            'id': commuteLineLayerId,
             'source': 'Boston_Cambridge_Commute',
             'type': 'line',
             'paint': {
@@ -198,7 +200,7 @@
         // white outline of MBTA for emphasis
         mbtaOutlineLayerId = 'mbta_routes_outline'
         map.addLayer({
-            'id': 'mbta_routes_outline',
+            'id': mbtaOutlineLayerId,
             'source': 'MBTA_Routes',
             'type': 'line',
             'paint': {
@@ -212,7 +214,7 @@
         });
         mbtaLayerId = 'mbta_routes'
         map.addLayer({
-            'id': 'mbta_routes',
+            'id': mbtaLayerId,
             'source': 'MBTA_Routes',
             'type': 'line',
             'paint': {
@@ -332,7 +334,7 @@
     // DASHBOARD FEATURE: user selects feature to color by
     function updateMapColoring(event) {
         const option = event.detail.selectedOption;
-        console.log(option)
+        console.log("coloring option:", option)
         if (map) {
             if (option === 'rent') {
                 console.log(selectedRent);
@@ -382,29 +384,39 @@
     // Coloring of neighborhoods by rent after selecting rent
     $: {
         if (map && fillLayerId && rentColor) {
-                    map.setPaintProperty(fillLayerId, 'fill-color', [
-                        'case',
-                        ['>', ['get', rentVar], selectedRent],
-                        'hsla(0, 80%, 100%, 0.4)',
-                        [
-                            'interpolate',
-                            ['linear'],
-                            ['get', rentVar],
-                            minRent, 'hsla(135, 100%, 90%, 0.8)', // Start of your gradient (e.g., $0)
-                            maxRent, 'hsla(135, 100%, 20%, 0.8)' // End of your gradient (e.g., $3000)
-                        ]
-                    ]);
+
+            const filteredNeighborhoods = map.querySourceFeatures("Boston_Cambridge_Rent", {
+                sourceLayer: fillLayerId,
+                filter: ['<', rentVar, selectedRent],
+            });
+            let rentVals = filteredNeighborhoods.map(v => +(v.properties[rentVar]))
+            console.log("got rents: ", rentVals);
+            [minRent, maxRent] = d3.extent(rentVals);
+            console.log("coloring by rent: ", rentVar, selectedRent, minRent, maxRent);
+
+            map.setPaintProperty(fillLayerId, 'fill-color', [
+                'case',
+                ['>', ['get', rentVar], selectedRent],
+                'hsla(0, 80%, 100%, 0.4)',
+                [
+                    'interpolate',
+                    ['linear'],
+                    ['get', rentVar],
+                    minRent, 'hsla(135, 100%, 90%, 0.8)', // Start of your gradient (e.g., $0)
+                    maxRent, 'hsla(135, 100%, 20%, 0.8)' // End of your gradient (e.g., $3000)
+                ]
+            ]);
 
             var features = map.querySourceFeatures('Boston_Cambridge_Rent');
             features.forEach(function(feature) {
                 var isRentBelowSelected = feature.properties.avg_per_bed < selectedRent;
                 if (feature.id !== undefined) {
                     map.setFeatureState({
-                    source: 'Boston_Cambridge_Rent',
-                    id: feature.id,
+                        source: 'Boston_Cambridge_Rent',
+                        id: feature.id,
                     }, {'valid_rent':isRentBelowSelected});
                     rentState[feature.id] = isRentBelowSelected;
-                    }
+                }
             });
         }
     }
@@ -473,39 +485,41 @@
 <p> </p>
 
 <div class="map-wrap">
-    <div class="map" bind:this={mapContainer} />
+    <div class="map" bind:this={mapContainer}>
+        <!-- Sliders and Color Bars (contained within map)-->
+        {#if rentSlider}
+        <div class="slider-container">
+            <Slider bind:Value={rentValue} sliderColor='hsl(135, 40%, 50%)' class="slider-slider"/>
+            <button on:click={handleRentEnter} class="slider-button">Enter</button>
+        </div>
+        {/if}
+
+        {#if rentColor}
+        <div class="color-legend">
+            <ColorLegend color1='hsla(135, 100%, 90%, 1)'
+                        color2='hsla(135, 100%, 20%, 1)'
+                        title='Average Rent per Bedroom'/>
+        </div>
+        {/if}
+
+        {#if commuteSlider}
+        <div class="slider-container">
+                <Slider bind:Value={commuteValue} label='Maximum commute time (min):' min={minCommute} max={maxCommute} sliderColor='hsl(200, 50%, 50%)'/>
+                <button on:click={handleCommuteEnter}>Enter</button>
+        </div>
+        {/if}
+
+        {#if commuteColor}
+        <div class="container">
+            <ColorLegend color1='hsla(200, 100%, 100%, 1)'
+                        color2='hsla(200, 100%, 20%, 1)'
+                        title='Average Commute Time from {clickedNeighborhood} (minutes)'/>
+        </div>
+        {/if}
+    </div>
 </div>
 
-<!-- Sliders and Color Bars -->
-{#if rentSlider}
-    <div class="slider-container">
-            <Slider bind:Value={rentValue} sliderColor='hsl(135, 40%, 50%)'/>
-            <button on:click={handleRentEnter}>Enter</button>
-    </div>
-{/if}
 
-{#if rentColor}
-    <div class="container">
-        <ColorLegend color1='hsla(135, 100%, 90%, 1)'
-                    color2='hsla(135, 100%, 20%, 1)'
-                    title='Average Rent per Bedroom'/>
-    </div>
-{/if}
-
-{#if commuteSlider}
-    <div class="slider-container">
-            <Slider bind:Value={commuteValue} label='Maximum commute time (min):' min={minCommute} max={maxCommute} sliderColor='hsl(200, 50%, 50%)'/>
-            <button on:click={handleCommuteEnter}>Enter</button>
-    </div>
-{/if}
-
-{#if commuteColor}
-    <div class="container">
-        <ColorLegend color1='hsla(200, 100%, 100%, 1)'
-                    color2='hsla(200, 100%, 20%, 1)'
-                    title='Average Commute Time from {clickedNeighborhood} (minutes)'/>
-    </div>
-{/if}
 
 <!-- Map Display Options -->
 {#if commuteColor || dashboard}
@@ -574,19 +588,37 @@
 
 <style>
     @import url("$lib/global.css");
+    .map-wrap {
+        position: absolute;
+        width: 100%;
+        height: 90%;
+    }
 
     .map {
         position: absolute;
-        width: 99%;
-        height: 75%;
+        width: 90%;
+        height: 100%;
+    }
+    .color-legend {
+        position: absolute;
+        top: 1%;
+        right: 2%;
+        width: 200px;
+        z-index: 10;
     }
 
     .slider-container {
         position: absolute;
-        bottom: 20px;
-        left: 65%;
+        bottom: 0;
+        left: 37%;
         z-index: 1000;
+        width: 26%;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+        align-items: center;
     }
+
     .instruction {
         position: fixed;
         top: 50%;

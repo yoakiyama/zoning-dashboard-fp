@@ -22,15 +22,16 @@
 
 <style>
 	.slider-container {
-		position: fixed;
+		/* position: fixed;
 		bottom: 0;
 		left: 50%;
 		transform: translateX(-50%);
-		width: 20%;
+		width: 20%; */
 		background-color: white;
 		padding: 20px;
 		border-radius: 10px;
 		box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+		font-size: 16pt;
 	}
 	input[type="range"]{
 		width: 100%;
@@ -39,7 +40,7 @@
 
 	.slider {
 	-webkit-appearance: none;
-	appearance: none; 
+	appearance: none;
 	width: 100%;
 	cursor: pointer;
 	outline: none;
@@ -66,7 +67,7 @@
 	.slider::-webkit-slider-thumb {
 	/* removing default appearance */
 	-webkit-appearance: none;
-	appearance: none; 
+	appearance: none;
 	/* creating a custom design */
 	height: 12px;
 	width: 12px;
