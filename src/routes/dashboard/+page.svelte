@@ -302,6 +302,7 @@
                     console.log("you can't click that neighborhood")
                 }
                 console.log(clickedNeighborhood)
+                console.log(commuteColor)
 
 
             }
@@ -398,8 +399,6 @@
                 maxRent = 2000; // Default maximum rent
             }
 
-
-
             console.log("coloring by rent: ", rentVar, selectedRent, minRent, maxRent);
 
             map.setPaintProperty(fillLayerId, 'fill-color', [
@@ -473,12 +472,12 @@
                     var features = map.querySourceFeatures('Boston_Cambridge_Commute');
                     features.forEach(function(feature) {
                         var isCommuteBelowSelected = feature.properties[clickedNeighborhood] <= selectedCommute;
+                        commuteState[feature.id] = isCommuteBelowSelected;
                         if (feature.id !== undefined) {
                             map.setFeatureState({
                             source: 'Boston_Cambridge_Commute',
                             id: feature.id,
                             }, {'valid_commute':isCommuteBelowSelected});
-                            commuteState[feature.id] = isCommuteBelowSelected;
                             }
                     });
                 } catch (error) {
@@ -518,7 +517,7 @@
         {/if}
 
         {#if commuteColor}
-        <div class="container">
+        <div class="color-legend">
             <ColorLegend color1='hsla(200, 100%, 100%, 1)'
                         color2='hsla(200, 100%, 20%, 1)'
                         title='Average Commute Time from {clickedNeighborhood} (minutes)'/>
