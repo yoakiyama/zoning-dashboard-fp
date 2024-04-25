@@ -15,7 +15,7 @@
 
     let rentValue = 1500;
     let selectedRent = 6000;
-    let commuteValue=20;
+    let commuteValue = 20;
     let selectedCommute = 1000;
     let selectedOption = 'commute';
 
@@ -34,6 +34,9 @@
     // slider states
     let rentSlider = true;
     let commuteSlider = null;
+
+    let showSidePanel = false;
+    let mapWidth = "100%";
 
     function handleRentEnter() {
         // Store the current value of the rent slider
@@ -294,7 +297,7 @@
 
 
         // When clicking on map colored by rent
-        map.on('click', 'boston_cambridge_rent', (e) => {
+        map.on('click', fillLayerId, (e) => {
             if (e.features.length > 0 && rentSlider == null && !dashboard) {
                 const feature = e.features[0];
                 if (rentState[feature.id]){
@@ -317,7 +320,7 @@
         });
 
         // When clicking on map colored by commute
-        map.on('click', 'boston_cambridge_commute', (e) => {
+        map.on('click', commuteLayerId, (e) => {
             // NARRATIVE MODE
             if (e.features.length > 0 && commuteSlider == null && !dashboard) {
                 const feature = e.features[0];
@@ -328,6 +331,7 @@
                     selectedRent = Infinity;
                     selectedCommute = 200;
                     dashboard = true;
+                    showSidePanel = true;
                 } else {
                     console.log("you can't click that neighborhood")
                 }
@@ -456,7 +460,8 @@
                         'hsla(0, 80%, 100%, 0.4)', // Placeholder for NaN, no commute time data so greyed out
                         ['case',
                         ['>', ['get', clickedNeighborhood], selectedCommute],
-                        'hsla(0, 80%, 100%, 0.4)', [
+                        'hsla(0, 80%, 100%, 0.4)',
+                        [
                             'interpolate',
                             ['linear'],
                             ['get', clickedNeighborhood],
@@ -488,8 +493,8 @@
                         commuteState[feature.id] = isCommuteBelowSelected;
                         if (feature.id !== undefined) {
                             map.setFeatureState({
-                            source: 'Boston_Cambridge_Commute',
-                            id: feature.id,
+                                source: 'Boston_Cambridge_Commute',
+                                id: feature.id,
                             }, {'valid_commute':isCommuteBelowSelected});
                             }
                     });
@@ -499,13 +504,22 @@
             })();
         }
     }
+
+    // Shrink map width if side panel is active
+    $: {
+        if (showSidePanel) {
+            mapWidth = "80%";
+        } else {
+            mapWidth = "100%";
+        }
+    }
 </script>
 
 <h1> Minimal Viable Product </h1>
 <p> </p>
 
 <div class="map-wrap">
-    <div class="map" bind:this={mapContainer}>
+    <div class="map" bind:this={mapContainer} style="--width:{mapWidth};">
         <!-- Sliders and Color Bars (contained within map)-->
         {#if rentSlider}
         <div class="slider-container">
@@ -616,8 +630,9 @@
 
     .map {
         position: absolute;
-        width: 90%;
+        width: var(--width);
         height: 100%;
+        transition: 300ms;
     }
     .color-legend {
         position: absolute;
