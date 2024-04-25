@@ -496,7 +496,7 @@
         <!-- Sliders and Color Bars (contained within map)-->
         {#if rentSlider}
         <div class="slider-container">
-            <Slider bind:Value={rentValue} sliderColor='hsl(135, 40%, 50%)' class="slider-slider"/>
+            <Slider bind:Value={rentValue} sliderColor='hsl(135, 40%, 50%)' class="slider-slider" min={1200}/>
             <button on:click={handleRentEnter} class="slider-button">Enter</button>
         </div>
         {/if}
