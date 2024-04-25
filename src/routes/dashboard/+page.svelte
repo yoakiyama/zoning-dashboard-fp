@@ -14,7 +14,7 @@
 
 
     let rentValue = 1500;
-    let selectedRent = Infinity;
+    let selectedRent = 6000;
     let commuteValue=20;
     let selectedCommute = 1000;
     let selectedOption = 'commute';
@@ -384,7 +384,6 @@
     // Coloring of neighborhoods by rent after selecting rent
     $: {
         if (map && fillLayerId && rentColor) {
-
             const filteredNeighborhoods = map.querySourceFeatures("Boston_Cambridge_Rent", {
                 sourceLayer: fillLayerId,
                 filter: ['<', rentVar, selectedRent],
@@ -392,6 +391,15 @@
             let rentVals = filteredNeighborhoods.map(v => +(v.properties[rentVar]))
             console.log("got rents: ", rentVals);
             [minRent, maxRent] = d3.extent(rentVals);
+            if (minRent === undefined) {
+                minRent = 1200; // Default minimum rent
+            }
+            if (maxRent === undefined) {
+                maxRent = 2000; // Default maximum rent
+            }
+
+
+
             console.log("coloring by rent: ", rentVar, selectedRent, minRent, maxRent);
 
             map.setPaintProperty(fillLayerId, 'fill-color', [
