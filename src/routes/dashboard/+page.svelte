@@ -76,6 +76,11 @@
     lng = -71.06;
     lat = 42.315;
     zoom = 10.5;
+
+    let rentSourceId = "boston_cambridge_rent";
+    let rentLoaded = false;
+    let numRentDataPoints;
+
     // Define layerId as a reactive variable
     let fillLayerId;
     let lineLayerId;
@@ -121,17 +126,20 @@
         await new Promise(resolve => map.on("load", resolve));
 
         // ADD RENT LAYER
-        map.addSource("Boston_Cambridge_Rent", {
+        map.addSource(rentSourceId, {
             type: 'geojson',
             data: 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/geographic/Boston_Cambridge_rent_ids.geojson',
             generateId: false
         });
+        // Update this if the datasource changes, seems to be only easy way to
+        // verify the entire dataset is loaded.
+        numRentDataPoints = 103;
 
         fillLayerId = 'boston_cambridge_rent';
         lineLayerId = 'boston_cambridge_rent_outline';
         map.addLayer({
             'id': fillLayerId,
-            'source': 'Boston_Cambridge_Rent',
+            'source': rentSourceId,
             'type': 'fill',
             'paint': {
                 'fill-color': 'hsla(135, 100%, 45%, 0.38)'
@@ -140,7 +148,7 @@
         });
         map.addLayer({
             'id': lineLayerId,
-            'source': 'Boston_Cambridge_Rent',
+            'source': rentSourceId,
             'type': 'line',
             'paint': {
                 'line-color': "hsla(0, 100%, 0%, 0.5)",
@@ -330,7 +338,16 @@
                 }
             }
         });
+        map.on('data', (e) => {
+            if (e.sourceId === rentSourceId) {
+                const features = map.querySourceFeatures(rentSourceId);
+                if (features.length == numRentDataPoints) {
+                    rentLoaded = true;
+                }
+            }
+        });
     });
+
 
     // DASHBOARD FEATURE: user selects feature to color by
     function updateMapColoring(event) {
@@ -384,20 +401,16 @@
 
     // Coloring of neighborhoods by rent after selecting rent
     $: {
-        if (map && fillLayerId && rentColor) {
-            const filteredNeighborhoods = map.querySourceFeatures("Boston_Cambridge_Rent", {
-                sourceLayer: fillLayerId,
+        if (map && fillLayerId && rentColor && rentLoaded) {
+            const filteredNeighborhoods = map.querySourceFeatures(rentSourceId, {
                 filter: ['<', rentVar, selectedRent],
             });
             let rentVals = filteredNeighborhoods.map(v => +(v.properties[rentVar]))
-            console.log("got rents: ", rentVals);
+            console.log("got rents: ", filteredNeighborhoods);
             [minRent, maxRent] = d3.extent(rentVals);
-            if (minRent === undefined) {
-                minRent = 1200; // Default minimum rent
-            }
-            if (maxRent === undefined) {
-                maxRent = 2000; // Default maximum rent
-            }
+            minRent = Math.ceil(minRent / 10) * 10;
+            maxRent = Math.max(Math.ceil(maxRent / 10) * 10, minRent + 10);
+
 
             console.log("coloring by rent: ", rentVar, selectedRent, minRent, maxRent);
 
@@ -414,12 +427,12 @@
                 ]
             ]);
 
-            var features = map.querySourceFeatures('Boston_Cambridge_Rent');
+            var features = map.querySourceFeatures(rentSourceId);
             features.forEach(function(feature) {
                 var isRentBelowSelected = feature.properties.avg_per_bed < selectedRent;
                 if (feature.id !== undefined) {
                     map.setFeatureState({
-                        source: 'Boston_Cambridge_Rent',
+                        source: rentSourceId,
                         id: feature.id,
                     }, {'valid_rent':isRentBelowSelected});
                     rentState[feature.id] = isRentBelowSelected;
@@ -496,7 +509,7 @@
         <!-- Sliders and Color Bars (contained within map)-->
         {#if rentSlider}
         <div class="slider-container">
-            <Slider bind:Value={rentValue} sliderColor='hsl(135, 40%, 50%)' class="slider-slider" min={1200}/>
+            <Slider bind:Value={rentValue} sliderColor='hsl(135, 40%, 50%)' class="slider-slider" min={minRent} max={maxRent} step=10/>
             <button on:click={handleRentEnter} class="slider-button">Enter</button>
         </div>
         {/if}

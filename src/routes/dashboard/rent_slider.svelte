@@ -5,6 +5,7 @@
     export let Value = 1500;
     export let max = 2000;
     export let min = 0;
+    export let step = 10;
     export let label = 'Maximum spending on rent:';
     export let sliderColor = 'hsl(135, 40%, 50%)';
 
@@ -16,7 +17,7 @@
 
 <div class="slider-container">
 	<label for="rent-slider">{label}</label>
-	<input type=range bind:value={Value} min={min} max={max} name='rent-slider' class='slider'>
+	<input type=range bind:value={Value} min={min} max={max} step={step} name='rent-slider' class='slider'>
 	<span>{ Value }</span>
 </div>
 
