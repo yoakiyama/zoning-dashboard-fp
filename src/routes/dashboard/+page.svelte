@@ -32,6 +32,9 @@
     let rentData = [];
     let numRentDataPoints;
 
+    let salaryData = [];
+    let salaryPlotElement = null;
+
     // Layer IDs
     let rentFillLayerId;
     let rentOutlineLayerId;
@@ -374,6 +377,14 @@
                 }
             }
         });
+
+        const bostonUrl = 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/employment_opportunities/parsed_employment_data.txt';
+        salaryData = await d3.tsv(bostonUrl, (d) => {
+            return {
+                neighborhood: d.NEIGHBORHOOD,
+                avg_salary: +d.ANN_PAY_DIV_EMP,
+            };
+        });
     });
 
 
@@ -479,7 +490,37 @@
                 range: [minRentAll, maxRentAll]
             }
         };
-        Plotly.newPlot('rentBarPlot', plotData, layout);
+        Plotly.newPlot('rentBarPlot', plotData, layout,  {responsive: true});
+    }
+
+    function plotSalaryBarPlot(targetNode, neighborhood) {
+        console.log(targetNode);
+        if (targetNode === null) {
+            return
+        }
+        // Delete old plot if it exists
+        Plotly.purge(targetNode);
+
+        let xlabels = salaryData.map((v) => v.neighborhood);
+        let yvals = salaryData.map(v => v.avg_salary);
+        let ymax = d3.max(yvals) * 1.1;
+        let plotData = [{
+            x: xlabels,
+            y: yvals,
+            type: 'bar',
+            orientation: 'v'
+        }];
+        let layout = {
+            title: 'Average salaries by neighborhood',
+            xaxis: {
+                title: "Neighborhood"
+            },
+            yaxis: {
+                title: "Average salary",
+                range: [0, ymax]
+            }
+        };
+        Plotly.newPlot(targetNode, plotData, layout, {responsive: true});
     }
 
 
@@ -615,7 +656,7 @@
     $: {
         if (showSidePanel) {
             mapWidth = "70%";
-            sidebarWidth = "20%";
+            sidebarWidth = "26%";
         } else {
             mapWidth = "100%";
             sidebarWidth = "0%";
@@ -636,6 +677,7 @@
                     console.error('Error processing rent by bedroom:', error);
                 }
             })();
+            plotSalaryBarPlot(salaryPlotElement, clickedNeighborhood);
         }
     }
 </script>
@@ -710,10 +752,12 @@
     </div>
     {#if showSidePanel}
     <div class="sidebar" style="--width:{sidebarWidth}; --map-width:{mapWidth}">
-        <p>
+        <p id="sidebarText">
             Given a max rent of {rentValue} and max commute time of {commuteValue} mins, you've
             chosen to live in {clickedNeighborhood} and work in {workingNeighborhood}.
         </p>
+        <div id="rentBarPlot"/>
+        <div id="salaryBarPlot" bind:this={salaryPlotElement}/>
     </div>
     {/if}
 </div>
@@ -783,10 +827,6 @@
         </p>
     </div>
 {/if}
-{#if showSidePanel}
-    <div id="rentBarPlot" style="--width:{rentBarPlotWidth}; --map-width:{mapWidth};">
-    </div>
-{/if}
 
 
 <style>
@@ -803,7 +843,31 @@
         height: 100%;
         transition: 300ms;
         left: calc(var(--map-width) + 2%);
+        display: grid;
+        /* grid-template-columns: 1fr;
+        grid-template-rows: repeat(1fr, 2); */
+        grid-template-rows: auto; /* Automatically size rows based on content */
+        align-content: start;
+
+        #sidebarText {
+            transition: 300ms;
+        }
+
+        #rentBarPlot {
+            transition: 300ms;
+            width: 100%;
+            /* height: 30%;
+            grid-row: 1; */
+        }
+        #salaryBarPlot {
+            transition: 300ms;
+            width: 100%;
+            /* height: 30%;
+            grid-row: 2; */
+
+        }
     }
+
 
     .map {
         position: absolute;
@@ -908,13 +972,5 @@
         width: 100%; /* Ensures children stretch to match the wrapper's width */
     }
 
-    #rentBarPlot {
-        position: absolute;
-        width: var(--width);
-        height: 40%;
-        transition: 300ms;
-        left: calc(var(--map-width) + 2%);
-        top: 30%;
-    }
 
 </style>
