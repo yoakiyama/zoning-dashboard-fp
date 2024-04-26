@@ -37,6 +37,7 @@
 
     let showSidePanel = false;
     let mapWidth = "100%";
+    let sidebarWidth = "0%";
 
     function handleRentEnter() {
         // Store the current value of the rent slider
@@ -508,9 +509,11 @@
     // Shrink map width if side panel is active
     $: {
         if (showSidePanel) {
-            mapWidth = "80%";
+            mapWidth = "70%";
+            sidebarWidth = "20%";
         } else {
             mapWidth = "100%";
+            sidebarWidth = "0%";
         }
     }
 </script>
@@ -519,7 +522,7 @@
 <p> </p>
 
 <div class="map-wrap">
-    <div class="map" bind:this={mapContainer} style="--width:{mapWidth};">
+    <div class="map" bind:this={mapContainer} style="--width:{mapWidth}">
         <!-- Sliders and Color Bars (contained within map)-->
         {#if rentSlider}
         <div class="slider-container">
@@ -551,6 +554,15 @@
         </div>
         {/if}
     </div>
+    {#if showSidePanel}
+    <div class="sidebar" style="--width:{sidebarWidth}; --map-width:{mapWidth}">
+        <p>
+            Given a max rent of {rentValue} and max commute time of {commuteValue} mins, you've
+            chosen to live in {clickedNeighborhood} and work in {workingNeighborhood}.
+        </p>
+
+    </div>
+    {/if}
 </div>
 
 
@@ -626,6 +638,14 @@
         position: absolute;
         width: 100%;
         height: 90%;
+    }
+
+    .sidebar {
+        position: absolute;
+        width: var(--width);
+        height: 100%;
+        transition: 300ms;
+        left: calc(var(--map-width) + 5%);
     }
 
     .map {
@@ -728,5 +748,6 @@
         margin-bottom: 5px; /* Adds space between the checkbox and dropdown */
         width: 100%; /* Ensures children stretch to match the wrapper's width */
     }
+
 
 </style>
