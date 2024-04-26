@@ -13,7 +13,61 @@
     // import { Plotly } from 'plotly.js-dist';
 
     import * as d3 from "d3";
+    import '../../../node_modules/mapbox-gl/dist/mapbox-gl.css';
 
+    import mapboxgl from 'mapbox-gl';
+    import { onMount } from "svelte";
+
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZXB0eXNpbmdlciIsImEiOiJjbHVoanlneWIycm14MmxvZTh2Y3VhYXFkIn0.lkhHKBe-C2_I9v2J-jJ2hg';
+    const accessToken = 'pk.eyJ1IjoiZXB0eXNpbmdlciIsImEiOiJjbHVoanlneWIycm14MmxvZTh2Y3VhYXFkIn0.lkhHKBe-C2_I9v2J-jJ2hg';
+    let map;
+    let mapContainer;
+    let lng, lat, zoom;
+    lng = -71.06;
+    lat = 42.315;
+    zoom = 10.5;
+
+    let rentSourceId = "boston_cambridge_rent";
+    let rentLoaded = false;
+    let rentData = [];
+    let numRentDataPoints;
+
+    // Layer IDs
+    let rentFillLayerId;
+    let rentOutlineLayerId;
+    let commuteLayerId;
+    let commuteLineLayerId;
+
+    let mbtaLayerId;
+    let mbtaOutlineLayerId;
+    let commuterRailLayerId;
+    let commuterRailOutlineLayerId;
+    let transitStopsLayerId;
+
+    let transitLayers;
+    $: {
+        transitLayers = [
+            mbtaLayerId,
+            mbtaOutlineLayerId,
+            commuterRailLayerId,
+            commuterRailOutlineLayerId,
+        ];
+    }
+
+
+    // State variables
+    let minRent, maxRent;
+    let minCommute, maxCommute;
+    let clickedNeighborhood = null;
+    let workingNeighborhood = null;
+    let maxRentAll = 9500
+    let minRentAll = 0;
+
+    let dashboard = false;
+    let showPopup = true;
+    let showSidePanel = false;
+
+    let rentByBed = null;
 
     let rentValue = 1500;
     let selectedRent = 6000;
@@ -37,10 +91,19 @@
     let rentSlider = true;
     let commuteSlider = null;
 
-    let showSidePanel = false;
     let mapWidth = "100%";
     let sidebarWidth = "0%";
     let rentBarPlotWidth = "25%";
+
+    // Color values
+    let rentMinColor = 'hsla(135, 100%, 90%, 0.8)';
+    let rentMaxColor = 'hsla(135, 100%, 20%, 0.8)';
+    let commuteMinColor = 'hsla(200, 100%, 100%, 0.8)';
+    let commuteMaxColor = 'hsla(200, 100%, 20%, 0.8)';
+    let defaultOutlineColor = "hsla(0, 100%, 0%, 0.5)";
+    let livingOutlineColor = "hsla(240, 100%, 50%, 0.5)";
+    let workingOutlineColor = "hsla(25, 100%, 50%, 0.5)";
+    let unavailableColor =  'hsla(0, 80%, 100%, 0.4)'; // Color for unavailable regions given current selections
 
     function handleRentEnter() {
         // Store the current value of the rent slider
@@ -71,62 +134,6 @@
     }
 
 
-    import '../../../node_modules/mapbox-gl/dist/mapbox-gl.css';
-
-    import mapboxgl from 'mapbox-gl';
-    // import { Map } from "mapbox-gl";
-    import { onMount } from "svelte";
-    mapboxgl.accessToken = 'pk.eyJ1IjoiZXB0eXNpbmdlciIsImEiOiJjbHVoanlneWIycm14MmxvZTh2Y3VhYXFkIn0.lkhHKBe-C2_I9v2J-jJ2hg';
-    const accessToken = 'pk.eyJ1IjoiZXB0eXNpbmdlciIsImEiOiJjbHVoanlneWIycm14MmxvZTh2Y3VhYXFkIn0.lkhHKBe-C2_I9v2J-jJ2hg';
-    let map;
-    let mapContainer;
-    let lng, lat, zoom;
-    lng = -71.06;
-    lat = 42.315;
-    zoom = 10.5;
-
-    let rentSourceId = "boston_cambridge_rent";
-    let rentLoaded = false;
-    let rentData = [];
-    let numRentDataPoints;
-
-    // Define layerId as a reactive variable
-    let fillLayerId;
-    let lineLayerId;
-    let commuteLayerId;
-    let commuteLineLayerId;
-
-    let mbtaLayerId;
-    let mbtaOutlineLayerId;
-    let commuterRailLayerId;
-    let commuterRailOutlineLayerId;
-    let transitStopsLayerId;
-
-    let transitLayers;
-    $: {
-        transitLayers = [
-            mbtaLayerId,
-            mbtaOutlineLayerId,
-            commuterRailLayerId,
-            commuterRailOutlineLayerId,
-        ];
-    }
-
-
-
-    let minRent, maxRent;
-    let minCommute, maxCommute;
-    let clickedNeighborhood = null;
-    let workingNeighborhood = null;
-    let maxRentAll = 9500
-    let minRentAll = 0;
-
-    let dashboard = false;
-    let showPopup = true;
-    
-    let rentByBed = null;
-
-
     onMount(async () => {
         const initialState = { lng: lng, lat: lat, zoom: zoom };
         map = new mapboxgl.Map({
@@ -148,10 +155,10 @@
         // verify the entire dataset is loaded.
         numRentDataPoints = 103;
 
-        fillLayerId = 'boston_cambridge_rent';
-        lineLayerId = 'boston_cambridge_rent_outline';
+        rentFillLayerId = 'boston_cambridge_rent';
+        rentOutlineLayerId = 'boston_cambridge_rent_outline';
         map.addLayer({
-            'id': fillLayerId,
+            'id': rentFillLayerId,
             'source': rentSourceId,
             'type': 'fill',
             'paint': {
@@ -160,11 +167,11 @@
             'layout': {'visibility': 'visible'},
         });
         map.addLayer({
-            'id': lineLayerId,
+            'id': rentOutlineLayerId,
             'source': rentSourceId,
             'type': 'line',
             'paint': {
-                'line-color': "hsla(0, 100%, 0%, 0.5)",
+                'line-color': defaultOutlineColor,
                 'line-opacity': 0.95
             },
             'layout': {'visibility': 'visible'},
@@ -192,7 +199,7 @@
             'source': 'Boston_Cambridge_Commute',
             'type': 'line',
             'paint': {
-                'line-color': "hsla(0, 100%, 0%, 0.5)",
+                'line-color': defaultOutlineColor,
                 'line-opacity': 0.95
             },
             'layout': {'visibility': 'none'},
@@ -307,7 +314,7 @@
 
 
         // When clicking on map colored by rent
-        map.on('click', fillLayerId, (e) => {
+        map.on('click', rentFillLayerId, (e) => {
             if (e.features.length > 0 && rentSlider == null && !dashboard) {
                 const feature = e.features[0];
                 if (rentState[feature.id]){
@@ -322,10 +329,6 @@
                 } else {
                     console.log("you can't click that neighborhood")
                 }
-                console.log(clickedNeighborhood)
-                console.log(commuteColor)
-
-
             }
         });
 
@@ -337,7 +340,6 @@
                 if (commuteState[feature.id]){
                     workingNeighborhood = feature.properties.neighborhood;
                     commuteSlider = null;
-                    console.log(workingNeighborhood);
                     selectedRent = Infinity;
                     selectedCommute = 200;
                     dashboard = true;
@@ -391,8 +393,8 @@
     }
 
     function colorbyRent() {
-        map.setLayoutProperty(fillLayerId, 'visibility', 'visible');
-        map.setLayoutProperty(lineLayerId, 'visibility', 'visible');
+        map.setLayoutProperty(rentFillLayerId, 'visibility', 'visible');
+        map.setLayoutProperty(rentOutlineLayerId, 'visibility', 'visible');
         map.setLayoutProperty(commuteLayerId, 'visibility', 'none');
         map.setLayoutProperty(commuteLineLayerId, 'visibility', 'none');
         for (const layerId of transitLayers) {
@@ -403,8 +405,8 @@
     }
 
     function colorbyCommute() {
-        map.setLayoutProperty(fillLayerId, 'visibility', 'none');
-        map.setLayoutProperty(lineLayerId, 'visibility', 'none');
+        map.setLayoutProperty(rentFillLayerId, 'visibility', 'none');
+        map.setLayoutProperty(rentOutlineLayerId, 'visibility', 'none');
         map.setLayoutProperty(commuteLayerId, 'visibility', 'visible');
         map.setLayoutProperty(commuteLineLayerId, 'visibility', 'visible');
         for (const layerId of transitLayers) {
@@ -472,25 +474,23 @@
 
     // Coloring of neighborhoods by rent after selecting rent
     $: {
-        if (map && fillLayerId && rentColor && rentLoaded) {
+        if (map && rentFillLayerId && rentColor && rentLoaded) {
             let rentVals = rentData.map(v => +(v.properties[rentVar]));
             let filteredRentVals = rentVals.filter(v => v < selectedRent);
             [minRent, maxRent] = d3.extent(filteredRentVals);
             minRent = Math.ceil(minRent / 10) * 10;
             maxRent = Math.max(Math.ceil(maxRent / 10) * 10, minRent + 10);
 
-            console.log("coloring by rent: ", rentVar, selectedRent, minRent, maxRent);
-
-            map.setPaintProperty(fillLayerId, 'fill-color', [
+            map.setPaintProperty(rentFillLayerId, 'fill-color', [
                 'case',
                 ['>', ['get', rentVar], selectedRent],
-                'hsla(0, 80%, 100%, 0.4)',
+                unavailableColor,
                 [
                     'interpolate',
                     ['linear'],
                     ['get', rentVar],
-                    minRent, 'hsla(135, 100%, 90%, 0.8)', // Start of your gradient (e.g., $0)
-                    maxRent, 'hsla(135, 100%, 20%, 0.8)' // End of your gradient (e.g., $3000)
+                    minRent, rentMinColor, // Start of your gradient (e.g., $0)
+                    maxRent, rentMaxColor, // End of your gradient (e.g., $3000)
                 ]
             ]);
 
@@ -513,16 +513,16 @@
                     map.setPaintProperty(commuteLayerId, 'fill-color', [
                         'case',
                         ['==', ['get', clickedNeighborhood], 180],
-                        'hsla(0, 80%, 100%, 0.4)', // Placeholder for NaN, no commute time data so greyed out
+                         unavailableColor, // Placeholder for NaN, no commute time data so greyed out
                         ['case',
                         ['>', ['get', clickedNeighborhood], selectedCommute],
-                        'hsla(0, 80%, 100%, 0.4)',
+                        unavailableColor,
                         [
                             'interpolate',
                             ['linear'],
                             ['get', clickedNeighborhood],
-                            minCommute, 'hsla(200, 100%, 100%, 0.8)',
-                            maxCommute, 'hsla(200, 100%, 20%, 0.8)'
+                            minCommute, commuteMinColor,
+                            maxCommute, commuteMaxColor,
                         ]]
                     ]);
                     for (const layerId of transitLayers) {
@@ -561,6 +561,33 @@
         }
     }
 
+    // Outlining of selected neighborhoods to live or work.
+    $ :{
+        if (clickedNeighborhood !== null || workingNeighborhood !== null) {
+            for (const layerId of [rentOutlineLayerId, commuteLineLayerId]) {
+                map.setPaintProperty(layerId, 'line-width', [
+                    'case',
+                    ['in', ['get', "neighborhood"], ["literal", [clickedNeighborhood, workingNeighborhood]]],
+                    5,
+                    1,
+                ]);
+                map.setPaintProperty(layerId, 'line-dasharray', [
+                    'case',
+                    ['in', ['get', "neighborhood"], ["literal", [clickedNeighborhood, workingNeighborhood]]],
+                    [4, 2],
+                    ['literal', []] // Default to a solid line if the condition is not met
+                ]);
+                map.setPaintProperty(layerId, 'line-color', [
+                    'case',
+                    ['==', ['get', "neighborhood"], clickedNeighborhood],
+                    livingOutlineColor,
+                    ['==', ['get', "neighborhood"], workingNeighborhood],
+                    workingOutlineColor,
+                    defaultOutlineColor,
+                ]);
+            };
+        }
+    }
 
     // Shrink map width if side panel is active
     $: {
@@ -599,31 +626,40 @@
         <!-- Sliders and Color Bars (contained within map)-->
         {#if rentSlider}
         <div class="slider-container">
-            <Slider bind:Value={rentValue} sliderColor='hsl(135, 40%, 50%)' class="slider-slider" min={minRent} max={maxRent} step=10/>
+            <Slider bind:Value={rentValue}
+                    sliderColor='hsl(135, 40%, 50%)'
+                    class="slider-slider"
+                    min={minRent}
+                    max={maxRent}
+                    step=10/>
             <button on:click={handleRentEnter} class="slider-button">Enter</button>
         </div>
         {/if}
 
         {#if rentColor}
         <div class="color-legend">
-            <ColorLegend color1='hsla(135, 100%, 90%, 1)'
-                        color2='hsla(135, 100%, 20%, 1)'
+            <ColorLegend color1={rentMinColor}
+                         color2={rentMaxColor}
                         title='Average Rent per Bedroom'/>
         </div>
         {/if}
 
         {#if commuteSlider}
         <div class="slider-container">
-                <Slider bind:Value={commuteValue} label='Maximum commute time (min):' min={minCommute} max={maxCommute} sliderColor='hsl(200, 50%, 50%)'/>
+                <Slider bind:Value={commuteValue}
+                        label='Maximum commute time (min):'
+                        min={minCommute}
+                        max={maxCommute}
+                        sliderColor='hsl(200, 50%, 50%)'/>
                 <button on:click={handleCommuteEnter}>Enter</button>
         </div>
         {/if}
 
         {#if commuteColor}
         <div class="color-legend">
-            <ColorLegend color1='hsla(200, 100%, 100%, 1)'
-                        color2='hsla(200, 100%, 20%, 1)'
-                        title='Average Commute Time from {clickedNeighborhood} (minutes)'/>
+            <ColorLegend color1={commuteMinColor}
+                         color2={commuteMaxColor}
+                         title='Average Commute Time from {clickedNeighborhood} (minutes)'/>
         </div>
         {/if}
     </div>
@@ -825,7 +861,7 @@
         margin-bottom: 5px; /* Adds space between the checkbox and dropdown */
         width: 100%; /* Ensures children stretch to match the wrapper's width */
     }
-    
+
     #rentBarPlot {
         position: absolute;
         width: var(--width);
