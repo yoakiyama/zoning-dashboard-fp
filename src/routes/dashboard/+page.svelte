@@ -83,6 +83,7 @@
 
     let rentSourceId = "boston_cambridge_rent";
     let rentLoaded = false;
+    let rentData = [];
     let numRentDataPoints;
 
     // Define layerId as a reactive variable
@@ -350,6 +351,7 @@
                 const features = map.querySourceFeatures(rentSourceId);
                 if (features.length == numRentDataPoints) {
                     rentLoaded = true;
+                    rentData = features;
                 }
             }
         });
@@ -416,15 +418,11 @@
     // Coloring of neighborhoods by rent after selecting rent
     $: {
         if (map && fillLayerId && rentColor && rentLoaded) {
-            const filteredNeighborhoods = map.querySourceFeatures(rentSourceId, {
-                filter: ['<', rentVar, selectedRent],
-            });
-            let rentVals = filteredNeighborhoods.map(v => +(v.properties[rentVar]))
-            console.log("got rents: ", filteredNeighborhoods);
-            [minRent, maxRent] = d3.extent(rentVals);
+            let rentVals = rentData.map(v => +(v.properties[rentVar]));
+            let filteredRentVals = rentVals.filter(v => v < selectedRent);
+            [minRent, maxRent] = d3.extent(filteredRentVals);
             minRent = Math.ceil(minRent / 10) * 10;
             maxRent = Math.max(Math.ceil(maxRent / 10) * 10, minRent + 10);
-
 
             console.log("coloring by rent: ", rentVar, selectedRent, minRent, maxRent);
 
@@ -441,16 +439,9 @@
                 ]
             ]);
 
-            var features = map.querySourceFeatures(rentSourceId);
-            features.forEach(function(feature) {
+            rentData.forEach(function(feature) {
                 var isRentBelowSelected = feature.properties.avg_per_bed < selectedRent;
-                if (feature.id !== undefined) {
-                    map.setFeatureState({
-                        source: rentSourceId,
-                        id: feature.id,
-                    }, {'valid_rent':isRentBelowSelected});
-                    rentState[feature.id] = isRentBelowSelected;
-                }
+                rentState[feature.id] = isRentBelowSelected;
             });
         }
     }
