@@ -231,6 +231,9 @@
             'id': mbtaOutlineLayerId,
             'source': 'MBTA_Routes',
             'type': 'line',
+            'filter': [
+                '!', ['in', ['get', 'id'], ['literal', ["sl1", "sl2", "sl4", "sl5"]]],
+            ],
             'paint': {
                 'line-color': 'white',
                 'line-opacity': 0,
@@ -245,6 +248,9 @@
             'id': mbtaLayerId,
             'source': 'MBTA_Routes',
             'type': 'line',
+            'filter': [
+                '!', ['in', ['get', 'id'], ['literal', ["sl1", "sl2", "sl4", "sl5"]]],
+            ],
             'paint': {
                 'line-color': [
                     'case',
