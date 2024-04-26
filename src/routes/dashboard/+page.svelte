@@ -813,7 +813,7 @@
     {#if showSidePanel}
     <div class="sidebar" style="--width:{sidebarWidth}; --map-width:{mapWidth}">
         <p id="sidebarText">
-            Given a max rent of {rentValue} and max commute time of {commuteValue} mins, you've
+            Given a max rent of ${rentValue} and max commute time of {commuteValue} minutes, you've
             chosen to live in {clickedNeighborhood} and work in {workingNeighborhood}.
         </p>
         <div id="rentBarPlot"/>
@@ -853,6 +853,8 @@
         grid-template-rows: repeat(1fr, 2); */
         grid-template-rows: auto; /* Automatically size rows based on content */
         align-content: start;
+        overflow-y: auto;
+        overflow-x: clip;
 
         #sidebarText {
             transition: 300ms;
@@ -861,15 +863,10 @@
         #rentBarPlot {
             transition: 300ms;
             width: 100%;
-            /* height: 30%;
-            grid-row: 1; */
         }
         #salaryBarPlot {
             transition: 300ms;
             width: 100%;
-            /* height: 30%;
-            grid-row: 2; */
-
         }
     }
 
