@@ -346,8 +346,8 @@
                 if (commuteState[feature.id]){
                     workingNeighborhood = feature.properties.neighborhood;
                     commuteSlider = null;
-                    selectedRent = Infinity;
-                    selectedCommute = 200;
+                    selectedRent = 2000;
+                    selectedCommute = 60;
                     dashboard = true;
                     showSidePanel = true;
                 } else {
@@ -487,6 +487,11 @@
             minRent = Math.ceil(minRent / 10) * 10;
             maxRent = Math.max(Math.ceil(maxRent / 10) * 10, minRent + 10);
 
+            if (dashboard) {
+                minRent = 1200;
+                maxRent = 2000;
+            }
+
             map.setPaintProperty(rentFillLayerId, 'fill-color', [
                 'case',
                 ['>', ['get', rentVar], selectedRent],
@@ -570,20 +575,26 @@
     // Outlining of selected neighborhoods to live or work.
     $ :{
         if (clickedNeighborhood !== null || workingNeighborhood !== null) {
-            for (const layerId of [rentOutlineLayerId, commuteLineLayerId]) {
-                map.setPaintProperty(layerId, 'line-width', [
+            const layers = [
+                { id: rentOutlineLayerId, dashArray: [4, 2] }, // Shorter dashes
+                { id: commuteLineLayerId, dashArray: [2, 4] }  // Longer dashes
+            ];
+            for (const layer of layers) {
+                map.setPaintProperty(layer.id, 'line-width', [
                     'case',
                     ['in', ['get', "neighborhood"], ["literal", [clickedNeighborhood, workingNeighborhood]]],
                     5,
                     1,
                 ]);
-                //map.setPaintProperty(layerId, 'line-dasharray', [
+                //map.setPaintProperty(layer.id, 'line-dasharray', [
                 //    'case',
-                //    ['in', ['get', "neighborhood"], ["literal", [clickedNeighborhood, workingNeighborhood]]],
+                //    ['==', ['get', "neighborhood"], clickedNeighborhood],
+                //    [2, 4],
+                //    ['==', ['get', "neighborhood"], workingNeighborhood],
                 //    [4, 2],
                 //    ['literal', []] // Default to a solid line if the condition is not met
                 //]);
-                map.setPaintProperty(layerId, 'line-color', [
+                map.setPaintProperty(layer.id, 'line-color', [
                     'case',
                     ['==', ['get', "neighborhood"], clickedNeighborhood],
                     livingOutlineColor,
@@ -667,6 +678,28 @@
             <ColorLegend color1={commuteMinColor}
                          color2={commuteMaxColor}
                          title='Average Commute Time from {clickedNeighborhood} (minutes)'/>
+        </div>
+        {/if}
+        {#if dashboard && rentColor}
+        <div class="slider-container" style="left:{mapWidth};">
+            <Slider bind:Value={selectedRent}
+                    sliderColor='hsl(135, 40%, 50%)'
+                    label='Filter by Average Rent:'
+                    class="slider-slider"
+                    min=0
+                    max=2000
+                    step=10/>
+        </div>
+        {/if}
+        {#if dashboard && commuteColor}
+        <div class="slider-container" style="left:{mapWidth};">
+            <Slider bind:Value={selectedCommute}
+                    sliderColor='hsl(200, 50%, 50%)'
+                    label='Filter by Commute Time:'
+                    class="slider-slider"
+                    min=0
+                    max=80
+                    step=1/>
         </div>
         {/if}
     </div>
@@ -785,6 +818,7 @@
         position: absolute;
         bottom: 0;
         left: 37%;
+        margin: 20px;
         z-index: 1000;
         width: 26%;
         display: grid;
@@ -792,6 +826,7 @@
         gap: 10px;
         align-items: center;
     }
+
 
     .instruction {
         position: fixed;
@@ -837,7 +872,7 @@
         left: 0;              /* Aligns the container to the left */
         margin: 20px;         /* Adds some space from the corner edges */
         padding: 5px;        /* Padding inside the container */
-        background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+        background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
         border-radius: 8px;   /* Rounded corners for aesthetics */
         font-size: 16px;      /* Adequate font size for visibility */
         box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Subtle shadow for better readability */
