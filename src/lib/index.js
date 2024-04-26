@@ -1,4 +1,5 @@
 // place files you want to import through the `$lib` alias in this folder.
+import * as d3 from 'd3';
 
 export async function fetchRentData(columnName) {
     const url = 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/geographic/Boston_Cambridge_rent.geojson';
@@ -48,10 +49,17 @@ export async function fetchCommuteData(columnName) {
     return { minCommute, maxCommute };
 }
 
+// export async function fetchMinMaxAllRentData() {
+//     const url = 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/rent_data/Boston_Cambridge_collapsed_rent.csv';
+//     const data = await d3.csv(url);
+//     const values = data.map(d => parseFloat(d.value));
+//     let minRent = Math.min(...values);
+//     let maxRent = Math.max(...values);
+//     return { minRent, maxRent }
+// }
+
 export async function fetchRentByBedData(neighborhood) {
     const url = 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/rent_data/Boston_Cambridge_collapsed_rent.csv';
-
-    // Fetch the csv file
     const response = await fetch(url);
     if (!response.ok) {
         throw new Error(`Failed to fetch ${url}: ${response.status} ${response.statusText}`);
@@ -63,12 +71,12 @@ export async function fetchRentByBedData(neighborhood) {
     let headers = rows[0].split(',');
 
     // Find index of Neighborhood column (Should be first column)
-    const neighborhoodIndex = headers.indexOf('Neighborhood')
+    let neighborhoodIndex = headers.indexOf('Neighborhood')
 
     // Find indices of other columns
-    const columnIndices = {
+    let columnIndices = {
         'SRO': headers.indexOf('SRO'),
-        '0 BR': headers.indexOf('0BR'),
+        '0BR': headers.indexOf('0BR'),
         '1BR': headers.indexOf('1BR'),
         '2BR': headers.indexOf('2BR'),
         '3BR': headers.indexOf('3BR'),
@@ -87,11 +95,12 @@ export async function fetchRentByBedData(neighborhood) {
         // Check if row for desired neighborhood
         if (row[neighborhoodIndex].trim() == neighborhood) {
             // Get rent data from row
-            let rentValues = Object.keys(columnIndices).map(column => row[columnIndices[column]].trim());
-            rentData.push(values);
+            let rentValues = Object.keys(columnIndices).map(column => parseFloat(row[columnIndices[column]]));
+            // console.log("Getting rent by bed for "+neighborhood)
+            rentData.push(...rentValues);
+            break;
         }
     }
-
     return { rentData };
 }
 

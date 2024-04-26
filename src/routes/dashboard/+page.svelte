@@ -2,6 +2,7 @@
 	<title>FP2</title>
 	<meta name="description" content="FP2 interactive map" />
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js" type="text/javascript"></script>
 </svelte:head>
 
 <script>
@@ -9,6 +10,7 @@
     import ColorLegend from './color_legend.svelte';
     import { fetchRentData, fetchCommuteData, fetchRentByBedData, Dashboard } from '$lib/index';
     import Dropdown from './dropdown.svelte';
+    // import { Plotly } from 'plotly.js-dist';
 
     import * as d3 from "d3";
 
@@ -38,6 +40,7 @@
     let showSidePanel = false;
     let mapWidth = "100%";
     let sidebarWidth = "0%";
+    let rentBarPlotWidth = "25%";
 
     function handleRentEnter() {
         // Store the current value of the rent slider
@@ -115,6 +118,8 @@
     let minCommute, maxCommute;
     let clickedNeighborhood = null;
     let workingNeighborhood = null;
+    let maxRentAll = 9500
+    let minRentAll = 0;
 
     let dashboard = false;
     let showPopup = true;
@@ -409,11 +414,60 @@
     }
 
     // // Plotly rent barplot
-    // function plotRentBar() {
-
+    // function plotRentBar(rentData) {
+    //     let rent_xlabels = ['SRO', '0 BR', '1BR', '2BR', '3BR', '4BR', '5BR', '6BR', '7BR', '8BR'];
+    //     let rent_bar_canvas = document.getElementById('rentBarChart')
+    //     let ctx = rent_bar_canvas.getContext('2d');
+    //     // Create a bar chart instance
+    //     let rentBarChart = new Chart(ctx, {
+    //         type: 'bar',
+    //         data: {
+    //             labels: rent_xlabels,
+    //             datasets: [{
+    //                 label: 'Average rent prices per bedroom',
+    //                 data: rentData,
+    //                 backgroundColor: 'rgba(54, 162, 235, 0.6)', // Blue bars
+    //                 borderColor: 'rgba(54, 162, 235, 1)',
+    //                 borderWidth: 1,
+    //             }]
+    //         },
+    //         options: {
+    //             scales: {
+    //                 yAxes: [{
+    //                     ticks: {
+    //                         beginAtZero:true
+    //                     }
+    //                 }]
+    //             }
+    //         }
+    //     });
     // }
+    function plotRentBar(rentByBed, neighborhood) {
+        // Delete old plot if it exists
+        const chartExists = document.getElementById('rentBarPlot');
+        if (chartExists) {
+            Plotly.purge('rentBarPlot');
+        }
 
-    
+        let rent_xlabels = ['SRO', '0 BR', '1BR', '2BR', '3BR', '4BR', '5BR', '6BR', '7BR', '8BR'];
+        let plotData = [{
+            x: rent_xlabels,
+            y: rentByBed.rentData,
+            type: 'bar',
+            orientation: 'v'
+        }];
+        let layout = {
+            title: 'Average rent prices per bedroom<br>in '+neighborhood,
+            xaxis: {
+                title: "Unit type"
+            },
+            yaxis: {
+                title: "Average rent",
+                range: [minRentAll, maxRentAll]
+            }
+        };
+        Plotly.newPlot('rentBarPlot', plotData, layout);
+    }
 
 
     // Coloring of neighborhoods by rent after selecting rent
@@ -522,10 +576,17 @@
     // Add side panel plots
     $: {
         if (showSidePanel){
-            rentByBed = fetchRentByBedData(clickedNeighborhood);
-            console.log("Fetched rent by bedroom")
-            console.log(clickedNeighborhood)
-            console.log(rentByBed)
+            (async () => {
+                try {
+                    // Get min and max rent by bedroom
+                    // const [minRentAll, maxRentAll] = fetchMinMaxAllRentData()
+                    // rentByBed = fetchRentByBedData(clickedNeighborhood);
+                    let rentByBed = await fetchRentByBedData(clickedNeighborhood);
+                    plotRentBar(rentByBed, clickedNeighborhood)
+                } catch (error) {
+                    console.error('Error processing rent by bedroom:', error);
+                }
+            })();
         }
     }
 </script>
@@ -572,8 +633,9 @@
             Given a max rent of {rentValue} and max commute time of {commuteValue} mins, you've
             chosen to live in {clickedNeighborhood} and work in {workingNeighborhood}.
         </p>
-
     </div>
+    <!-- <div id="rentBarPlot" style="--width:{rentBarPlotWidth}; --map-width:{mapWidth}">
+    </div> -->
     {/if}
 </div>
 
@@ -642,7 +704,10 @@
         </p>
     </div>
 {/if}
-
+{#if dashboard && showSidePanel}
+    <div id="rentBarPlot" style="--width:{rentBarPlotWidth}; --map-width:{mapWidth}">
+    </div>
+{/if}
 
 <style>
     @import url("$lib/global.css");
@@ -760,6 +825,14 @@
         margin-bottom: 5px; /* Adds space between the checkbox and dropdown */
         width: 100%; /* Ensures children stretch to match the wrapper's width */
     }
-
+    
+    #rentBarPlot {
+        position: absolute;
+        width: var(--width);
+        height: 30%;
+        transition: 300ms;
+        left: calc(var(--map-width) + 5%);
+        top: 20%;
+    }
 
 </style>
