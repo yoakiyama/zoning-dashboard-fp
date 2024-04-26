@@ -7,7 +7,7 @@
 <script>
     import Slider from './rent_slider.svelte';
     import ColorLegend from './color_legend.svelte';
-    import { fetchRentData, fetchCommuteData, Dashboard } from '$lib/index';
+    import { fetchRentData, fetchCommuteData, fetchRentByBedData, Dashboard } from '$lib/index';
     import Dropdown from './dropdown.svelte';
 
     import * as d3 from "d3";
@@ -115,6 +115,8 @@
 
     let dashboard = false;
     let showPopup = true;
+    
+    let rentByBed = null;
 
 
     onMount(async () => {
@@ -402,6 +404,13 @@
         map.setLayoutProperty(transitStopsLayerId, 'visibility', 'visible');
     }
 
+    // // Plotly rent barplot
+    // function plotRentBar() {
+
+    // }
+
+    
+
 
     // Coloring of neighborhoods by rent after selecting rent
     $: {
@@ -505,12 +514,23 @@
         }
     }
 
+
     // Shrink map width if side panel is active
     $: {
         if (showSidePanel) {
             mapWidth = "80%";
         } else {
             mapWidth = "100%";
+        }
+    }
+
+    // Add side panel plots
+    $: {
+        if (showSidePanel){
+            rentByBed = fetchRentByBedData(clickedNeighborhood);
+            console.log("Fetched rent by bedroom")
+            console.log(clickedNeighborhood)
+            console.log(rentByBed)
         }
     }
 </script>
