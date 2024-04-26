@@ -335,6 +335,11 @@
                 } else {
                     console.log("you can't click that neighborhood")
                 }
+            } else if (e.features.length > 0 && dashboard) { // DASHBOARD MODE
+                const feature = e.features[0];
+                if (rentState[feature.id]){
+                    clickedNeighborhood = feature.properties.neighborhood
+                }
             }
         });
 
