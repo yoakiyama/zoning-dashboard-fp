@@ -749,6 +749,66 @@
                     step=1/>
         </div>
         {/if}
+        {#if commuteColor || dashboard}
+            <div class="wrapper">
+                {#if dashboard}
+                    <div class="dropdownContainer">
+                        <Dropdown bind:selected={selectedOption} on:change={updateMapColoring} />
+                    </div>
+                {/if}
+                <!--
+                {#if dashboard && rentColor}
+                    <div class="dropdownContainer">
+                        <Dropdown bind:selected={selectedOption} on:change={updateRentVar} options={rentVarOptions} labelText='Rent Variable:'/>
+                    </div>
+                {/if} -->
+                {#if commuteColor}
+                    <div class="checkboxContainer">
+                        <label style="color: white">
+                            <input type="checkbox" id="MBTAtoggle" checked on:change={toggleTransitVisibility}>
+                            Show/Hide MBTA Routes
+                        </label>
+                    </div>
+                {/if}
+            </div>
+        {/if}
+
+        <!-- POP UPS -->
+
+        {#if rentSlider == null && clickedNeighborhood == null}
+        <div class='popUp'>
+            <p>Shown are the neighborhoods in your price range. Please select one of them.</p>
+        </div>
+        {/if}
+
+
+        {#if clickedNeighborhood && commuteSlider}
+        <div class='popUp'>
+            <p>You've selected to live in <span class="neighborhood-name" style="font-weight: bold; color: hsl(135, 90%, 30%)">{clickedNeighborhood}</span>!</p>
+        </div>
+        {/if}
+
+        {#if clickedNeighborhood && commuteSlider == null && workingNeighborhood == null}
+        <div class='popUp'>
+            <p>Shown are the neighborhoods in your commute range. Please select one of them.</p>
+        </div>
+        {/if}
+
+        {#if workingNeighborhood}
+        <div class='popUp'>
+            <p style="position:relative;">You've selected to live in <span class="neighborhood-name" style="font-weight: bold; color: hsl(135, 90%, 30%)">{clickedNeighborhood}</span> and to
+                work in <span class="neighborhood-name" style="font-weight: bold; color: hsl(200, 900%, 30%)">{workingNeighborhood}</span>!</p>
+        </div>
+        {/if}
+        {#if dashboard && showPopup}
+            <div class='instruction'>
+                <button class="closeButton" on:click={closePopup}>X</button>
+                <p>
+                    <span class="neighborhood-name" style="font-weight: bold;">Welcome to the dashboard!</span> You can now explore all the rent and commute data on your own by selecting what to color the map by.
+                    When colored by commute time, <span style="text-decoration: underline; font-style: italic;">click</span> on different neighborhoods to get commute time <span style="text-decoration: underline; font-style: italic;">from</span> that neighborhood.
+                </p>
+            </div>
+        {/if}
     </div>
     {#if showSidePanel}
     <div class="sidebar" style="--width:{sidebarWidth}; --map-width:{mapWidth}">
@@ -760,73 +820,18 @@
         <div id="salaryBarPlot" bind:this={salaryPlotElement}/>
     </div>
     {/if}
+    
 </div>
 
 
 
 <!-- Map Display Options -->
-{#if commuteColor || dashboard}
-    <div class="wrapper">
-        {#if dashboard}
-            <div class="dropdownContainer">
-                <Dropdown bind:selected={selectedOption} on:change={updateMapColoring} />
-            </div>
-        {/if}
-        <!--
-        {#if dashboard && rentColor}
-            <div class="dropdownContainer">
-                <Dropdown bind:selected={selectedOption} on:change={updateRentVar} options={rentVarOptions} labelText='Rent Variable:'/>
-            </div>
-        {/if} -->
-        {#if commuteColor}
-            <div class="checkboxContainer">
-                <label style="color: white">
-                    <input type="checkbox" id="MBTAtoggle" checked on:change={toggleTransitVisibility}>
-                    Show/Hide MBTA Routes
-                </label>
-            </div>
-        {/if}
-    </div>
-{/if}
 
 
-<!-- POP UPS -->
-
-{#if rentSlider == null && clickedNeighborhood == null}
-    <div class='popUp'>
-        <p>Shown are the neighborhoods in your price range. Please select one of them.</p>
-    </div>
-{/if}
 
 
-{#if clickedNeighborhood && commuteSlider}
-    <div class='popUp'>
-        <p>You've selected to live in <span class="neighborhood-name" style="font-weight: bold; color: hsl(135, 90%, 30%)">{clickedNeighborhood}</span>!</p>
-    </div>
-{/if}
 
-{#if clickedNeighborhood && commuteSlider == null && workingNeighborhood == null}
-    <div class='popUp'>
-        <p>Shown are the neighborhoods in your commute range. Please select one of them.</p>
-    </div>
-{/if}
 
-{#if workingNeighborhood}
-    <div class='popUp'>
-        <p style="position:relative;">You've selected to live in <span class="neighborhood-name" style="font-weight: bold; color: hsl(135, 90%, 30%)">{clickedNeighborhood}</span> and to
-            work in <span class="neighborhood-name" style="font-weight: bold; color: hsl(200, 900%, 30%)">{workingNeighborhood}</span>!</p>
-    </div>
-{/if}
-
-{#if dashboard && showPopup}
-    <div class='instruction'>
-        <button class="closeButton" on:click={closePopup}>X</button>
-        <p>
-            <span class="neighborhood-name" style="font-weight: bold;">Welcome to the dashboard!</span> You can now explore all the rent and commute data on your own by selecting what to color the map by.
-            When colored by commute time, <span style="text-decoration: underline; font-style: italic;">click</span> on different neighborhoods to get commute time <span style="text-decoration: underline; font-style: italic;">from</span> that neighborhood.
-        </p>
-    </div>
-{/if}
 
 
 <style>
@@ -898,9 +903,9 @@
 
 
     .instruction {
-        position: fixed;
+        position: absolute;
         top: 50%;
-        left: 37.5%;
+        left: 50%;
         transform: translate(-50%, -50%);
         z-index: 10000;
         padding: 20px;
@@ -910,6 +915,7 @@
         width: 90%; /* Maximum width or percentage-based width */
         box-sizing: border-box;
         text-align: left;
+        font-size: 16px;
     }
 
     .closeButton {
@@ -936,11 +942,12 @@
     }
 
     .popUp {
-        position: fixed;   /* Absolute positioning relative to the nearest positioned ancestor */
+        position: absolute;   /* Absolute positioning relative to the nearest positioned ancestor */
         bottom: 0;            /* Aligns the container to the bottom */
         left: 0;              /* Aligns the container to the left */
         margin: 20px;         /* Adds some space from the corner edges */
         padding: 5px;        /* Padding inside the container */
+        z-index: 1000;
         background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
         border-radius: 8px;   /* Rounded corners for aesthetics */
         font-size: 16px;      /* Adequate font size for visibility */
@@ -957,14 +964,13 @@
     }
 
     .wrapper {
-        position: fixed;
-        top: 5rem;
-        left: 0.3rem;
-        margin: 0px;
+        position: absolute;
+        margin: 20px;
         width: 300px;
+        z-index: 1000;
         text-align: left;
         margin-top: 15px;
-        padding-left: 15px;
+        font-size: 16px;
     }
 
     .checkboxContainer, .dropdownContainer {
