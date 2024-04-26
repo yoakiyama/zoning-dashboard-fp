@@ -60,6 +60,7 @@
         for (const layerId of transitLayers) {
             map.setLayoutProperty(layerId, 'visibility', visible);
         }
+        map.setLayoutProperty(transitStopsLayerId, 'visibility', visible);
     }
 
     function closePopup() {
