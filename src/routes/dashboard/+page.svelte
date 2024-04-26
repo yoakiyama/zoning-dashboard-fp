@@ -900,7 +900,7 @@
     .instruction {
         position: fixed;
         top: 50%;
-        left: 50%;
+        left: 37.5%;
         transform: translate(-50%, -50%);
         z-index: 10000;
         padding: 20px;
