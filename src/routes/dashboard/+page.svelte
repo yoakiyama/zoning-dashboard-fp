@@ -101,8 +101,8 @@
     let commuteMinColor = 'hsla(200, 100%, 100%, 0.8)';
     let commuteMaxColor = 'hsla(200, 100%, 20%, 0.8)';
     let defaultOutlineColor = "hsla(0, 100%, 0%, 0.5)";
-    let livingOutlineColor = "hsla(240, 100%, 50%, 0.5)";
-    let workingOutlineColor = "hsla(25, 100%, 50%, 0.5)";
+    let workingOutlineColor = "hsla(200, 900%, 30%, 0.7)";
+    let livingOutlineColor = 'hsla(135, 90%, 30%, 0.7)'; //"hsla(25, 100%, 50%, 0.5)";
     let unavailableColor =  'hsla(0, 80%, 100%, 0.4)'; // Color for unavailable regions given current selections
 
     function handleRentEnter() {
@@ -310,7 +310,7 @@
             'paint': {
                 'circle-color': 'white',
                 'circle-opacity': 0.3,
-                'circle-radius': 5 ,
+                'circle-radius': 3 ,
                 'circle-stroke-color': 'black',
                 'circle-stroke-width': 1,
                 'circle-stroke-opacity': 0.3,
@@ -541,12 +541,12 @@
                     map.setPaintProperty(transitStopsLayerId, 'circle-opacity', [
                             'case',
                             ['==', clickedNeighborhood, ['get', 'neighborhood']], 0.8,  // High opacity if clickedNeighborhood is in the list
-                            0.3
+                            0.15
                     ]);
                     map.setPaintProperty(transitStopsLayerId, 'circle-stroke-opacity', [
                             'case',
                             ['==', clickedNeighborhood, ['get', 'neighborhood']], 0.8,  // High opacity if clickedNeighborhood is in the list
-                            0.3
+                            0.15
                     ]);
 
                     var features = map.querySourceFeatures('Boston_Cambridge_Commute');
@@ -577,12 +577,12 @@
                     5,
                     1,
                 ]);
-                map.setPaintProperty(layerId, 'line-dasharray', [
-                    'case',
-                    ['in', ['get', "neighborhood"], ["literal", [clickedNeighborhood, workingNeighborhood]]],
-                    [4, 2],
-                    ['literal', []] // Default to a solid line if the condition is not met
-                ]);
+                //map.setPaintProperty(layerId, 'line-dasharray', [
+                //    'case',
+                //    ['in', ['get', "neighborhood"], ["literal", [clickedNeighborhood, workingNeighborhood]]],
+                //    [4, 2],
+                //    ['literal', []] // Default to a solid line if the condition is not met
+                //]);
                 map.setPaintProperty(layerId, 'line-color', [
                     'case',
                     ['==', ['get', "neighborhood"], clickedNeighborhood],
@@ -656,7 +656,8 @@
                         label='Maximum commute time (min):'
                         min={minCommute}
                         max={maxCommute}
-                        sliderColor='hsl(200, 50%, 50%)'/>
+                        sliderColor='hsl(200, 50%, 50%)'
+                        step=5/>
                 <button on:click={handleCommuteEnter}>Enter</button>
         </div>
         {/if}
@@ -676,8 +677,6 @@
             chosen to live in {clickedNeighborhood} and work in {workingNeighborhood}.
         </p>
     </div>
-    <!-- <div id="rentBarPlot" style="--width:{rentBarPlotWidth}; --map-width:{mapWidth}">
-    </div> -->
     {/if}
 </div>
 
@@ -720,7 +719,7 @@
 
 {#if clickedNeighborhood && commuteSlider}
     <div class='popUp'>
-        <p>You've selected to live in <span class="neighborhood-name" style="font-weight: bold; color: hsl(135, 40%, 50%)">{clickedNeighborhood}</span>!</p>
+        <p>You've selected to live in <span class="neighborhood-name" style="font-weight: bold; color: hsl(135, 90%, 30%)">{clickedNeighborhood}</span>!</p>
     </div>
 {/if}
 
@@ -732,8 +731,8 @@
 
 {#if workingNeighborhood}
     <div class='popUp'>
-        <p style="position:relative;">You've selected to live in <span class="neighborhood-name" style="font-weight: bold; color: hsl(135, 40%, 50%)">{clickedNeighborhood}</span> and to
-            work in <span class="neighborhood-name" style="font-weight: bold; color: hsl(200, 50%, 50%)">{workingNeighborhood}</span>!</p>
+        <p style="position:relative;">You've selected to live in <span class="neighborhood-name" style="font-weight: bold; color: hsl(135, 90%, 30%)">{clickedNeighborhood}</span> and to
+            work in <span class="neighborhood-name" style="font-weight: bold; color: hsl(200, 900%, 30%)">{workingNeighborhood}</span>!</p>
     </div>
 {/if}
 
@@ -746,10 +745,11 @@
         </p>
     </div>
 {/if}
-{#if dashboard && showSidePanel}
-    <div id="rentBarPlot" style="--width:{rentBarPlotWidth}; --map-width:{mapWidth}">
+{#if showSidePanel}
+    <div id="rentBarPlot" style="--width:{rentBarPlotWidth}; --map-width:{mapWidth};">
     </div>
 {/if}
+
 
 <style>
     @import url("$lib/global.css");
@@ -764,7 +764,7 @@
         width: var(--width);
         height: 100%;
         transition: 300ms;
-        left: calc(var(--map-width) + 5%);
+        left: calc(var(--map-width) + 2%);
     }
 
     .map {
@@ -871,10 +871,10 @@
     #rentBarPlot {
         position: absolute;
         width: var(--width);
-        height: 30%;
+        height: 40%;
         transition: 300ms;
-        left: calc(var(--map-width) + 5%);
-        top: 20%;
+        left: calc(var(--map-width) + 2%);
+        top: 30%;
     }
 
 </style>
