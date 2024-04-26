@@ -513,12 +513,13 @@
         let layout = {
             title: 'Average salaries by neighborhood',
             xaxis: {
-                title: "Neighborhood"
+                title: "Neighborhood",
+                automargin: true,
             },
             yaxis: {
                 title: "Average salary",
                 range: [0, ymax]
-            }
+            },
         };
         Plotly.newPlot(targetNode, plotData, layout, {responsive: true});
     }
@@ -820,7 +821,7 @@
         <div id="salaryBarPlot" bind:this={salaryPlotElement}/>
     </div>
     {/if}
-    
+
 </div>
 
 
