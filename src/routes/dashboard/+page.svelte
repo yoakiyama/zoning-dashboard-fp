@@ -23,8 +23,6 @@
   ];
 </script>
 
-<h1> Minimal Viable Product </h1>
-<p> </p>
 <Tabs {items} />
 
 <!-- Map Display Options -->

@@ -821,8 +821,6 @@
 
 </div>
 
-
-
 <!-- Map Display Options -->
 
 <style>
@@ -830,7 +828,7 @@
     .map-wrap {
         position: absolute;
         width: 95%;
-        height: 80%;
+        height: 90%;
     }
 
     .sidebar {
