@@ -1,3 +1,9 @@
+<svelte:head>
+	<title>Commute Time Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;700&display=swap" rel="stylesheet">
+</svelte:head>
+
+
 <script>
 function goToDashboard(){
     window.location.href = './dashboard';

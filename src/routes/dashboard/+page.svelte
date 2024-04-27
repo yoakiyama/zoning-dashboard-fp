@@ -1,7 +1,6 @@
 
 <svelte:head>
-	<title>FP2</title>
-	<meta name="description" content="FP2 interactive map" />
+	<title>Commute Time Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.plot.ly/plotly-latest.min.js" type="text/javascript"></script>
 </svelte:head>
