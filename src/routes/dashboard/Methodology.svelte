@@ -1,3 +1,5 @@
+<div class="text-container">
+
 <p>The code we used for data processing and transformation is available on <a href="https://github.com/yoakiyama/zoning-dashboard-fp">GitHub</a>. This project was developed with guidance and feedback from the <a href="https://www.mapc.org/">Metropolitan Area Planning Commission (MAPC)</a>.</p>
 
 <h2>Rent Data</h2>
@@ -8,7 +10,12 @@
 
 <h2>Employment Opportunities Data</h2>
 <p>We obtained data from the <a href="https://www.census.gov/data/developers/data-sets/cbp-zbp/zbp-api.html">U.S. Census Bureau Zip Codes Business Patterns API</a>, which provided information about number of business establishments by industry, total employees, and total payroll. We then aggregated the zipcode-level data into Boston-area neighborhoods. To estimate average salary by neighborhood, we divided the total payroll by the number of employees. In our exploratory data analysis, we used normalized values (calculated by dividing by the neighborhood's population) to examine the relationship between these values and other variables such as rent.</p>
-
+</div>
 <style>
     @import url("$lib/global.css");
+    .text-container {
+        margin: auto;
+        width: 100%;
+        line-height: 2;
+    }
 </style>

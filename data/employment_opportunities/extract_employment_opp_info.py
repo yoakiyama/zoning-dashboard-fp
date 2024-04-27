@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import numpy as np
 
-neighborhood_names = ["Allston/Brighton", "Back Bay/Beacon Hill", "Central Boston", "Charlestown", "Dorchester", "East Boston", "Fenway/Kenmore", "Hyde Park", "Jamaica Plain", "Mattapan", "Roslindale", "Roxbury", "South Boston", "South End", "West Roxbury"]
+neighborhood_names = ["Allston/Brighton", "Back Bay/Beacon Hill", "Central Boston", "Charlestown", "Dorchester", "East Boston", "Fenway/Kenmore", "Hyde Park", "Jamaica Plain", "Mattapan", "Roslindale", "Roxbury", "South Boston", "South End", "West Roxbury", "The Port", "Neighborhood Nine", "Wellington-Harrington", "Mid-Cambridge", "North Cambridge", "Cambridge Highlands", "Strawberry Hill", "West Cambridge", "Riverside", "Cambridgeport", "Area 2/MIT", "East Cambridge", "Baldwin"]
 
 zip_neighborhoods = {
     "02134" : "Allston/Brighton",
@@ -61,8 +61,14 @@ zip_neighborhoods = {
     "02127" : "South Boston",
     "02210" : "South Boston",
     "02118" : "South End",
-    "02132" : "West Roxbury"
-    }
+    "02132" : "West Roxbury",
+    "02139" : ["The Port", "Mid-Cambridge", "Riverside", "Cambridgeport", "Area 2/MIT"],
+    "02140" : "Neighborhood Nine",
+    "02141" : ["Wellington-Harrington", "North Cambridge", "East Cambridge"],
+    "02138" : ["Cambridge Highlands", "Strawberry Hill", "West Cambridge", "Baldwin"]
+}
+
+overlapping_neighs = [["The Port", "Mid-Cambridge", "Riverside", "Cambridgeport", "Area 2/MIT"], ["Wellington-Harrington", "North Cambridge", "East Cambridge"], ["Cambridge Highlands", "Strawberry Hill", "West Cambridge", "Baldwin"]]
 
 num_employees = np.zeros(len(neighborhood_names))
 num_establishments = np.zeros(len(neighborhood_names))
@@ -92,16 +98,28 @@ while(orig_line):
 
     if(orig_split[emp_size_idx] == "All establishments" and orig_split[sector_idx] == "Total for all sectors"):
         try:
-            neigh_idx = neighborhood_names.index(zip_neighborhoods[orig_split[zip_idx][5:10]])
+            neigh_val = zip_neighborhoods[orig_split[zip_idx][5:10]]
         except:
             # not one of our zipcodes
             orig_line = orig_file.readline()
             continue
 
-        num_employees[neigh_idx] += int(orig_split[num_emp_idx])
-        num_establishments[neigh_idx] += int(orig_split[num_est_idx])
-        ann_payroll[neigh_idx] += int(orig_split[ann_pay_idx])
-        q1_payroll[neigh_idx] += int(orig_split[q1_pay_idx])
+        if isinstance(neigh_val, list):
+            print(neigh_val)
+            for neigh in neigh_val:
+                neigh_idx = neighborhood_names.index(neigh)
+
+                num_employees[neigh_idx] += int(orig_split[num_emp_idx])
+                num_establishments[neigh_idx] += int(orig_split[num_est_idx])
+                ann_payroll[neigh_idx] += int(orig_split[ann_pay_idx])
+                q1_payroll[neigh_idx] += int(orig_split[q1_pay_idx])
+
+        else:
+            neigh_idx = neighborhood_names.index(neigh_val)
+            num_employees[neigh_idx] += int(orig_split[num_emp_idx])
+            num_establishments[neigh_idx] += int(orig_split[num_est_idx])
+            ann_payroll[neigh_idx] += int(orig_split[ann_pay_idx])
+            q1_payroll[neigh_idx] += int(orig_split[q1_pay_idx])
 
         seen_zip.add(orig_split[zip_idx][5:10])
     orig_line = orig_file.readline()
@@ -139,8 +157,23 @@ census_file.close()
 
 # save results to file
 out = open("parsed_employment_data.txt", 'w')
-out.write("NEIGHBORHOOD\tNUM_EST\tNUM_EMP\tPAY_ANN\tPAY_QTR1\tPOP\tNORM_EST\tNORM_EMP\tNORM_PAY_ANN\tNORM_PAY_QTR1\tANN_PAY_DIV_EMP\n")
+out.write("NEIGHBORHOOD\tNUM_EST\tNUM_EMP\tPAY_ANN\tPAY_QTR1\tPOP\tNORM_EST\tNORM_EMP\tNORM_PAY_ANN\tNORM_PAY_QTR1\tANN_PAY_DIV_EMP\tOVERLAPPING_NEIGHBORHOODS\n")
 for i in range(len(neighborhood_names)):
-    out.write(neighborhood_names[i] + '\t' + str(int(num_establishments[i])) + '\t' + str(int(num_employees[i])) + '\t' + str(int(ann_payroll[i])) + '\t' + str(int(q1_payroll[i])) + '\t' + str(int(population[i])) + '\t' + str(num_establishments[i]/population[i]) + '\t' + str(num_employees[i]/population[i]) + '\t' + str(ann_payroll[i]/population[i]) + '\t' + str(q1_payroll[i]/population[i]) + '\t' + str(ann_payroll[i]/num_employees[i]) + '\n')
+    out.write(neighborhood_names[i] + '\t' + str(int(num_establishments[i])) + '\t' + str(int(num_employees[i])) + '\t' + str(int(ann_payroll[i])) + '\t' + str(int(q1_payroll[i])) + '\t' + str(int(population[i])) + '\t' + str(num_establishments[i]/population[i]) + '\t' + str(num_employees[i]/population[i]) + '\t' + str(ann_payroll[i]/population[i]) + '\t' + str(q1_payroll[i]/population[i]) + '\t' + str(ann_payroll[i]/num_employees[i]) + '\t')
+
+    # write the list of neighborhoods that overlap by zipcode, if applicable (sometimes happens in the Cambridge area)
+    in_list = False
+    to_write = ""
+    for overlap_list in overlapping_neighs:
+        if neighborhood_names[i] in overlap_list:
+            for j in range(len(overlap_list)):
+                if overlap_list[j] != neighborhood_names[i]:
+                    to_write += overlap_list[j] + ", "
+            in_list = True
+
+    if in_list:
+        out.write(to_write[:-2] + '\n')
+    else:
+        out.write("NA\n")
 
 out.close()
