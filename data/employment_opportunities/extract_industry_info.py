@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 import numpy as np
 
-neighborhood_names = ["Allston/Brighton", "Back Bay/Beacon Hill", "Central Boston", "Charlestown", "Dorchester", "East Boston", "Fenway/Kenmore", "Hyde Park", "Jamaica Plain", "Mattapan", "Roslindale", "Roxbury", "South Boston", "South End", "West Roxbury"]
+neighborhood_names = ["Allston/Brighton", "Back Bay/Beacon Hill", "Central Boston", "Charlestown", "Dorchester", "East Boston", "Fenway/Kenmore", "Hyde Park", "Jamaica Plain", "Mattapan", "Roslindale", "Roxbury", "South Boston", "South End", "West Roxbury", "The Port", "Neighborhood Nine", "Wellington-Harrington", "Mid-Cambridge", "North Cambridge", "Cambridge Highlands", "Strawberry Hill", "West Cambridge", "Riverside", "Cambridgeport", "Area 2/MIT", "East Cambridge", "Baldwin"]
 
 sector_names = ["Accommodation and food services", "Administrative and support and waste management and remediation services", "Arts, entertainment, and recreation", "Construction", "Educational services", "Finance and insurance", "Health care and social assistance", "Industries not classified", "Information", "Management of companies and enterprises", "Manufacturing", "Professional, scientific, and technical services", "Real estate and rental and leasing", "Retail trade", "Transportation and warehousing", "Utilities", "Wholesale trade", "Other services (except public administration)", "Total for all sectors"]
-
 
 
 zip_neighborhoods = {
@@ -65,8 +64,18 @@ zip_neighborhoods = {
     "02127" : "South Boston",
     "02210" : "South Boston",
     "02118" : "South End",
-    "02132" : "West Roxbury"
-    }
+    "02132" : "West Roxbury",
+    "02139" : ["The Port", "Mid-Cambridge", "Riverside", "Cambridgeport", "Area 2/MIT"],
+    "02140" : "Neighborhood Nine",
+    "02141" : ["Wellington-Harrington", "North Cambridge", "East Cambridge"],
+    "02138" : ["Cambridge Highlands", "Strawberry Hill", "West Cambridge", "Baldwin"],
+    "02139" : ["The Port", "Mid-Cambridge", "Riverside", "Cambridgeport", "Area 2/MIT"],
+    "02140" : "Neighborhood Nine",
+    "02141" : ["Wellington-Harrington", "North Cambridge", "East Cambridge"],
+    "02138" : ["Cambridge Highlands", "Strawberry Hill", "West Cambridge", "Baldwin"]
+}
+
+overlapping_neighs = [["The Port", "Mid-Cambridge", "Riverside", "Cambridgeport", "Area 2/MIT"], ["Wellington-Harrington", "North Cambridge", "East Cambridge"], ["Cambridge Highlands", "Strawberry Hill", "West Cambridge", "Baldwin"]]
 
 orig_file = open("CBP2021.CB2100CBP-Data.txt", 'r')
 
@@ -86,7 +95,7 @@ while(orig_line):
 
     if(orig_split[emp_size_idx] == "All establishments"):
         try:
-            neigh_idx = neighborhood_names.index(zip_neighborhoods[orig_split[zip_idx][5:10]])
+            neigh_val = zip_neighborhoods[orig_split[zip_idx][5:10]]
         except:
             # not one of our zipcodes
             orig_line = orig_file.readline()
@@ -94,7 +103,13 @@ while(orig_line):
 
         sector = sector_names.index(orig_split[sector_idx].strip('"'))
 
-        counts[neigh_idx][sector] += int(orig_split[num_est_idx])
+        if isinstance(neigh_val, list):
+            for neigh in neigh_val:
+                neigh_idx = neighborhood_names.index(neigh)
+                counts[neigh_idx][sector] += int(orig_split[num_est_idx])
+        else:
+            neigh_idx = neighborhood_names.index(neigh_val)
+            counts[neigh_idx][sector] += int(orig_split[num_est_idx])
 
     orig_line = orig_file.readline()
 
@@ -102,13 +117,23 @@ orig_file.close()
 
 # save results to file
 out = open("aggregated_establishments_by_industry_data.txt", 'w')
-out.write("NEIGHBORHOOD")
+out.write("NEIGHBORHOOD\tOVERLAPPING_NEIGHBORHOODS")
 for sector in sector_names:
     out.write('\t' + sector)
 out.write('\n')
 
 for i in range(len(neighborhood_names)):
-    out.write(neighborhood_names[i])
+    out.write(neighborhood_names[i] + '\t')
+    # write the list of neighborhoods that overlap by zipcode, if applicable (sometimes happens in the Cambridge area)
+    in_list = False
+    to_write = ""
+    for overlap_list in overlapping_neighs:
+        if neighborhood_names[i] in overlap_list:
+            for j in range(len(overlap_list)):
+                if overlap_list[j] != neighborhood_names[i]:
+                    to_write += overlap_list[j] + ", "
+            in_list = True
+    out.write(to_write[:-2])
     for j in range(len(sector_names)):
         out.write('\t' + str(int(counts[i][j])))
     out.write('\n')
