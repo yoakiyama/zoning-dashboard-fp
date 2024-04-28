@@ -9,7 +9,7 @@
 <script>
     import Slider from './rent_slider.svelte';
     import ColorLegend from './color_legend.svelte';
-    import { fetchRentData, fetchCommuteData, fetchRentByBedData, Dashboard } from '$lib/index';
+    import { legend, fetchRentData, fetchCommuteData, fetchRentByBedData, Dashboard } from '$lib/index';
     import Dropdown from './dropdown.svelte';
     // import { Plotly } from 'plotly.js-dist';
 
@@ -35,6 +35,8 @@
 
     let salaryData = [];
     let salaryPlotElement = null;
+    let colorLegendElement = null;
+    let colorLegendTitleElement = null;
 
     // Layer IDs
     let rentFillLayerId;
@@ -387,7 +389,6 @@
         });
     });
 
-
     // DASHBOARD FEATURE: user selects feature to color by
     function updateMapColoring(event) {
         const option = event.detail.selectedOption;
@@ -437,35 +438,6 @@
         map.setLayoutProperty(transitStopsLayerId, 'visibility', 'visible');
     }
 
-    // // Plotly rent barplot
-    // function plotRentBar(rentData) {
-    //     let rent_xlabels = ['SRO', '0 BR', '1BR', '2BR', '3BR', '4BR', '5BR', '6BR', '7BR', '8BR'];
-    //     let rent_bar_canvas = document.getElementById('rentBarChart')
-    //     let ctx = rent_bar_canvas.getContext('2d');
-    //     // Create a bar chart instance
-    //     let rentBarChart = new Chart(ctx, {
-    //         type: 'bar',
-    //         data: {
-    //             labels: rent_xlabels,
-    //             datasets: [{
-    //                 label: 'Average rent prices per bedroom',
-    //                 data: rentData,
-    //                 backgroundColor: 'rgba(54, 162, 235, 0.6)', // Blue bars
-    //                 borderColor: 'rgba(54, 162, 235, 1)',
-    //                 borderWidth: 1,
-    //             }]
-    //         },
-    //         options: {
-    //             scales: {
-    //                 yAxes: [{
-    //                     ticks: {
-    //                         beginAtZero:true
-    //                     }
-    //                 }]
-    //             }
-    //         }
-    //     });
-    // }
     function plotRentBar(rentByBed, neighborhood) {
         // Delete old plot if it exists
         const chartExists = document.getElementById('rentBarPlot');
@@ -542,6 +514,26 @@
         Plotly.newPlot(targetNode, plotData, layout, {responsive: true});
     }
 
+    function addColorLegend(
+        legendElement,
+        legendTitle,
+        minVal,
+        maxVal,
+        minColor,
+        maxColor,
+    ) {
+        console.log(legendTitle);
+        colorLegendTitleElement.innerText = legendTitle;
+        let colorBarNode = legend({
+            color: d3.scaleSequential([minVal, maxVal], d3.interpolateHsl(minColor, maxColor)),
+            title: null,
+            elemId: "#colorBar",
+            width: 200,
+            ticks: 4,
+        });
+        legendElement.appendChild(colorBarNode);
+    }
+
 
     // Coloring of neighborhoods by rent after selecting rent
     $: {
@@ -574,6 +566,7 @@
                 var isRentBelowSelected = feature.properties.avg_per_bed < selectedRent;
                 rentState[feature.id] = isRentBelowSelected;
             });
+            addColorLegend(colorLegendElement, "Average rent per bedroom", minRent, maxRent, rentMinColor, rentMaxColor);
         }
     }
 
@@ -633,6 +626,14 @@
                 } catch (error) {
                     console.error('Error processing commute data:', error);
                 }
+                addColorLegend(
+                    colorLegendElement,
+                    "Average commute time from " + clickedNeighborhood + " (minutes)",
+                    minCommute,
+                    maxCommute,
+                    commuteMinColor,
+                    commuteMaxColor,
+                );
             })();
         }
     }
@@ -707,11 +708,10 @@
         </div>
         {/if}
 
-        {#if rentColor}
-        <div class="color-legend">
-            <ColorLegend color1={rentMinColor}
-                         color2={rentMaxColor}
-                        title='Average Rent per Bedroom'/>
+        {#if rentColor || commuteColor}
+        <div class="color-legend" bind:this={colorLegendElement}>
+            <p id="colorBarTitle" bind:this={colorLegendTitleElement}></p>
+            <svg id="colorBar"></svg>
         </div>
         {/if}
 
@@ -727,13 +727,6 @@
         </div>
         {/if}
 
-        {#if commuteColor}
-        <div class="color-legend">
-            <ColorLegend color1={commuteMinColor}
-                         color2={commuteMaxColor}
-                         title='Average Commute Time from {clickedNeighborhood} (minutes)'/>
-        </div>
-        {/if}
         {#if dashboard && rentColor}
         <div class="slider-container" style="left:{mapWidth};">
             <Slider bind:Value={selectedRent}
@@ -972,5 +965,12 @@
         margin-bottom: 5px; /* Adds space between the checkbox and dropdown */
         width: 100%; /* Ensures children stretch to match the wrapper's width */
     }
-
+    #colorBar {
+        color: white;
+    }
+    #colorBarTitle {
+        margin-bottom: 0px;
+        color: white;
+        font-size: 16px;
+    }
 </style>
