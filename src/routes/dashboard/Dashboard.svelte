@@ -731,7 +731,7 @@
         <div class="slider-container" style="left:{mapWidth};">
             <Slider bind:Value={selectedRent}
                     sliderColor='hsl(135, 40%, 50%)'
-                    label='Filter by Average Rent:'
+                    label='Filter by average rent per bedroom:'
                     class="slider-slider"
                     min=0
                     max=2000
