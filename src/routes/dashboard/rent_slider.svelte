@@ -6,7 +6,7 @@
     export let max = 2000;
     export let min = 0;
     export let step = 10;
-    export let label = 'Maximum spending on rent:';
+    export let label = 'Maximum spending on rent (per bedroom):';
     export let sliderColor = 'hsl(135, 40%, 50%)';
 
     onMount(() => {

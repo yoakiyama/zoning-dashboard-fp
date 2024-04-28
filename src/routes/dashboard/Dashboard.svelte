@@ -58,7 +58,6 @@
         ];
     }
 
-
     // State variables
     let minRent, maxRent;
     let minCommute, maxCommute;
@@ -494,7 +493,7 @@
         Plotly.newPlot('rentBarPlot', plotData, layout,  {responsive: true});
     }
 
-    function plotSalaryBarPlot(targetNode, neighborhood) {
+    function plotSalaryBarPlot(targetNode, livingNeighborhood, workingNeighborhood) {
         console.log(targetNode);
         if (targetNode === null) {
             return
@@ -502,14 +501,32 @@
         // Delete old plot if it exists
         Plotly.purge(targetNode);
 
-        let xlabels = salaryData.map((v) => v.neighborhood);
-        let yvals = salaryData.map(v => v.avg_salary);
+        let sortedSalaryData = salaryData.toSorted((a, b) => a.avg_salary - b.avg_salary);
+        let xlabels = sortedSalaryData.map((v) => v.neighborhood);
+        let yvals = sortedSalaryData.map(v => v.avg_salary);
         let ymax = d3.max(yvals) * 1.1;
+        let colors = [];
+        for (const hood of xlabels) {
+            switch(hood) {
+            case livingNeighborhood:
+                colors.push(livingOutlineColor);
+                break;
+            case workingNeighborhood:
+                colors.push(workingOutlineColor);
+                break;
+            default:
+                colors.push(defaultOutlineColor);
+                break;
+            };
+        };
         let plotData = [{
             x: xlabels,
             y: yvals,
             type: 'bar',
-            orientation: 'v'
+            orientation: 'v',
+            marker: {
+                color: colors,
+            },
         }];
         let layout = {
             title: 'Average salaries by neighborhood',
@@ -634,14 +651,6 @@
                     5,
                     1,
                 ]);
-                //map.setPaintProperty(layer.id, 'line-dasharray', [
-                //    'case',
-                //    ['==', ['get', "neighborhood"], clickedNeighborhood],
-                //    [2, 4],
-                //    ['==', ['get', "neighborhood"], workingNeighborhood],
-                //    [4, 2],
-                //    ['literal', []] // Default to a solid line if the condition is not met
-                //]);
                 map.setPaintProperty(layer.id, 'line-color', [
                     'case',
                     ['==', ['get', "neighborhood"], clickedNeighborhood],
@@ -679,7 +688,7 @@
                     console.error('Error processing rent by bedroom:', error);
                 }
             })();
-            plotSalaryBarPlot(salaryPlotElement, clickedNeighborhood);
+            plotSalaryBarPlot(salaryPlotElement, clickedNeighborhood, workingNeighborhood);
         }
     }
 </script>
