@@ -222,7 +222,7 @@
 
         map.addSource("MBTA_Routes", {
             type: 'geojson',
-            data: 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/transportation/mbta/map_layers/routes.geojson',
+            data: 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/transportation/mbta/map_layers/MBTA_Systemwide_GTFS_Map.with_hoods.dissolved.geojson',
             generateId: false
         });
 
@@ -261,24 +261,17 @@
             'id': mbtaLayerId,
             'source': 'MBTA_Routes',
             'type': 'line',
-            'filter': [
-                '!', ['in', ['get', 'id'], ['literal', ["sl1", "sl2", "sl4", "sl5"]]],
-            ],
             'paint': {
                 'line-color': [
                     'case',
-                    ['==', ['get', 'id'], "blue"], '#003DA5',
-                    ['==', ['get', 'id'], "red-a"], '#DA291C',
-                    ['==', ['get', 'id'], "red-b"], '#DA291C',
-                    ['==', ['get', 'id'], "orange"], '#ED8B00',
-                    ['==', ['get', 'id'], "sl1"], '#7C878E',
-                    ['==', ['get', 'id'], "sl2"], '#7C878E',
-                    ['==', ['get', 'id'], "sl4"], '#7C878E',
-                    ['==', ['get', 'id'], "sl5"], '#7C878E',
-                    ['==', ['get', 'id'], "green-e"], '#00843D',
-                    ['==', ['get', 'id'], "green-d"], '#00843D',
-                    ['==', ['get', 'id'], "green-c"], '#00843D',
-                    ['==', ['get', 'id'], "green-b"], '#00843D',
+                    ['==', ['get', 'route_id'], "Blue"], '#003DA5',
+                    ['==', ['get', 'route_id'], "Red"], '#DA291C',
+                    ['==', ['get', 'route_id'], "Mattapan"], '#DA291C',
+                    ['==', ['get', 'route_id'], "Orange"], '#ED8B00',
+                    ['==', ['get', 'route_id'], "Green-B"], '#00843D',
+                    ['==', ['get', 'route_id'], "Green-C"], '#00843D',
+                    ['==', ['get', 'route_id'], "Green-D"], '#00843D',
+                    ['==', ['get', 'route_id'], "Green-E"], '#00843D',
                     'black'
                 ],
                 'line-opacity': 0.3,
