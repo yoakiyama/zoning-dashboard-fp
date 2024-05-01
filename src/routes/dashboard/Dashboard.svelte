@@ -45,6 +45,7 @@
     let commuteLineLayerId;
     let salaryLayerId;
     let salaryLineLayerId;
+    let salarySourceId = "boston_cambridge_salary";
 
     let mbtaLayerId;
     let mbtaOutlineLayerId;
@@ -69,6 +70,7 @@
     let workingNeighborhood = null;
     let maxRentAll = 9500
     let minRentAll = 0;
+    let minSalary, maxSalary;
 
     let dashboard = false;
     let showPopup = true;
@@ -81,9 +83,14 @@
     let commuteValue = 20;
     let selectedCommute = 1000;
     let selectedOption = 'commute';
+    let selectedSalary = 180
 
     var rentState = {}; // dictionary to keep track of which neighborhoods have valid rent
     var commuteState = {}; // dictionary to keep track of which neighborhoods have valid commute
+    var salaryState = {};
+    for (var i = 1; i <= 36; i++) {
+        salaryState[i.toString()] = true;
+    }
 
     // what to color the neighborhoods by
     let rentColor = true;
@@ -104,6 +111,8 @@
     let rentMaxColor = 'hsla(135, 100%, 20%, 0.8)';
     let commuteMinColor = 'hsla(200, 100%, 100%, 0.8)';
     let commuteMaxColor = 'hsla(200, 100%, 20%, 0.8)';
+    let salaryMinColor = 'hsla(30, 100%, 90%, 0.8)';
+    let salaryMaxColor = 'hsla(30, 100%, 30%, 0.8)';
     let defaultOutlineColor = "hsla(0, 100%, 0%, 0.5)";
     let workingOutlineColor = "hsla(200, 900%, 30%, 0.7)";
     let livingOutlineColor = 'hsla(135, 90%, 30%, 0.7)'; //"hsla(25, 100%, 50%, 0.5)";
@@ -322,7 +331,38 @@
             'layout': {'visibility': 'none'},
         });
 
-        
+        // ADD SALARY LAYER
+        map.addSource(salarySourceId, {
+            type: 'geojson',
+            data: 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/employment_opportunities/Boston_Cambridge_salary.geojson',
+            generateId: false
+        });
+        // Update this if the datasource changes, seems to be only easy way to
+        // verify the entire dataset is loaded.
+        numRentDataPoints = 103;
+
+        salaryLayerId = 'boston_cambridge_salary';
+        salaryLineLayerId = 'boston_cambridge_salary_outline';
+        map.addLayer({
+            'id': salaryLayerId,
+            'source': salarySourceId,
+            'type': 'fill',
+            'paint': {
+                'fill-color': 'hsla(30, 100%, 45%, 0.38)'
+            },
+            'layout': {'visibility': 'none'},
+        });
+        map.addLayer({
+            'id': salaryLineLayerId,
+            'source': salarySourceId,
+            'type': 'line',
+            'paint': {
+                'line-color': defaultOutlineColor,
+                'line-opacity': 0.95
+            },
+            'layout': {'visibility': 'none'},
+        });
+
 
 
         // When clicking on map colored by rent
@@ -371,6 +411,16 @@
                 }
             }
         });
+
+        map.on('click', salaryLayerId, (e) => {
+            if (e.features.length > 0 && dashboard) { // DASHBOARD MODE
+                const feature = e.features[0];
+                if (salaryState[feature.id]){
+                    workingNeighborhood = feature.properties.neighborhood
+                }
+            }
+        });
+
         map.on('data', (e) => {
             if (e.sourceId === rentSourceId) {
                 const features = map.querySourceFeatures(rentSourceId);
@@ -400,11 +450,19 @@
                 colorbyRent();
                 commuteColor=false;
                 rentColor=true;
+                salaryColor=false;
             } else if (option === 'commute') {
                 console.log(selectedCommute);
                 colorbyCommute();
                 commuteColor=true;
                 rentColor=false;
+                salaryColor=false;
+            } else if (option == 'salary') {
+                colorbySalary();
+                commuteColor=false;
+                rentColor=false;
+                salaryColor=true;
+                selectedSalary=200;
             }
         }
     }
@@ -425,6 +483,8 @@
             map.setLayoutProperty(layerId, 'visibility', 'none');
         }
         map.setLayoutProperty(transitStopsLayerId, 'visibility', 'none');
+        map.setLayoutProperty(salaryLayerId, 'visibility', 'none');
+        map.setLayoutProperty(salaryLineLayerId, 'visibility', 'none');
 
     }
 
@@ -437,6 +497,21 @@
             map.setLayoutProperty(layerId, 'visibility', 'visible');
         }
         map.setLayoutProperty(transitStopsLayerId, 'visibility', 'visible');
+        map.setLayoutProperty(salaryLayerId, 'visibility', 'none');
+        map.setLayoutProperty(salaryLineLayerId, 'visibility', 'none');
+    }
+
+    function colorbySalary() {
+        map.setLayoutProperty(rentFillLayerId, 'visibility', 'none');
+        map.setLayoutProperty(rentOutlineLayerId, 'visibility', 'none');
+        map.setLayoutProperty(commuteLayerId, 'visibility', 'none');
+        map.setLayoutProperty(commuteLineLayerId, 'visibility', 'none');
+        for (const layerId of transitLayers) {
+            map.setLayoutProperty(layerId, 'visibility', 'none');
+        }
+        map.setLayoutProperty(transitStopsLayerId, 'visibility', 'none');
+        map.setLayoutProperty(salaryLayerId, 'visibility', 'visible');
+        map.setLayoutProperty(salaryLineLayerId, 'visibility', 'visible');
     }
 
     function plotRentBar(rentByBed, neighborhood) {
@@ -571,6 +646,37 @@
         }
     }
 
+    // Coloring of neighborhoods by salary
+    $: {
+        if (map && salaryLayerId && salaryColor) {
+
+            
+            minSalary = 40;
+            maxSalary = 180;
+            
+
+            map.setPaintProperty(salaryLayerId, 'fill-color', [
+                'case',
+                ['>', ['get', 'avg_salary'], selectedSalary],
+                unavailableColor,
+                [
+                    'interpolate',
+                    ['linear'],
+                    ['get', 'avg_salary'],
+                    minSalary, salaryMinColor, // Start of your gradient (e.g., $0)
+                    maxSalary, salaryMaxColor, // End of your gradient (e.g., $3000)
+                ]
+            ]);
+
+            var features = map.querySourceFeatures(salarySourceId);
+            features.forEach(function(feature) {
+                var isSalaryBelowSelected = feature.properties['avg_salary'] <= selectedSalary;
+                salaryState[feature.id] = isSalaryBelowSelected;
+            });
+            addColorLegend(colorLegendElement, "Average salary ($/hour)", minSalary, maxSalary, salaryMinColor, salaryMaxColor);
+        }
+    }
+
     // Coloring of neighborhoods by commute conditional on clicked neighborhood and selected commute time
     $: {
         if (map && commuteLayerId && commuteColor) {
@@ -643,8 +749,9 @@
     $ :{
         if (clickedNeighborhood !== null || workingNeighborhood !== null) {
             const layers = [
-                { id: rentOutlineLayerId, dashArray: [4, 2] }, // Shorter dashes
-                { id: commuteLineLayerId, dashArray: [2, 4] }  // Longer dashes
+                { id: rentOutlineLayerId}, 
+                { id: commuteLineLayerId},  
+                { id: salaryLineLayerId},
             ];
             for (const layer of layers) {
                 map.setPaintProperty(layer.id, 'line-width', [
@@ -709,7 +816,7 @@
         </div>
         {/if}
 
-        {#if rentColor || commuteColor}
+        {#if rentColor || commuteColor || salaryColor}
         <div class="color-legend" bind:this={colorLegendElement}>
             <p id="colorBarTitle" bind:this={colorLegendTitleElement}></p>
             <svg id="colorBar"></svg>
@@ -748,6 +855,17 @@
                     min=0
                     max=80
                     step=1/>
+        </div>
+        {/if}
+        {#if dashboard && salaryColor}
+        <div class="slider-container" style="left:{mapWidth};">
+            <Slider bind:Value={selectedSalary}
+                    sliderColor='hsl(30, 100%, 50%)'
+                    label='Filter by Average Salary ($/hr)'
+                    class="slider-slider"
+                    min=0
+                    max=200
+                    step=5/>
         </div>
         {/if}
         {#if commuteColor || dashboard}

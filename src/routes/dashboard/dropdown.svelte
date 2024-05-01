@@ -3,7 +3,7 @@
     const dispatch = createEventDispatcher();
 
     // Exports 'options' as a prop and sets a default value if not provided
-    export let options = [{ value: 'commute', label: 'Commute Time' }, { value: 'rent', label: 'Rent' }];
+    export let options = [{ value: 'commute', label: 'Commute Time' }, { value: 'rent', label: 'Rent' }, {value: 'salary', label: 'Salary'}];
 
     // Reactive variable to hold the selected value
     export let selectedOption = options[0].value;
