@@ -107,15 +107,17 @@
     let rentBarPlotWidth = "25%";
 
     // Color values
-    let rentMinColor = 'hsla(135, 100%, 90%, 0.8)';
-    let rentMaxColor = 'hsla(135, 100%, 20%, 0.8)';
+    // let rentMinColor = 'hsla(135, 100%, 90%, 0.8)';
+    // let rentMaxColor = 'hsla(135, 100%, 20%, 0.8)';
+    let rentMinColor = 'hsla(260, 100%, 90%, 0.8)';
+    let rentMaxColor = 'hsla(260, 100%, 20%, 0.8)';
     let commuteMinColor = 'hsla(200, 100%, 100%, 0.8)';
     let commuteMaxColor = 'hsla(200, 100%, 20%, 0.8)';
     let salaryMinColor = 'hsla(30, 100%, 90%, 0.8)';
     let salaryMaxColor = 'hsla(30, 100%, 30%, 0.8)';
     let defaultOutlineColor = "hsla(0, 100%, 0%, 0.5)";
     let workingOutlineColor = "hsla(200, 900%, 30%, 0.7)";
-    let livingOutlineColor = 'hsla(135, 90%, 30%, 0.7)'; //"hsla(25, 100%, 50%, 0.5)";
+    let livingOutlineColor = 'hsla(260, 90%, 30%, 0.7)'; //"hsla(25, 100%, 50%, 0.5)";
     let unavailableColor =  'hsla(0, 80%, 100%, 0.4)'; // Color for unavailable regions given current selections
 
     function handleRentEnter() {
@@ -175,7 +177,8 @@
             'source': rentSourceId,
             'type': 'fill',
             'paint': {
-                'fill-color': 'hsla(135, 100%, 45%, 0.38)'
+                // 'fill-color': 'hsla(135, 100%, 45%, 0.38)'
+                'fill-color': 'hsla(260, 100%, 45%, 0.38)'
             },
             'layout': {'visibility': 'visible'},
         });
@@ -800,7 +803,7 @@
         {#if rentSlider}
         <div class="slider-container">
             <Slider bind:Value={rentValue}
-                    sliderColor='hsl(135, 40%, 50%)'
+                    sliderColor='hsl(260, 40%, 50%)'
                     class="slider-slider"
                     min={minRent}
                     max={maxRent}
@@ -831,7 +834,7 @@
         {#if dashboard && rentColor}
         <div class="slider-container" style="left:{mapWidth};">
             <Slider bind:Value={selectedRent}
-                    sliderColor='hsl(135, 40%, 50%)'
+                    sliderColor='hsl(260, 40%, 50%)'
                     label='Filter by average rent per bedroom:'
                     class="slider-slider"
                     min=0
@@ -896,7 +899,7 @@
 
         {#if clickedNeighborhood && commuteSlider}
         <div class='popUp'>
-            <p>You've selected to live in <span class="neighborhood-name" style="font-weight: bold; color: hsl(135, 90%, 30%)">{clickedNeighborhood}</span>!</p>
+            <p>You've selected to live in <span class="neighborhood-name" style="font-weight: bold; color: hsl(260, 90%, 30%)">{clickedNeighborhood}</span>!</p>
         </div>
         {/if}
 
@@ -908,7 +911,7 @@
 
         {#if workingNeighborhood}
         <div class='popUp'>
-            <p style="position:relative;">You've selected to live in <span class="neighborhood-name" style="font-weight: bold; color: hsl(135, 90%, 30%)">{clickedNeighborhood}</span> and to
+            <p style="position:relative;">You've selected to live in <span class="neighborhood-name" style="font-weight: bold; color: hsl(260, 90%, 30%)">{clickedNeighborhood}</span> and to
                 work in <span class="neighborhood-name" style="font-weight: bold; color: hsl(200, 900%, 30%)">{workingNeighborhood}</span>!</p>
         </div>
         {/if}

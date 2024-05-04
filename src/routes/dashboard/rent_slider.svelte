@@ -7,7 +7,7 @@
     export let min = 0;
     export let step = 10;
     export let label = 'Maximum spending on rent (per bedroom):';
-    export let sliderColor = 'hsl(135, 40%, 50%)';
+	export let sliderColor = 'hsl(260, 40%, 50%)'
 
     onMount(() => {
         document.documentElement.style.setProperty('--sliderColor', sliderColor);
