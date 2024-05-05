@@ -427,8 +427,8 @@
             }
         });
 
-        const bostonUrl = 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/employment_opportunities/parsed_employment_data.txt';
-        salaryData = await d3.tsv(bostonUrl, (d) => {
+        const salaryUrl = 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/employment_opportunities/parsed_employment_data.txt';
+        salaryData = await d3.tsv(salaryUrl, (d) => {
             return {
                 neighborhood: d.NEIGHBORHOOD,
                 avg_salary: +d.ANN_PAY_DIV_EMP,
@@ -645,11 +645,8 @@
     // Coloring of neighborhoods by salary
     $: {
         if (map && salaryLayerId && salaryColor) {
-
-            
             minSalary = 40;
             maxSalary = 180;
-            
 
             map.setPaintProperty(salaryLayerId, 'fill-color', [
                 'case',
@@ -745,8 +742,8 @@
     $ :{
         if (clickedNeighborhood !== null || workingNeighborhood !== null) {
             const layers = [
-                { id: rentOutlineLayerId}, 
-                { id: commuteLineLayerId},  
+                { id: rentOutlineLayerId},
+                { id: commuteLineLayerId},
                 { id: salaryLineLayerId},
             ];
             for (const layer of layers) {
