@@ -1,74 +1,13 @@
 #!/usr/bin/env python3
 import numpy as np
+import pandas as pd
 
-neighborhood_names = ["Allston/Brighton", "Back Bay/Beacon Hill", "Central Boston", "Charlestown", "Dorchester", "East Boston", "Fenway/Kenmore", "Hyde Park", "Jamaica Plain", "Mattapan", "Roslindale", "Roxbury", "South Boston", "South End", "West Roxbury", "The Port", "Neighborhood Nine", "Wellington-Harrington", "Mid-Cambridge", "North Cambridge", "Cambridge Highlands", "Strawberry Hill", "West Cambridge", "Riverside", "Cambridgeport", "Area 2/MIT", "East Cambridge", "Baldwin"]
-
-zip_neighborhoods = {
-    "02134" : "Allston/Brighton",
-    "02135" : "Allston/Brighton",
-    "02163" : "Allston/Brighton",
-    "02108" : "Back Bay/Beacon Hill",
-    "02116" : "Back Bay/Beacon Hill",
-    "02117" : "Back Bay/Beacon Hill",
-    "02123" : "Back Bay/Beacon Hill",
-    "02133" : "Back Bay/Beacon Hill",
-    "02199" : "Back Bay/Beacon Hill",
-    "02216" : "Back Bay/Beacon Hill",
-    "02217" : "Back Bay/Beacon Hill",
-    "02295" : "Back Bay/Beacon Hill",
-    "02101" : "Central Boston",
-    "02102" : "Central Boston",
-    "02103" : "Central Boston",
-    "02104" : "Central Boston",
-    "02105" : "Central Boston",
-    "02106" : "Central Boston",
-    "02107" : "Central Boston",
-    "02109" : "Central Boston",
-    "02110" : "Central Boston",
-    "02111" : "Central Boston",
-    "02112" : "Central Boston",
-    "02113" : "Central Boston",
-    "02114" : "Central Boston",
-    "02196" : "Central Boston",
-    "02201" : "Central Boston",
-    "02202" : "Central Boston",
-    "02203" : "Central Boston",
-    "02204" : "Central Boston",
-    "02205" : "Central Boston",
-    "02206" : "Central Boston",
-    "02207" : "Central Boston",
-    "02208" : "Central Boston",
-    "02209" : "Central Boston",
-    "02211" : "Central Boston",
-    "02212" : "Central Boston",
-    "02222" : "Central Boston",
-    "02293" : "Central Boston",
-    "02129" : "Charlestown",
-    "02122" : "Dorchester",
-    "02124" : "Dorchester",
-    "02125" : "Dorchester",
-    "02128" : "East Boston",
-    "02228" : "East Boston",
-    "02115" : "Fenway/Kenmore",
-    "02215" : "Fenway/Kenmore",
-    "02136" : "Hyde Park",
-    "02130" : "Jamaica Plain",
-    "02126" : "Mattapan",
-    "02131" : "Roslindale",
-    "02119" : "Roxbury",
-    "02120" : "Roxbury",
-    "02121" : "Roxbury",
-    "02127" : "South Boston",
-    "02210" : "South Boston",
-    "02118" : "South End",
-    "02132" : "West Roxbury",
-    "02139" : ["The Port", "Mid-Cambridge", "Riverside", "Cambridgeport", "Area 2/MIT"],
-    "02140" : "Neighborhood Nine",
-    "02141" : ["Wellington-Harrington", "North Cambridge", "East Cambridge"],
-    "02138" : ["Cambridge Highlands", "Strawberry Hill", "West Cambridge", "Baldwin"]
-}
-
-overlapping_neighs = [["The Port", "Mid-Cambridge", "Riverside", "Cambridgeport", "Area 2/MIT"], ["Wellington-Harrington", "North Cambridge", "East Cambridge"], ["Cambridge Highlands", "Strawberry Hill", "West Cambridge", "Baldwin"]]
+zip_map = pd.read_table("../transportation/mbta/zips_to_hoods.tsv")
+zip_neighborhoods = {f"0{x.zip}":x.neighborhoods.split(",") for x in zip_map.itertuples()}
+neighborhood_names = []
+for hoods in zip_neighborhoods.values():
+    neighborhood_names.extend(hoods)
+neighborhood_names = np.unique(neighborhood_names).tolist()
 
 num_employees = np.zeros(len(neighborhood_names))
 num_establishments = np.zeros(len(neighborhood_names))
@@ -130,50 +69,9 @@ for zipcode in zip_neighborhoods:
 
 orig_file.close()
 
-## calculate population sizes to normalize data
-
-population = np.zeros(len(neighborhood_names))
-census_file = open("DECENNIALDHC2020.P1-Data.txt", 'r')
-
-census_line = census_file.readline()
-census_line = census_file.readline()
-census_line = census_file.readline()
-
-while(census_line):
-    census_split = census_line.split()
-
-    try:
-        neigh_idx = neighborhood_names.index(zip_neighborhoods[census_split[2]])
-    except:
-        # not one of our zipcodes
-        census_line = census_file.readline()
-        continue
-
-    population[neigh_idx] += int(census_split[3])
-
-    census_line = census_file.readline()
-
-census_file.close()
-
 # save results to file
 out = open("parsed_employment_data.txt", 'w')
-out.write("NEIGHBORHOOD\tNUM_EST\tNUM_EMP\tPAY_ANN\tPAY_QTR1\tPOP\tNORM_EST\tNORM_EMP\tNORM_PAY_ANN\tNORM_PAY_QTR1\tANN_PAY_DIV_EMP\tOVERLAPPING_NEIGHBORHOODS\n")
+out.write("NEIGHBORHOOD\tNUM_EST\tNUM_EMP\tPAY_ANN\tPAY_QTR1\tANN_PAY_DIV_EMP\n")
 for i in range(len(neighborhood_names)):
-    out.write(neighborhood_names[i] + '\t' + str(int(num_establishments[i])) + '\t' + str(int(num_employees[i])) + '\t' + str(int(ann_payroll[i])) + '\t' + str(int(q1_payroll[i])) + '\t' + str(int(population[i])) + '\t' + str(num_establishments[i]/population[i]) + '\t' + str(num_employees[i]/population[i]) + '\t' + str(ann_payroll[i]/population[i]) + '\t' + str(q1_payroll[i]/population[i]) + '\t' + str(ann_payroll[i]/num_employees[i]) + '\t')
-
-    # write the list of neighborhoods that overlap by zipcode, if applicable (sometimes happens in the Cambridge area)
-    in_list = False
-    to_write = ""
-    for overlap_list in overlapping_neighs:
-        if neighborhood_names[i] in overlap_list:
-            for j in range(len(overlap_list)):
-                if overlap_list[j] != neighborhood_names[i]:
-                    to_write += overlap_list[j] + ", "
-            in_list = True
-
-    if in_list:
-        out.write(to_write[:-2] + '\n')
-    else:
-        out.write("NA\n")
-
+    out.write(neighborhood_names[i] + '\t' + str(int(num_establishments[i])) + '\t' + str(int(num_employees[i])) + '\t' + str(int(ann_payroll[i])) + '\t' + str(int(q1_payroll[i])) + '\t' + str(ann_payroll[i]/num_employees[i]) + '\n')
 out.close()
