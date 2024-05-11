@@ -46,6 +46,9 @@
     let salaryLayerId;
     let salaryLineLayerId;
     let salarySourceId = "boston_cambridge_salary";
+    let dashboardLayerId;
+    let dashboardLineLayerId;
+    let dashboardSourceId = 'boston_cambridge_all';
 
     let mbtaLayerId;
     let mbtaOutlineLayerId;
@@ -359,6 +362,35 @@
             'layout': {'visibility': 'none'},
         });
 
+        // ADD DASHBOARD LAYER
+        map.addSource(dashboardSourceId, {
+            type: 'geojson',
+            data: 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/Boston_Cambridge_all.geojson',
+            generateId: false
+        });
+
+        dashboardLayerId = 'boston_cambridge_all';
+        dashboardLineLayerId = 'boston_cambridge_all_outline';
+        map.addLayer({
+            'id': dashboardLayerId,
+            'source': dashboardSourceId,
+            'type': 'fill',
+            'paint': {
+                'fill-color': 'hsla(200, 100%, 100%, 0.8)'
+            },
+            'layout': {'visibility': 'none'},
+        });
+        map.addLayer({
+            'id': dashboardLineLayerId,
+            'source': dashboardSourceId,
+            'type': 'line',
+            'paint': {
+                'line-color': defaultOutlineColor,
+                'line-opacity': 0.95
+            },
+            'layout': {'visibility': 'none'},
+        });
+
 
 
         // When clicking on map colored by rent
@@ -397,6 +429,7 @@
                     selectedCommute = 60;
                     dashboard = true;
                     showSidePanel = true;
+                    colorDashboard()
                 } else {
                     console.log("you can't click that neighborhood")
                 }
@@ -443,18 +476,18 @@
         if (map) {
             if (option === 'rent') {
                 console.log(selectedRent);
-                colorbyRent();
+                //colorbyRent();
                 commuteColor=false;
                 rentColor=true;
                 salaryColor=false;
             } else if (option === 'commute') {
                 console.log(selectedCommute);
-                colorbyCommute();
+                //colorbyCommute();
                 commuteColor=true;
                 rentColor=false;
                 salaryColor=false;
             } else if (option == 'salary') {
-                colorbySalary();
+                //colorbySalary();
                 commuteColor=false;
                 rentColor=false;
                 salaryColor=true;
@@ -468,6 +501,22 @@
         const option = event.detail.selectedOption;
         rentVar = option;
         console.log(rentVar)
+    }
+
+    function colorDashboard() {
+        map.setLayoutProperty(rentFillLayerId, 'visibility', 'none');
+        map.setLayoutProperty(rentOutlineLayerId, 'visibility', 'none');
+        map.setLayoutProperty(commuteLayerId, 'visibility', 'none');
+        map.setLayoutProperty(commuteLineLayerId, 'visibility', 'none');
+        for (const layerId of transitLayers) {
+            map.setLayoutProperty(layerId, 'visibility', 'none');
+        }
+        map.setLayoutProperty(transitStopsLayerId, 'visibility', 'none');
+        map.setLayoutProperty(salaryLayerId, 'visibility', 'none');
+        map.setLayoutProperty(salaryLineLayerId, 'visibility', 'none');
+        map.setLayoutProperty(dashboardLayerId, 'visibility', 'visible');
+        map.setLayoutProperty(dashboardLineLayerId, 'visibility', 'visible');
+
     }
 
     function colorbyRent() {
@@ -634,15 +683,12 @@
                         maxRent, rentMaxColor, // End of your gradient (e.g., $3000)
                     ]
                 ]);
-
-                rentData.forEach(function(feature) {
-                    var isRentBelowSelected = feature.properties.avg_per_bed < selectedRent;
-                    rentState[feature.id] = isRentBelowSelected;
-                });
             } else {
-                map.setPaintProperty(rentFillLayerId, 'fill-color', [
+                map.setPaintProperty(dashboardLayerId, 'fill-color', [
                     'case',
-                    ['>', ['get', 'avg_salary'], selectedSalary],  // New condition for average salary
+                    ['>', ['get', clickedNeighborhood], selectedCommute],
+                    unavailableColor,
+                    ['<', ['get', 'avg_salary'], selectedSalary],  // New condition for average salary
                     unavailableColor,
                     ['>', ['get', rentVar], selectedRent],
                     unavailableColor,
@@ -654,12 +700,11 @@
                         maxRent, rentMaxColor, // End of your gradient (e.g., $3000)
                     ]
                 ]);
-
-                rentData.forEach(function(feature) {
+            }
+            rentData.forEach(function(feature) {
                     var isRentBelowSelected = feature.properties.avg_per_bed < selectedRent;
                     rentState[feature.id] = isRentBelowSelected;
                 });
-            }
             addColorLegend(colorLegendElement, "Average rent per bedroom", minRent, maxRent, rentMinColor, rentMaxColor);
         }
     }
@@ -670,23 +715,42 @@
             minSalary = 40;
             maxSalary = 180;
 
-            map.setPaintProperty(salaryLayerId, 'fill-color', [
-                'case',
-                ['<', ['get', 'avg_salary'], selectedSalary],
-                unavailableColor,
-                [
-                    'interpolate',
-                    ['linear'],
-                    ['get', 'avg_salary'],
-                    minSalary, salaryMinColor, // Start of your gradient (e.g., $0)
-                    maxSalary, salaryMaxColor, // End of your gradient (e.g., $3000)
-                ]
-            ]);
+            if (!dashboard) {
+                map.setPaintProperty(salaryLayerId, 'fill-color', [
+                    'case',
+                    ['<', ['get', 'avg_salary'], selectedSalary],
+                    unavailableColor,
+                    [
+                        'interpolate',
+                        ['linear'],
+                        ['get', 'avg_salary'],
+                        minSalary, salaryMinColor, // Start of your gradient (e.g., $0)
+                        maxSalary, salaryMaxColor, // End of your gradient (e.g., $3000)
+                    ]
+                ]);
+            } else {
+                map.setPaintProperty(dashboardLayerId, 'fill-color', [
+                    'case',
+                    ['>', ['get', clickedNeighborhood], selectedCommute],
+                    unavailableColor,
+                    ['<', ['get', 'avg_salary'], selectedSalary],  // New condition for average salary
+                    unavailableColor,
+                    ['>', ['get', rentVar], selectedRent],
+                    unavailableColor,
+                    [
+                        'interpolate',
+                        ['linear'],
+                        ['get', 'avg_salary'],
+                        minSalary, salaryMinColor, // Start of your gradient (e.g., $0)
+                        maxSalary, salaryMaxColor, // End of your gradient (e.g., $3000)
+                    ]
+                ]);
+            }
 
             var features = map.querySourceFeatures(salarySourceId);
             features.forEach(function(feature) {
-                var isSalaryBelowSelected = feature.properties['avg_salary'] <= selectedSalary;
-                salaryState[feature.id] = isSalaryBelowSelected;
+                var isSalaryAboveSelected = feature.properties['avg_salary'] > selectedSalary;
+                salaryState[feature.id] = isSalaryAboveSelected;
             });
             addColorLegend(colorLegendElement, "Average salary ($/hour)", minSalary, maxSalary, salaryMinColor, salaryMaxColor);
         }
@@ -700,22 +764,41 @@
                     const commutes = await fetchCommuteData(clickedNeighborhood);
                     minCommute = commutes.minCommute;
                     maxCommute = commutes.maxCommute;
-
-                    map.setPaintProperty(commuteLayerId, 'fill-color', [
-                        'case',
-                        ['==', ['get', clickedNeighborhood], 180],
-                         unavailableColor, // Placeholder for NaN, no commute time data so greyed out
-                        ['case',
-                        ['>', ['get', clickedNeighborhood], selectedCommute],
-                        unavailableColor,
-                        [
-                            'interpolate',
-                            ['linear'],
-                            ['get', clickedNeighborhood],
-                            minCommute, commuteMinColor,
-                            maxCommute, commuteMaxColor,
-                        ]]
-                    ]);
+                    
+                    if (!dashboard) {
+                        map.setPaintProperty(commuteLayerId, 'fill-color', [
+                            'case',
+                            ['==', ['get', clickedNeighborhood], 180],
+                            unavailableColor, // Placeholder for NaN, no commute time data so greyed out
+                            ['case',
+                            ['>', ['get', clickedNeighborhood], selectedCommute],
+                            unavailableColor,
+                            [
+                                'interpolate',
+                                ['linear'],
+                                ['get', clickedNeighborhood],
+                                minCommute, commuteMinColor,
+                                maxCommute, commuteMaxColor,
+                            ]]
+                        ]);
+                    } else {
+                        map.setPaintProperty(dashboardLayerId, 'fill-color', [
+                            'case',
+                            ['>', ['get', clickedNeighborhood], selectedCommute],
+                            unavailableColor,
+                            ['<', ['get', 'avg_salary'], selectedSalary],  // New condition for average salary
+                            unavailableColor,
+                            ['>', ['get', rentVar], selectedRent],
+                            unavailableColor,
+                            [
+                                'interpolate',
+                                ['linear'],
+                                ['get', clickedNeighborhood],
+                                minCommute, commuteMinColor,
+                                maxCommute, commuteMaxColor,
+                            ]
+                        ]);
+                    }
                     for (const layerId of transitLayers) {
                         map.setPaintProperty(layerId, 'line-opacity', [
                             'case',
