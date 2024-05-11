@@ -95,8 +95,14 @@
     import { onMount } from 'svelte';
 
     onMount(() => {
-        Plotly.newPlot("commutePlot", [...plotCommuteData, commuteRegression], commuteLayout);
-        Plotly.newPlot("salaryPlot", [...plotRentData, salaryRegression], salaryLayout);
+        setTimeout(() =>{
+            if (typeof Plotly !== 'undefined') {
+                Plotly.newPlot("commutePlot", [...plotCommuteData, commuteRegression], commuteLayout);
+                Plotly.newPlot("salaryPlot", [...plotRentData, salaryRegression], salaryLayout);
+            } else {
+                console.error("plotly is still not defined after waiting");
+            }
+        }, 1000);
     });
 </script>
 
@@ -112,18 +118,9 @@
         While many resort to long daily commutes, studies have also found that increased commute times are associated with reduced work 
         and life satisfaction and decreased physical health<sup><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9819363/">4</a></sup>.
     </p>
+
 	<h3>The trade-off between rent, commute time, and salary</h3>
     <p>But just how large is the trade-off between rent and commute time? Our analyses find that in the Boston area, a <b>$100 increase in rent</b> per bedroom is about equivalent to a <b>1 minute and 45 second decrease in commute</b> time.</p>
-
-    <h3>Quantitatively exploring the affordability vs commute time trade-off</h3>
-
-    <p>
-        But just how large is the trade-off between rent and commute time? Our analyses find that in the Boston area, 
-        a <b>$100 increase in rent</b> per bedroom is about equivalent to a <b>1 minute and 45 second decrease in commute</b> time. 
-        We also find complementary evidence that neighborhoods with high rent prices tend to have more businesses and job opportunities 
-        (normalized by population) and offer higher salaries. The following plot shows the average salary for workers in a given neighborhood 
-        regressed against the average 1 bedroom apartment rent (with data for both Boston and Cambridge area neighborhoods).
-    </p>
     
     <div id="commutePlot"></div>
 
