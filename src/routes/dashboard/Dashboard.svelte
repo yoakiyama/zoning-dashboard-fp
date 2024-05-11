@@ -450,6 +450,21 @@
             }
         });
 
+        map.on('click', dashboardLayerId, (e) => {
+            if (e.features.length > 0 && dashboard) { // DASHBOARD MODE
+                const feature = e.features[0];
+                if (rentState[feature.id] && salaryState[feature.id] && commuteState[feature.id]) {
+                    if (salaryColor){
+                        workingNeighborhood = feature.properties.neighborhood
+                    } else if (commuteColor) {
+                        clickedNeighborhood = feature.properties.neighborhood
+                    } else if (rentColor) {
+                        clickedNeighborhood = feature.properties.neighborhood
+                    }
+                }
+            }
+        });
+
         map.on('data', (e) => {
             if (e.sourceId === rentSourceId) {
                 const features = map.querySourceFeatures(rentSourceId);
@@ -476,18 +491,15 @@
         if (map) {
             if (option === 'rent') {
                 console.log(selectedRent);
-                //colorbyRent();
                 commuteColor=false;
                 rentColor=true;
                 salaryColor=false;
             } else if (option === 'commute') {
                 console.log(selectedCommute);
-                //colorbyCommute();
                 commuteColor=true;
                 rentColor=false;
                 salaryColor=false;
             } else if (option == 'salary') {
-                //colorbySalary();
                 commuteColor=false;
                 rentColor=false;
                 salaryColor=true;
@@ -519,19 +531,6 @@
 
     }
 
-    function colorbyRent() {
-        map.setLayoutProperty(rentFillLayerId, 'visibility', 'visible');
-        map.setLayoutProperty(rentOutlineLayerId, 'visibility', 'visible');
-        map.setLayoutProperty(commuteLayerId, 'visibility', 'none');
-        map.setLayoutProperty(commuteLineLayerId, 'visibility', 'none');
-        for (const layerId of transitLayers) {
-            map.setLayoutProperty(layerId, 'visibility', 'none');
-        }
-        map.setLayoutProperty(transitStopsLayerId, 'visibility', 'none');
-        map.setLayoutProperty(salaryLayerId, 'visibility', 'none');
-        map.setLayoutProperty(salaryLineLayerId, 'visibility', 'none');
-
-    }
 
     function colorbyCommute() {
         map.setLayoutProperty(rentFillLayerId, 'visibility', 'none');
@@ -546,18 +545,6 @@
         map.setLayoutProperty(salaryLineLayerId, 'visibility', 'none');
     }
 
-    function colorbySalary() {
-        map.setLayoutProperty(rentFillLayerId, 'visibility', 'none');
-        map.setLayoutProperty(rentOutlineLayerId, 'visibility', 'none');
-        map.setLayoutProperty(commuteLayerId, 'visibility', 'none');
-        map.setLayoutProperty(commuteLineLayerId, 'visibility', 'none');
-        for (const layerId of transitLayers) {
-            map.setLayoutProperty(layerId, 'visibility', 'none');
-        }
-        map.setLayoutProperty(transitStopsLayerId, 'visibility', 'none');
-        map.setLayoutProperty(salaryLayerId, 'visibility', 'visible');
-        map.setLayoutProperty(salaryLineLayerId, 'visibility', 'visible');
-    }
 
     function plotRentBar(rentByBed, neighborhood) {
         // Delete old plot if it exists
@@ -683,6 +670,10 @@
                         maxRent, rentMaxColor, // End of your gradient (e.g., $3000)
                     ]
                 ]);
+                rentData.forEach(function(feature) {
+                    var isRentBelowSelected = feature.properties.avg_per_bed < selectedRent;
+                    rentState[feature.id] = isRentBelowSelected;
+                });
             } else {
                 map.setPaintProperty(dashboardLayerId, 'fill-color', [
                     'case',
@@ -700,11 +691,22 @@
                         maxRent, rentMaxColor, // End of your gradient (e.g., $3000)
                     ]
                 ]);
-            }
-            rentData.forEach(function(feature) {
+                var sal_features = map.querySourceFeatures(dashboardSourceId);
+                sal_features.forEach(function(feature) {
+                    var isSalaryAboveSelected = feature.properties['avg_salary'] >= selectedSalary;
+                    salaryState[feature.id] = isSalaryAboveSelected;
+                });
+                rentData.forEach(function(feature) {
                     var isRentBelowSelected = feature.properties.avg_per_bed < selectedRent;
                     rentState[feature.id] = isRentBelowSelected;
                 });
+                var commute_features = map.querySourceFeatures(dashboardSourceId);
+                commute_features.forEach(function(feature) {
+                    var isCommuteBelowSelected = feature.properties[clickedNeighborhood] <= selectedCommute;
+                    commuteState[feature.id] = isCommuteBelowSelected;
+                });
+            }
+            
             addColorLegend(colorLegendElement, "Average rent per bedroom", minRent, maxRent, rentMinColor, rentMaxColor);
         }
     }
@@ -728,7 +730,13 @@
                         maxSalary, salaryMaxColor, // End of your gradient (e.g., $3000)
                     ]
                 ]);
+                var features = map.querySourceFeatures(salarySourceId);
+                features.forEach(function(feature) {
+                    var isSalaryAboveSelected = feature.properties['avg_salary'] >= selectedSalary;
+                    salaryState[feature.id] = isSalaryAboveSelected;
+                });
             } else {
+                console.log(selectedSalary)
                 map.setPaintProperty(dashboardLayerId, 'fill-color', [
                     'case',
                     ['>', ['get', clickedNeighborhood], selectedCommute],
@@ -745,13 +753,23 @@
                         maxSalary, salaryMaxColor, // End of your gradient (e.g., $3000)
                     ]
                 ]);
+                var sal_features = map.querySourceFeatures(dashboardSourceId);
+                sal_features.forEach(function(feature) {
+                    var isSalaryAboveSelected = feature.properties['avg_salary'] >= selectedSalary;
+                    salaryState[feature.id] = isSalaryAboveSelected;
+                });
+                rentData.forEach(function(feature) {
+                    var isRentBelowSelected = feature.properties.avg_per_bed < selectedRent;
+                    rentState[feature.id] = isRentBelowSelected;
+                });
+                var commute_features = map.querySourceFeatures(dashboardSourceId);
+                commute_features.forEach(function(feature) {
+                    var isCommuteBelowSelected = feature.properties[clickedNeighborhood] <= selectedCommute;
+                    commuteState[feature.id] = isCommuteBelowSelected;
+                });
             }
 
-            var features = map.querySourceFeatures(salarySourceId);
-            features.forEach(function(feature) {
-                var isSalaryAboveSelected = feature.properties['avg_salary'] > selectedSalary;
-                salaryState[feature.id] = isSalaryAboveSelected;
-            });
+            
             addColorLegend(colorLegendElement, "Average salary ($/hour)", minSalary, maxSalary, salaryMinColor, salaryMaxColor);
         }
     }
@@ -781,6 +799,17 @@
                                 maxCommute, commuteMaxColor,
                             ]]
                         ]);
+                        var features = map.querySourceFeatures('Boston_Cambridge_Commute');
+                        features.forEach(function(feature) {
+                            var isCommuteBelowSelected = feature.properties[clickedNeighborhood] <= selectedCommute;
+                            commuteState[feature.id] = isCommuteBelowSelected;
+                            if (feature.id !== undefined) {
+                                map.setFeatureState({
+                                    source: 'Boston_Cambridge_Commute',
+                                    id: feature.id,
+                                }, {'valid_commute':isCommuteBelowSelected});
+                                }
+                        });
                     } else {
                         map.setPaintProperty(dashboardLayerId, 'fill-color', [
                             'case',
@@ -798,6 +827,20 @@
                                 maxCommute, commuteMaxColor,
                             ]
                         ]);
+                        rentData.forEach(function(feature) {
+                            var isRentBelowSelected = feature.properties.avg_per_bed < selectedRent;
+                            rentState[feature.id] = isRentBelowSelected;
+                        });
+                        var commute_features = map.querySourceFeatures(dashboardSourceId);
+                        commute_features.forEach(function(feature) {
+                            var isCommuteBelowSelected = feature.properties[clickedNeighborhood] <= selectedCommute;
+                            commuteState[feature.id] = isCommuteBelowSelected;
+                        });
+                        var sal_features = map.querySourceFeatures(dashboardSourceId);
+                        sal_features.forEach(function(feature) {
+                            var isSalaryAboveSelected = feature.properties['avg_salary'] >= selectedSalary;
+                            salaryState[feature.id] = isSalaryAboveSelected;
+                        });
                     }
                     for (const layerId of transitLayers) {
                         map.setPaintProperty(layerId, 'line-opacity', [
@@ -817,17 +860,7 @@
                             0.15
                     ]);
 
-                    var features = map.querySourceFeatures('Boston_Cambridge_Commute');
-                    features.forEach(function(feature) {
-                        var isCommuteBelowSelected = feature.properties[clickedNeighborhood] <= selectedCommute;
-                        commuteState[feature.id] = isCommuteBelowSelected;
-                        if (feature.id !== undefined) {
-                            map.setFeatureState({
-                                source: 'Boston_Cambridge_Commute',
-                                id: feature.id,
-                            }, {'valid_commute':isCommuteBelowSelected});
-                            }
-                    });
+                    
                 } catch (error) {
                     console.error('Error processing commute data:', error);
                 }
@@ -850,6 +883,7 @@
                 { id: rentOutlineLayerId},
                 { id: commuteLineLayerId},
                 { id: salaryLineLayerId},
+                { id: dashboardLineLayerId},
             ];
             for (const layer of layers) {
                 map.setPaintProperty(layer.id, 'line-width', [
