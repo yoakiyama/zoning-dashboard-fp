@@ -102,7 +102,7 @@
             } else {
                 console.error("plotly is still not defined after waiting");
             }
-        }, 1000);
+        }, 500);
     });
 </script>
 
