@@ -196,6 +196,35 @@
             'layout': {'visibility': 'visible'},
         });
 
+        // ADD DASHBOARD LAYER
+        map.addSource(dashboardSourceId, {
+            type: 'geojson',
+            data: 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/Boston_Cambridge_all.geojson',
+            generateId: false
+        });
+
+        dashboardLayerId = 'boston_cambridge_all';
+        dashboardLineLayerId = 'boston_cambridge_all_outline';
+        map.addLayer({
+            'id': dashboardLayerId,
+            'source': dashboardSourceId,
+            'type': 'fill',
+            'paint': {
+                'fill-color': 'hsla(200, 100%, 100%, 0.8)'
+            },
+            'layout': {'visibility': 'none'},
+        });
+        map.addLayer({
+            'id': dashboardLineLayerId,
+            'source': dashboardSourceId,
+            'type': 'line',
+            'paint': {
+                'line-color': defaultOutlineColor,
+                'line-opacity': 0.95
+            },
+            'layout': {'visibility': 'none'},
+        });
+
         // ADD COMMUTE LAYER
         map.addSource("Boston_Cambridge_Commute", {
             type: 'geojson',
@@ -362,34 +391,7 @@
             'layout': {'visibility': 'none'},
         });
 
-        // ADD DASHBOARD LAYER
-        map.addSource(dashboardSourceId, {
-            type: 'geojson',
-            data: 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/Boston_Cambridge_all.geojson',
-            generateId: false
-        });
-
-        dashboardLayerId = 'boston_cambridge_all';
-        dashboardLineLayerId = 'boston_cambridge_all_outline';
-        map.addLayer({
-            'id': dashboardLayerId,
-            'source': dashboardSourceId,
-            'type': 'fill',
-            'paint': {
-                'fill-color': 'hsla(200, 100%, 100%, 0.8)'
-            },
-            'layout': {'visibility': 'none'},
-        });
-        map.addLayer({
-            'id': dashboardLineLayerId,
-            'source': dashboardSourceId,
-            'type': 'line',
-            'paint': {
-                'line-color': defaultOutlineColor,
-                'line-opacity': 0.95
-            },
-            'layout': {'visibility': 'none'},
-        });
+        
 
 
 
