@@ -25,18 +25,18 @@
         return xArr.map(x => slope * x + intercept);
     };
 
-    const rentData = [2607.0, 3539.0, 3718.0, 3633.0, 3518.0, 2750.0, 3633.0, 3539.0, 3140.0, 3250.0, 2377.0, 3749.0, 2377.0, 3151.0, 2607.0, 2497.0, 2680.0, 2607.0, 2377.0, 3539.0, 2397.0, 3213.0, 3213.0, 3046.0, 3539.0, 2497.0, 2481.0, 2730.0, 3570.0, 2481.0, 3633.0, 3539.0, 3151.0, 3633.0, 3046.0, 2499.0]
+    const rentData = [1549.7500881834214, 1932.3635802469137, 1833.3455820105821, 1657.121693121693, 1255.2674603174603, 1255.2674603174603, 1525.3431216931217, 1318.555687830688, 1416.9650793650794, 1255.2674603174603, 1318.555687830688, 1258.7166666666665, 1663.3708994708995, 1311.8887566137566, 1319.8109788359789]
 
-    const rentNeighborhoodNames = ["Allston", "Area 2/MIT", "Back Bay", "Baldwin", "Beacon Hill", "Brighton", "Cambridge Highlands","Cambridgeport", "Charlestown", "Chinatown", "Dorchester", "Downtown", "East Boston","East Cambridge","Fenway", "Hyde Park","Jamaica Plain","Longwood", "Mattapan", "Mid-Cambridge","Mission Hill","Neighborhood Nine","North Cambridge","North End","Riverside", "Roslindale", "Roxbury", "South Boston","South Boston Waterfront","South End","Strawberry Hill","The Port","Wellington-Harrington","West Cambridge","West End","West Roxbury"]
+    const neighborhoodNames = ["Allston/Brighton", "Back Bay/Beacon Hill", "Central Boston", "Charlestown", "Dorchester", "East Boston", "Fenway/Kenmore", "Hyde Park", "Jamaica Plain", "Mattapan", "Roslindale", "Roxbury", "South Boston", "South End", "West Roxbury"]
 
-    const salaryData = [71.83164739884393, 175.4480640393143, 147.05532554953237, 77.08398116226142, 112.21782230147907, 71.33450183064579, 77.08398116226142, 175.4480640393143, 78.91006001263423, 128.85338481959695, 59.683840847913864, 188.8833296001792, 59.68693009118541, 129.98903006318127, 81.23144565599719, 55.42134944612286, 69.7178024833959, 78.51204242827254, 43.01632438125329, 175.4480640393143, 57.423773287850956, 119.74381474710542, 119.74381474710542, 50.297506925207756, 175.4480640393143, 46.62062546537602, 72.66275149537792, 81.42493396724775, 165.73921750105174, 68.2045719844358, 77.08398116226142, 175.4480640393143, 129.98903006318127, 77.08398116226142, 109.57901280044203, 46.774375352244974]
+    const salaryData = [71.60039899786582, 149.3132226685017, 154.62586454469306, 78.91006001263423, 59.683840847913864, 59.68693009118541, 79.74541571022148, 55.42134944612286, 69.7178024833959, 43.01632438125329, 46.62062546537602, 68.19744733200062, 154.15502975758454, 68.2045719844358, 46.774375352244974]
 
     const data = [{
         x: rentData,
         y: salaryData,
         mode: "markers",
         type: "scatter",
-        text: rentNeighborhoodNames,
+        text: neighborhoodNames,
         showlegend: false,
         name: "",
         hoverinfo: "text"
@@ -44,7 +44,7 @@
 
     const regressionY = regressionLine(rentData, salaryData);
 
-    let regressionTrace = {
+    let salaryRegression = {
         x: rentData,
         y: regressionY,
         mode: "lines",
@@ -54,17 +54,17 @@
         hoverinfo: "none"
     };
 
-    let layout = {
-        xaxis: { range: [2300, 3800], title: "Average 1 Bedroom Apartment Rent" },
+    let salaryLayout = {
+        xaxis: { range: [1250, 1950], title: "Average 1 Bedroom Apartment Rent" },
         yaxis: { range: [0, 200], title: "Average Salary (in thousands of dollars per year)" },
-        title: "Average Salary vs. Average Rent by Neighborhood"
+        title: "Average Salary vs. Average 1 Bedroom Apartment Rent by Neighborhood"
     };
 
      // Create the Plotly plot once the component is mounted
     import { onMount } from 'svelte';
 
     onMount(() => {
-        Plotly.newPlot("salaryPlot", [...data, regressionTrace], layout);
+        Plotly.newPlot("salaryPlot", [...data, salaryRegression], salaryLayout);
     });
 </script>
 
