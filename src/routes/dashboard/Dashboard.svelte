@@ -464,6 +464,36 @@
                 }
             }
         });
+        map.on('mouseenter', dashboardLayerId, () => {
+
+            // Reset the cursor style
+            map.getCanvas().style.cursor = 'pointer';
+        });
+        let lastMove = Date.now();
+        map.on('mousemove', dashboardLayerId, (e) => {
+            const now = Date.now();
+            if (now - lastMove > 25) { 
+                lastMove = now;
+                if (e.features.length > 0) {
+                    const feature = e.features[0];
+                    const neighborhood = feature.properties.neighborhood;
+
+                    const tooltip = document.getElementById('tooltip');
+                    tooltip.style.display = 'block';
+                    tooltip.style.left = e.point.x + 10 + 'px';
+                    tooltip.style.top = e.point.y + 10 + 'px';
+                    tooltip.textContent = neighborhood;
+                    map.getCanvas().style.cursor = 'pointer';
+                }
+            }
+        });
+        map.on('mouseleave', dashboardLayerId, () => {
+            const tooltip = document.getElementById('tooltip');
+            tooltip.style.display = 'none';  // Hide the tooltip
+
+            // Reset the cursor style
+            map.getCanvas().style.cursor = '';
+        });
 
         map.on('data', (e) => {
             if (e.sourceId === rentSourceId) {
@@ -1016,6 +1046,8 @@
                 {/if}
             </div>
         {/if}
+
+        <div id="tooltip" style="position: absolute; display: none; background: rgba(255,255,255,0.8); padding: 5px; border-radius: 3px; border: 1px solid #ccc; z-index: 1;"></div>
 
         <!-- POP UPS -->
 
