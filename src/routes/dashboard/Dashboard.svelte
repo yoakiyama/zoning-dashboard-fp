@@ -614,7 +614,7 @@
         map.setLayoutProperty(commuteLayerId, 'visibility', 'none');
         map.setLayoutProperty(commuteLineLayerId, 'visibility', 'none');
         for (const layerId of transitLayers) {
-            map.setLayoutProperty(layerId, 'visibility', 'none');
+            map.setLayoutProperty(layerId, 'visibility', 'visible');
         }
         map.setLayoutProperty(transitStopsLayerId, 'visibility', 'none');
         map.setLayoutProperty(salaryLayerId, 'visibility', 'none');
