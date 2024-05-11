@@ -84,6 +84,8 @@
         and life satisfaction and decreased physical health<sup><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9819363/">4</a></sup>.
     </p>
 
+    <h3>Quantitatively exploring the affordability vs commute time trade-off</h3>
+
     <p>
         But just how large is the trade-off between rent and commute time? Our analyses find that in the Boston area, 
         a <b>$100 increase in rent</b> per bedroom is about equivalent to a <b>1 minute and 45 second decrease in commute</b> time. 
@@ -94,7 +96,10 @@
 
     <div id="salaryPlot"></div>
 
-    <p>In the following dashboard, you’ll get to explore how the variables of rent, commute time, and salary interact with each other by seeing how high rent prices can reduce your housing options, then visualizing how existing transportation options can limit the areas you’re able to work in (depending on how long you would be willing to commute).</p>
+    <h3>In-depth exploration via the Boston/Cambridge rent vs commute time dashboard</h3>
+    <p>In the following dashboard, you’ll get to explore how the variables of rent, commute time, and salary interact with each other by seeing how 
+        high rent prices can reduce your housing options, then visualizing how existing transportation options can limit the areas you’re able to work in 
+        (depending on how long you would be willing to commute).</p>
 
     <button on:click={goToDashboard}>Enter</button>
 </div>
