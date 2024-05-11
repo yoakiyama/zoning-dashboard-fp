@@ -102,7 +102,17 @@
 
 <div class="intro-container">
     <h2>How are transportation options and rent prices limiting your access to high-paying jobs?</h2>
-    <p>As rent prices climb in the Boston area, many tenants are being driven farther away from the center of the city<sup><a href="https://www.cbsnews.com/boston/news/boston-high-rent-city-workers-city-council-residence-requirement/">1</a>, <a href="https://www.forbes.com/sites/andrewdepietro/2023/01/24/the-average-rent-in-boston-now-rivals-bay-area-cities/?sh=7e5080d9434b">2</a></sup>. Unfortunately, this displacement often means living farther away from areas that are dense with high-paying job opportunities. Though many workers resort to long daily commutes, studies have also found that increased commute times are associated with reduced work and life satisfaction and decreased physical health<sup><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9819363/">3</a></sup>.</p>
+    <p>As rent prices climb in the Boston area, many tenants are being driven farther away from the center of the city<sup><a href="https://www.cbsnews.com/boston/news/boston-high-rent-city-workers-city-council-residence-requirement/">1</a>, <a href="https://www.forbes.com/sites/andrewdepietro/2023/01/24/the-average-rent-in-boston-now-rivals-bay-area-cities/?sh=7e5080d9434b">2</a></sup>. Unfortunately, this displacement often means living farther away from areas that are dense with high-paying job opportunities.</p>
+	<h3>Effects on mental and physical health</h3>
+    <p>
+        The trade off between affordability and commute time carries dire implications to overall health. According to the Metropolitan Area Planning Council (MAPC), 
+        a record <b>51% of Greater Boston renters are considered rent burdened</b>, spending more than the recommended maximum 30% of their monthly income on housing. 
+        Several longitudinal studies have documented how stress related to housing affordability and housing cost burden is significantly associated with 
+        declines in mental health and emotional well-being<sup><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8435361/">3</a></sup>. 
+        While many resort to long daily commutes, studies have also found that increased commute times are associated with reduced work 
+        and life satisfaction and decreased physical health<sup><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9819363/">4</a></sup>.
+    </p>
+	<h3>The trade-off between rent, commute time, and salary</h3>
     <p>But just how large is the trade-off between rent and commute time? Our analyses find that in the Boston area, a <b>$100 increase in rent</b> per bedroom is about equivalent to a <b>1 minute and 45 second decrease in commute</b> time.</p>
 
     <div id="commutePlot"></div>
