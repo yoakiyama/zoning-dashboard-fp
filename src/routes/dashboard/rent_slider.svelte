@@ -7,33 +7,25 @@
     export let min = 0;
     export let step = 10;
     export let label = 'Maximum spending on rent (per bedroom):';
-	export let sliderColor = 'hsl(260, 40%, 50%)'
+	export let sliderColor = 'hsl(260, 40%, 50%)';
+	export let fillRight = false;
 
-    onMount(() => {
-        document.documentElement.style.setProperty('--sliderColor', sliderColor);
-    });
 </script>
 
 
 <div class="slider-container">
 	<label for="rent-slider">{label}</label>
-	<input type=range bind:value={Value} min={min} max={max} step={step} name='rent-slider' class='slider'>
+	<input type=range bind:value={Value} min={min} max={max} step={step} name='rent-slider' class='slider' style="--sliderColor: {sliderColor}; --offsetDirection: {fillRight ? '407px' : '-407px'};">
 	<span>{ Value }</span>
 </div>
 
 <style>
 	.slider-container {
-		/* position: fixed;
-		bottom: 0;
-		left: 50%;
-		transform: translateX(-50%);
-		width: 20%; */
-		background-color: rgba(255, 255, 255, 0.9);
-		padding: 20px;
 		border-radius: 10px;
-		box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+		padding: 15px;
 		font-size: 18px;
 	}
+
 	input[type="range"]{
 		width: 100%;
 		cursor: pointer;
@@ -76,7 +68,7 @@
 	border-radius: 50%;
 	border: 2px solid var(--sliderColor);
 	/*  slider progress trick  */
-	box-shadow: -407px 0 0 400px var(--sliderColor);
+	box-shadow: var(--offsetDirection) 0 0 400px var(--sliderColor);
 	}
 
 
@@ -88,7 +80,7 @@
 	border-radius: 50%;
 	border: 1px solid var(--sliderColor);
 	/*  slider progress trick  */
-	box-shadow: -407px 0 0 400px var(--sliderColor);
+	box-shadow: var(--offsetDirection) 0 0 400px var(--sliderColor);
 	}
 
 

@@ -83,7 +83,7 @@
     let commuteValue = 20;
     let selectedCommute = 1000;
     let selectedOption = 'commute';
-    let selectedSalary = 180
+    let selectedSalary = 50
 
     var rentState = {}; // dictionary to keep track of which neighborhoods have valid rent
     var commuteState = {}; // dictionary to keep track of which neighborhoods have valid commute
@@ -458,7 +458,7 @@
                 commuteColor=false;
                 rentColor=false;
                 salaryColor=true;
-                selectedSalary=200;
+                selectedSalary=50;
             }
         }
     }
@@ -621,23 +621,45 @@
                 maxRent = 2000;
             }
 
-            map.setPaintProperty(rentFillLayerId, 'fill-color', [
-                'case',
-                ['>', ['get', rentVar], selectedRent],
-                unavailableColor,
-                [
-                    'interpolate',
-                    ['linear'],
-                    ['get', rentVar],
-                    minRent, rentMinColor, // Start of your gradient (e.g., $0)
-                    maxRent, rentMaxColor, // End of your gradient (e.g., $3000)
-                ]
-            ]);
+            if (!dashboard) {
+                map.setPaintProperty(rentFillLayerId, 'fill-color', [
+                    'case',
+                    ['>', ['get', rentVar], selectedRent],
+                    unavailableColor,
+                    [
+                        'interpolate',
+                        ['linear'],
+                        ['get', rentVar],
+                        minRent, rentMinColor, // Start of your gradient (e.g., $0)
+                        maxRent, rentMaxColor, // End of your gradient (e.g., $3000)
+                    ]
+                ]);
 
-            rentData.forEach(function(feature) {
-                var isRentBelowSelected = feature.properties.avg_per_bed < selectedRent;
-                rentState[feature.id] = isRentBelowSelected;
-            });
+                rentData.forEach(function(feature) {
+                    var isRentBelowSelected = feature.properties.avg_per_bed < selectedRent;
+                    rentState[feature.id] = isRentBelowSelected;
+                });
+            } else {
+                map.setPaintProperty(rentFillLayerId, 'fill-color', [
+                    'case',
+                    ['>', ['get', 'avg_salary'], selectedSalary],  // New condition for average salary
+                    unavailableColor,
+                    ['>', ['get', rentVar], selectedRent],
+                    unavailableColor,
+                    [
+                        'interpolate',
+                        ['linear'],
+                        ['get', rentVar],
+                        minRent, rentMinColor, // Start of your gradient (e.g., $0)
+                        maxRent, rentMaxColor, // End of your gradient (e.g., $3000)
+                    ]
+                ]);
+
+                rentData.forEach(function(feature) {
+                    var isRentBelowSelected = feature.properties.avg_per_bed < selectedRent;
+                    rentState[feature.id] = isRentBelowSelected;
+                });
+            }
             addColorLegend(colorLegendElement, "Average rent per bedroom", minRent, maxRent, rentMinColor, rentMaxColor);
         }
     }
@@ -650,7 +672,7 @@
 
             map.setPaintProperty(salaryLayerId, 'fill-color', [
                 'case',
-                ['>', ['get', 'avg_salary'], selectedSalary],
+                ['<', ['get', 'avg_salary'], selectedSalary],
                 unavailableColor,
                 [
                     'interpolate',
@@ -798,7 +820,7 @@
     <div class="map" bind:this={mapContainer} style="--width:{mapWidth}">
         <!-- Sliders and Color Bars (contained within map)-->
         {#if rentSlider}
-        <div class="slider-container">
+        <div class="outer-slider-container">
             <Slider bind:Value={rentValue}
                     sliderColor='hsl(260, 40%, 50%)'
                     class="slider-slider"
@@ -817,7 +839,7 @@
         {/if}
 
         {#if commuteSlider}
-        <div class="slider-container">
+        <div class="outer-slider-container">
                 <Slider bind:Value={commuteValue}
                         label='Maximum commute time (min):'
                         min={minCommute}
@@ -828,37 +850,30 @@
         </div>
         {/if}
 
-        {#if dashboard && rentColor}
-        <div class="slider-container" style="left:{mapWidth};">
+        {#if dashboard}
+        <div class="outer-slider-container" style="left:0; grid-template-rows: repeat(3, 1fr); grid-template-columns: 1fr;">
             <Slider bind:Value={selectedRent}
                     sliderColor='hsl(260, 40%, 50%)'
-                    label='Filter by average rent per bedroom:'
+                    label='Filter by Max Avg. Rent per Bedroom:'
                     class="slider-slider"
                     min=0
                     max=2000
                     step=10/>
-        </div>
-        {/if}
-        {#if dashboard && commuteColor}
-        <div class="slider-container" style="left:{mapWidth};">
             <Slider bind:Value={selectedCommute}
                     sliderColor='hsl(200, 50%, 50%)'
-                    label='Filter by Commute Time:'
+                    label='Filter by Max Commute Time:'
                     class="slider-slider"
                     min=0
                     max=80
                     step=1/>
-        </div>
-        {/if}
-        {#if dashboard && salaryColor}
-        <div class="slider-container" style="left:{mapWidth};">
             <Slider bind:Value={selectedSalary}
                     sliderColor='hsl(30, 100%, 50%)'
-                    label='Filter by Average Salary ($/hr)'
+                    label='Filter by Min Avg. Salary ($/hr)'
                     class="slider-slider"
                     min=0
                     max=200
-                    step=5/>
+                    step=5
+                    fillRight=true/>
         </div>
         {/if}
         {#if commuteColor || dashboard}
@@ -906,7 +921,7 @@
         </div>
         {/if}
 
-        {#if workingNeighborhood}
+        {#if workingNeighborhood && !dashboard}
         <div class='popUp'>
             <p style="position:relative;">You've selected to live in <span class="neighborhood-name" style="font-weight: bold; color: hsl(260, 90%, 30%)">{clickedNeighborhood}</span> and to
                 work in <span class="neighborhood-name" style="font-weight: bold; color: hsl(200, 900%, 30%)">{workingNeighborhood}</span>!</p>
@@ -988,7 +1003,7 @@
         z-index: 10;
     }
 
-    .slider-container {
+    .outer-slider-container {
         position: absolute;
         bottom: 0;
         left: 37%;
@@ -999,6 +1014,10 @@
         grid-template-columns: 1fr auto;
         gap: 10px;
         align-items: center;
+        background-color: rgba(255, 255, 255, 0.9);
+		border-radius: 10px;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        padding-right: 15px;
     }
 
 
