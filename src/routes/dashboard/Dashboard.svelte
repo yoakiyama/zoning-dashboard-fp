@@ -464,6 +464,8 @@
                 }
             }
         });
+
+        // NEIGHBORHOOD TOOLTIPS
         map.on('mouseenter', dashboardLayerId, () => {
 
             // Reset the cursor style
@@ -488,6 +490,65 @@
             }
         });
         map.on('mouseleave', dashboardLayerId, () => {
+            const tooltip = document.getElementById('tooltip');
+            tooltip.style.display = 'none';  // Hide the tooltip
+
+            // Reset the cursor style
+            map.getCanvas().style.cursor = '';
+        });
+
+        map.on('mouseenter', rentFillLayerId, () => {
+            // Reset the cursor style
+            map.getCanvas().style.cursor = 'pointer';
+        });
+        map.on('mousemove', rentFillLayerId, (e) => {
+            const now = Date.now();
+            if (now - lastMove > 25) { 
+                lastMove = now;
+                if (e.features.length > 0) {
+                    const feature = e.features[0];
+                    const neighborhood = feature.properties.neighborhood;
+
+                    const tooltip = document.getElementById('tooltip');
+                    tooltip.style.display = 'block';
+                    tooltip.style.left = e.point.x + 10 + 'px';
+                    tooltip.style.top = e.point.y + 10 + 'px';
+                    tooltip.textContent = neighborhood;
+                    map.getCanvas().style.cursor = 'pointer';
+                }
+            }
+        });
+        map.on('mouseleave', rentFillLayerId, () => {
+            const tooltip = document.getElementById('tooltip');
+            tooltip.style.display = 'none';  // Hide the tooltip
+
+            // Reset the cursor style
+            map.getCanvas().style.cursor = '';
+        });
+
+        map.on('mouseenter', commuteLayerId, () => {
+
+            // Reset the cursor style
+            map.getCanvas().style.cursor = 'pointer';
+        });
+        map.on('mousemove', commuteLayerId, (e) => {
+            const now = Date.now();
+            if (now - lastMove > 25) { 
+                lastMove = now;
+                if (e.features.length > 0) {
+                    const feature = e.features[0];
+                    const neighborhood = feature.properties.neighborhood;
+
+                    const tooltip = document.getElementById('tooltip');
+                    tooltip.style.display = 'block';
+                    tooltip.style.left = e.point.x + 10 + 'px';
+                    tooltip.style.top = e.point.y + 10 + 'px';
+                    tooltip.textContent = neighborhood;
+                    map.getCanvas().style.cursor = 'pointer';
+                }
+            }
+        });
+        map.on('mouseleave', commuteLayerId, () => {
             const tooltip = document.getElementById('tooltip');
             tooltip.style.display = 'none';  // Hide the tooltip
 
