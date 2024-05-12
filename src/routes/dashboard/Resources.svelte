@@ -12,8 +12,16 @@
 <p><a href="https://www.progressivemass.com/issues/transfer-fee-2023-action/#about">Local Option Transfer Fees bill</a>: proposed state-wide bills that impose transfer fees on large real estate sales to deter housing speculation</p>
 
 <p><a href="https://www.topa4ma.org/">Tenant Opportunity to Purchase Act (TOPA)</a>: proposed state-wide bills that gives tenants the right to purchase property instead of being displaced upon foreclosures or short sales</p>
-
 </div>
+
+<div>
+    <p>
+        Hopefully you've learned something about how your voting choices could be affecting your ability to
+        access high-paying jobs. Now please feel free to explore the fully-featured dashboard by
+        clicking on the "Dashboard" tab above.
+    </p>
+</div>
+
 <style>
     @import url("$lib/global.css");
     .text-container {

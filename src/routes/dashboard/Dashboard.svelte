@@ -1119,7 +1119,9 @@
                 wondering what you can do to improve your community's access to high-paying jobs without having to compromise by
                 either spending more money on rent or spending more time commuting to work.
             </p>
-            <button class="closeButton" on:click={completeNarrative}>Continue</button>
+            <div class="buttonDiv">
+                <button on:click={completeNarrative}>Continue</button>
+            </div>
         </div>
     {/if}
         {#if dashboard && showPopup}
@@ -1230,6 +1232,9 @@
         box-sizing: border-box;
         text-align: left;
         font-size: 16px;
+    }
+    .buttonDiv {
+        text-align: center;
     }
 
     .closeButton {
