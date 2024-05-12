@@ -43,9 +43,11 @@
     let rentOutlineLayerId;
     let commuteLayerId;
     let commuteLineLayerId;
+
     let salaryLayerId;
     let salaryLineLayerId;
     let salarySourceId = "boston_cambridge_salary";
+
     let dashboardLayerId;
     let dashboardLineLayerId;
     let dashboardSourceId = 'boston_cambridge_all';
@@ -78,8 +80,6 @@
     let dashboard = false;
     let showPopup = true;
     let showSidePanel = false;
-
-    let rentByBed = null;
 
     let rentValue = 1500;
     let selectedRent = 6000;
@@ -160,6 +160,7 @@
             style: 'mapbox://styles/mapbox/dark-v10',
             center: [initialState.lng, initialState.lat],
             zoom: initialState.zoom,
+            minZoom: initialState.zoom - 2,
         });
         await new Promise(resolve => map.on("load", resolve));
 
@@ -571,9 +572,8 @@
     });
 
     // DASHBOARD FEATURE: user selects feature to color by
-    function updateMapColoring(event) {
-        const option = event.detail.selectedOption;
-        console.log("coloring option:", option)
+    function updateMapColoring(selectedOption) {
+        const option = selectedOption;
         if (map) {
             if (option === 'rent') {
                 console.log(selectedRent);
@@ -594,11 +594,8 @@
         }
     }
 
-    // DASHBOARD FEATURE: user chooses rent var
-    function updateRentVar(event) {
-        const option = event.detail.selectedOption;
-        rentVar = option;
-        console.log(rentVar)
+    $: {
+        updateMapColoring(selectedOption);
     }
 
     function colorDashboard() {
@@ -660,7 +657,6 @@
     }
 
     function plotSalaryBarPlot(targetNode, livingNeighborhood, workingNeighborhood) {
-        console.log(targetNode);
         if (targetNode === null) {
             return
         }
@@ -716,7 +712,6 @@
         minColor,
         maxColor,
     ) {
-        console.log(legendTitle);
         colorLegendTitleElement.innerText = legendTitle;
         let colorBarNode = legend({
             color: d3.scaleSequential([minVal, maxVal], d3.interpolateHsl(minColor, maxColor)),
@@ -728,6 +723,19 @@
         legendElement.appendChild(colorBarNode);
     }
 
+    function updateSelectableStates() {
+        var joint_features = map.querySourceFeatures(dashboardSourceId);
+        joint_features.forEach(function(feature) {
+            var isSalaryAboveSelected = feature.properties['avg_salary'] >= selectedSalary;
+            salaryState[feature.id] = isSalaryAboveSelected;
+
+            var isCommuteBelowSelected = feature.properties[clickedNeighborhood] <= selectedCommute;
+            commuteState[feature.id] = isCommuteBelowSelected;
+
+            var isRentBelowSelected = feature.properties.avg_per_bed < selectedRent;
+            rentState[feature.id] = isRentBelowSelected;
+        });
+    }
 
     // Coloring of neighborhoods by rent after selecting rent
     $: {
@@ -777,20 +785,7 @@
                         maxRent, rentMaxColor, // End of your gradient (e.g., $3000)
                     ]
                 ]);
-                var sal_features = map.querySourceFeatures(dashboardSourceId);
-                sal_features.forEach(function(feature) {
-                    var isSalaryAboveSelected = feature.properties['avg_salary'] >= selectedSalary;
-                    salaryState[feature.id] = isSalaryAboveSelected;
-                });
-                rentData.forEach(function(feature) {
-                    var isRentBelowSelected = feature.properties.avg_per_bed < selectedRent;
-                    rentState[feature.id] = isRentBelowSelected;
-                });
-                var commute_features = map.querySourceFeatures(dashboardSourceId);
-                commute_features.forEach(function(feature) {
-                    var isCommuteBelowSelected = feature.properties[clickedNeighborhood] <= selectedCommute;
-                    commuteState[feature.id] = isCommuteBelowSelected;
-                });
+                updateSelectableStates();
             }
 
             addColorLegend(colorLegendElement, "Average rent per bedroom", minRent, maxRent, rentMinColor, rentMaxColor);
@@ -822,7 +817,6 @@
                     salaryState[feature.id] = isSalaryAboveSelected;
                 });
             } else {
-                console.log(selectedSalary)
                 map.setPaintProperty(dashboardLayerId, 'fill-color', [
                     'case',
                     ['>', ['get', clickedNeighborhood], selectedCommute],
@@ -839,22 +833,8 @@
                         maxSalary, salaryMaxColor, // End of your gradient (e.g., $3000)
                     ]
                 ]);
-                var sal_features = map.querySourceFeatures(dashboardSourceId);
-                sal_features.forEach(function(feature) {
-                    var isSalaryAboveSelected = feature.properties['avg_salary'] >= selectedSalary;
-                    salaryState[feature.id] = isSalaryAboveSelected;
-                });
-                rentData.forEach(function(feature) {
-                    var isRentBelowSelected = feature.properties.avg_per_bed < selectedRent;
-                    rentState[feature.id] = isRentBelowSelected;
-                });
-                var commute_features = map.querySourceFeatures(dashboardSourceId);
-                commute_features.forEach(function(feature) {
-                    var isCommuteBelowSelected = feature.properties[clickedNeighborhood] <= selectedCommute;
-                    commuteState[feature.id] = isCommuteBelowSelected;
-                });
+                updateSelectableStates();
             }
-
 
             addColorLegend(colorLegendElement, "Average salary ($/hour)", minSalary, maxSalary, salaryMinColor, salaryMaxColor);
         }
@@ -913,20 +893,7 @@
                                 maxCommute, commuteMaxColor,
                             ]
                         ]);
-                        rentData.forEach(function(feature) {
-                            var isRentBelowSelected = feature.properties.avg_per_bed < selectedRent;
-                            rentState[feature.id] = isRentBelowSelected;
-                        });
-                        var commute_features = map.querySourceFeatures(dashboardSourceId);
-                        commute_features.forEach(function(feature) {
-                            var isCommuteBelowSelected = feature.properties[clickedNeighborhood] <= selectedCommute;
-                            commuteState[feature.id] = isCommuteBelowSelected;
-                        });
-                        var sal_features = map.querySourceFeatures(dashboardSourceId);
-                        sal_features.forEach(function(feature) {
-                            var isSalaryAboveSelected = feature.properties['avg_salary'] >= selectedSalary;
-                            salaryState[feature.id] = isSalaryAboveSelected;
-                        });
+                        updateSelectableStates();
                     }
                     for (const layerId of transitLayers) {
                         map.setPaintProperty(layerId, 'line-opacity', [
@@ -1083,7 +1050,7 @@
             <div class="wrapper">
                 {#if dashboard}
                     <div class="dropdownContainer">
-                        <Dropdown bind:selected={selectedOption} on:change={updateMapColoring} />
+                        <Dropdown bind:selectedOption={selectedOption} />
                     </div>
                 {/if}
                 <!--

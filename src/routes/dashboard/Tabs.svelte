@@ -13,11 +13,9 @@
 {/each}
 </ul>
 {#each items as item}
-	{#if activeTabValue == item.value}
-	<div class="box">
-		<svelte:component this={item.component}/>
-	</div>
-	{/if}
+  <div class="box" style:display={activeTabValue == item.value ? null : 'none'}>
+    <svelte:component this={item.component}/>
+  </div>
 {/each}
 <style>
 	.box {
