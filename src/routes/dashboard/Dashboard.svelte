@@ -19,6 +19,10 @@
     import mapboxgl from 'mapbox-gl';
     import { onMount } from "svelte";
 
+    export let narrativeComplete = false;
+    export let dashboard = false;
+
+
     mapboxgl.accessToken = 'pk.eyJ1IjoiZXB0eXNpbmdlciIsImEiOiJjbHVoanlneWIycm14MmxvZTh2Y3VhYXFkIn0.lkhHKBe-C2_I9v2J-jJ2hg';
     const accessToken = 'pk.eyJ1IjoiZXB0eXNpbmdlciIsImEiOiJjbHVoanlneWIycm14MmxvZTh2Y3VhYXFkIn0.lkhHKBe-C2_I9v2J-jJ2hg';
     let map;
@@ -77,9 +81,9 @@
     let minRentAll = 0;
     let minSalary, maxSalary;
 
-    let dashboard = false;
     let showPopup = true;
     let showSidePanel = false;
+    let showClosing = false;
 
     let rentValue = 1500;
     let selectedRent = 6000;
@@ -149,6 +153,11 @@
 
     function closePopup() {
         showPopup = false;
+    }
+
+    function completeNarrative() {
+        showClosing = false;
+        narrativeComplete = true;
     }
 
 
@@ -423,9 +432,8 @@
                     commuteSlider = null;
                     selectedRent = 2000;
                     selectedCommute = 60;
-                    dashboard = true;
-                    showSidePanel = true;
-                    colorDashboard()
+//                    colorDashboard();
+                    showClosing = true;
                 } else {
                     console.log("you can't click that neighborhood")
                 }
@@ -959,6 +967,11 @@
 
     // Shrink map width if side panel is active
     $: {
+        if(dashboard) {
+            showSidePanel = true;
+        }
+    }
+    $: {
         if (showSidePanel) {
             mapWidth = "70%";
             sidebarWidth = "26%";
@@ -1099,6 +1112,16 @@
                 work in <span class="neighborhood-name" style="font-weight: bold; color: hsl(200, 900%, 30%)">{workingNeighborhood}</span>!</p>
         </div>
         {/if}
+        {#if showClosing && showPopup}
+        <div class='instruction'>
+            <p>
+                This completes the narrative tour of our dashboard, next we'd like to show you some external resources in case you're
+                wondering what you can do to improve your community's access to high-paying jobs without having to compromise by
+                either spending more money on rent or spending more time commuting to work.
+            </p>
+            <button class="closeButton" on:click={completeNarrative}>Continue</button>
+        </div>
+    {/if}
         {#if dashboard && showPopup}
             <div class='instruction'>
                 <button class="closeButton" on:click={closePopup}>X</button>
