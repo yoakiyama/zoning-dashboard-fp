@@ -365,9 +365,6 @@
             data: 'https://raw.githubusercontent.com/yoakiyama/zoning-dashboard-fp/main/data/employment_opportunities/Boston_Cambridge_salary.geojson',
             generateId: false
         });
-        // Update this if the datasource changes, seems to be only easy way to
-        // verify the entire dataset is loaded.
-        numRentDataPoints = 103;
 
         salaryLayerId = 'boston_cambridge_salary';
         salaryLineLayerId = 'boston_cambridge_salary_outline';
@@ -390,10 +387,6 @@
             },
             'layout': {'visibility': 'none'},
         });
-
-        
-
-
 
         // When clicking on map colored by rent
         map.on('click', rentFillLayerId, (e) => {
@@ -476,7 +469,7 @@
         let lastMove = Date.now();
         map.on('mousemove', dashboardLayerId, (e) => {
             const now = Date.now();
-            if (now - lastMove > 25) { 
+            if (now - lastMove > 25) {
                 lastMove = now;
                 if (e.features.length > 0) {
                     const feature = e.features[0];
@@ -505,7 +498,7 @@
         });
         map.on('mousemove', rentFillLayerId, (e) => {
             const now = Date.now();
-            if (now - lastMove > 25) { 
+            if (now - lastMove > 25) {
                 lastMove = now;
                 if (e.features.length > 0) {
                     const feature = e.features[0];
@@ -535,7 +528,7 @@
         });
         map.on('mousemove', commuteLayerId, (e) => {
             const now = Date.now();
-            if (now - lastMove > 25) { 
+            if (now - lastMove > 25) {
                 lastMove = now;
                 if (e.features.length > 0) {
                     const feature = e.features[0];
@@ -799,7 +792,7 @@
                     commuteState[feature.id] = isCommuteBelowSelected;
                 });
             }
-            
+
             addColorLegend(colorLegendElement, "Average rent per bedroom", minRent, maxRent, rentMinColor, rentMaxColor);
         }
     }
@@ -862,7 +855,7 @@
                 });
             }
 
-            
+
             addColorLegend(colorLegendElement, "Average salary ($/hour)", minSalary, maxSalary, salaryMinColor, salaryMaxColor);
         }
     }
@@ -875,7 +868,7 @@
                     const commutes = await fetchCommuteData(clickedNeighborhood);
                     minCommute = commutes.minCommute;
                     maxCommute = commutes.maxCommute;
-                    
+
                     if (!dashboard) {
                         map.setPaintProperty(commuteLayerId, 'fill-color', [
                             'case',
@@ -953,7 +946,7 @@
                             0.15
                     ]);
 
-                    
+
                 } catch (error) {
                     console.error('Error processing commute data:', error);
                 }
