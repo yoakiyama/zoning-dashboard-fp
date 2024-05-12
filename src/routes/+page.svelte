@@ -249,7 +249,9 @@
         While many resort to long daily commutes, studies have also found that increased commute times are associated with reduced work 
         and life satisfaction and decreased physical health<sup><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9819363/">4</a></sup>. 
         Crucially, a recent study found that rent burden and housing instability significantly increase risk of maternal depression in the postpartum 
-        year<sup><a href="https://www.sciencedirect.com/science/article/pii/S2666560323000075">5</a></sup>
+        year<sup><a href="https://www.sciencedirect.com/science/article/pii/S2666560323000075">5</a></sup>. Unfortunately, a 
+        vast majority of single parents with children in the Boston-area are rent burdened. Investing in housing stability is therefore not only an investment in 
+        working-age adults, but also the future of our communities.
     </p>
     <div id="rentBurdenPlot" style="width: 75%; height: auto;"></div>
 
