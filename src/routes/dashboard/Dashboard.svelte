@@ -158,6 +158,7 @@
     function completeNarrative() {
         showClosing = false;
         narrativeComplete = true;
+        colorDashboard();
     }
 
 
