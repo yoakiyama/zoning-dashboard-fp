@@ -126,11 +126,6 @@
 
     <p>We also find complementary evidence that neighborhoods with high rent prices tend to have more businesses and job opportunities (normalized by population) and offer higher salaries. The following plot shows the average salary for workers in a given neighborhood regressed against the average rent per bedroom.</p>
 
-    <h3>In-depth exploration via the Boston/Cambridge rent vs commute time dashboard</h3>
-    <p>In the following dashboard, you’ll get to explore how the variables of rent, commute time, and salary interact with each other by seeing how 
-        high rent prices can reduce your housing options, then visualizing how existing transportation options can limit the areas you’re able to work in 
-        (depending on how long you would be willing to commute).</p>
-	
     <div id="salaryPlot"></div>
 
     <p>In the following dashboard, you’ll explore how the variables of rent, commute time, and salary interact with each other by seeing how high rent prices can reduce your housing options, while existing transportation options can limit the areas you’re able to work in (depending on how long you would be willing to commute).</p>
