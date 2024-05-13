@@ -88,8 +88,8 @@
     let selectedRent = 6000;
     let commuteValue = 20;
     let selectedCommute = 1000;
-    let selectedOption = 'commute';
-    let selectedSalary = 50
+    let selectedOption = 'rent';
+    let selectedSalary = 25;
 
     var rentState = {}; // dictionary to keep track of which neighborhoods have valid rent
     var commuteState = {}; // dictionary to keep track of which neighborhoods have valid commute
@@ -159,8 +159,8 @@
         showClosing = false;
         narrativeComplete = true;
         colorDashboard();
+        updateMapColoring(selectedOption);
     }
-
 
     onMount(async () => {
         const initialState = { lng: lng, lat: lat, zoom: zoom };
@@ -431,9 +431,8 @@
                 if (commuteState[feature.id]){
                     workingNeighborhood = feature.properties.neighborhood;
                     commuteSlider = null;
-                    selectedRent = 2000;
-                    selectedCommute = 60;
-//                    colorDashboard();
+                    selectedRent = rentValue;
+                    selectedCommute = commuteValue;
                     showClosing = true;
                 } else {
                     console.log("you can't click that neighborhood")
@@ -462,7 +461,7 @@
                     if (salaryColor){
                         workingNeighborhood = feature.properties.neighborhood
                     } else if (commuteColor) {
-                        clickedNeighborhood = feature.properties.neighborhood
+                        workingNeighborhood = feature.properties.neighborhood
                     } else if (rentColor) {
                         clickedNeighborhood = feature.properties.neighborhood
                     }
@@ -598,7 +597,6 @@
                 commuteColor=false;
                 rentColor=false;
                 salaryColor=true;
-                selectedSalary=50;
             }
         }
     }
@@ -615,7 +613,7 @@
         for (const layerId of transitLayers) {
             map.setLayoutProperty(layerId, 'visibility', 'visible');
         }
-        map.setLayoutProperty(transitStopsLayerId, 'visibility', 'none');
+        map.setLayoutProperty(transitStopsLayerId, 'visibility', 'visible');
         map.setLayoutProperty(salaryLayerId, 'visibility', 'none');
         map.setLayoutProperty(salaryLineLayerId, 'visibility', 'none');
         map.setLayoutProperty(dashboardLayerId, 'visibility', 'visible');
@@ -916,23 +914,7 @@
                         ]);
                         updateSelectableStates();
                     }
-                    for (const layerId of transitLayers) {
-                        map.setPaintProperty(layerId, 'line-opacity', [
-                            'case',
-                            ['in', clickedNeighborhood, ['get', 'neighborhoods']], 0.8,  // High opacity if clickedNeighborhood is in the list
-                            0.3
-                        ]);
-                    }
-                    map.setPaintProperty(transitStopsLayerId, 'circle-opacity', [
-                            'case',
-                            ['==', clickedNeighborhood, ['get', 'neighborhood']], 0.8,  // High opacity if clickedNeighborhood is in the list
-                            0.15
-                    ]);
-                    map.setPaintProperty(transitStopsLayerId, 'circle-stroke-opacity', [
-                            'case',
-                            ['==', clickedNeighborhood, ['get', 'neighborhood']], 0.8,  // High opacity if clickedNeighborhood is in the list
-                            0.15
-                    ]);
+                    mbtaHighlight(clickedNeighborhood);
 
 
                 } catch (error) {
@@ -948,6 +930,35 @@
                 );
             })();
         }
+    }
+
+    $: {
+        if(dashboard) {
+            console.log("clicked: ", clickedNeighborhood, )
+            if (map.getLayoutProperty(transitStopsLayerId, 'visibility') == 'visible'){
+                mbtaHighlight(clickedNeighborhood);
+            };
+        };
+    }
+
+    function mbtaHighlight(neighborhood) {
+        for (const layerId of transitLayers) {
+            map.setPaintProperty(layerId, 'line-opacity', [
+                'case',
+                ['in', neighborhood, ['get', 'neighborhoods']], 0.8,  // High opacity if clickedNeighborhood is in the list
+                0.3
+            ]);
+        }
+        map.setPaintProperty(transitStopsLayerId, 'circle-opacity', [
+                'case',
+                ['==', neighborhood, ['get', 'neighborhood']], 0.8,  // High opacity if clickedNeighborhood is in the list
+                0.15
+        ]);
+        map.setPaintProperty(transitStopsLayerId, 'circle-stroke-opacity', [
+                'case',
+                ['==', neighborhood, ['get', 'neighborhood']], 0.8,  // High opacity if clickedNeighborhood is in the list
+                0.15
+        ]);
     }
 
     // Outlining of selected neighborhoods to live or work.
@@ -1088,14 +1099,12 @@
                         <Dropdown bind:selected={selectedOption} on:change={updateRentVar} options={rentVarOptions} labelText='Rent Variable:'/>
                     </div>
                 {/if} -->
-                {#if commuteColor}
-                    <div class="checkboxContainer">
-                        <label style="color: white">
-                            <input type="checkbox" id="MBTAtoggle" checked on:change={toggleTransitVisibility}>
-                            Show/Hide MBTA Routes
-                        </label>
-                    </div>
-                {/if}
+                <div class="checkboxContainer">
+                    <label style="color: white">
+                        <input type="checkbox" id="MBTAtoggle" checked on:change={toggleTransitVisibility}>
+                        Show/Hide MBTA Routes
+                    </label>
+                </div>
             </div>
         {/if}
 
@@ -1153,8 +1162,12 @@
     {#if showSidePanel}
     <div class="sidebar" style="--width:{sidebarWidth}; --map-width:{mapWidth}">
         <p id="sidebarText">
-            Given a max rent of ${rentValue} and max commute time of {commuteValue} minutes, you've
-            chosen to live in {clickedNeighborhood} and work in {workingNeighborhood}.
+            Given a max rent of ${selectedRent} and max commute time of {selectedCommute} minutes, you've
+            chosen to live in <span class="living-neighborhood-name" style="--color:{livingOutlineColor}">{clickedNeighborhood}</span>
+            and work in <span class="working-neighborhood-name" style="--color:{workingOutlineColor}">{workingNeighborhood}</span>.
+        </p>
+        <p>
+            <span class="instructions-text"> Color by rent to select where to live, color by salary or commute to select where to work.</span>
         </p>
         <div id="rentBarPlot"></div>
         <div id="salaryBarPlot" bind:this={salaryPlotElement}></div>
@@ -1193,6 +1206,18 @@
         #salaryBarPlot {
             transition: 300ms;
         }
+    }
+    .living-neighborhood-name {
+        font-weight: bold;
+        color: var(--color);
+    }
+
+    .working-neighborhood-name {
+        font-weight: bold;
+        color: var(--color);
+    }
+    .instructions-text {
+        font-size: smaller;
     }
 
 

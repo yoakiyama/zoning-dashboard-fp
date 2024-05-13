@@ -34,7 +34,7 @@
         padding-left: 3px;
         border: 1px solid #ccc;
         border-radius: 4px;
-        background-color: white;   
+        background-color: white;
         box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         width: fit-content;
     }
@@ -43,9 +43,9 @@
         padding: 3px;
         margin-left: 4px; /* Provides a small space between the label and the select box */
         height: auto;
-        border: 1px solid #ccc;  
-        border-radius: 4px;  
-        background-color: #fff; 
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #fff;
     }
 
     label {
