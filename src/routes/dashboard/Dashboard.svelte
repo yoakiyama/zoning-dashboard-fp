@@ -1158,12 +1158,17 @@
             <div class='instruction'>
                 <button class="closeButton" on:click={closePopup}>X</button>
 					<p>
-						Your rent selection of ${rentValue} removed {numRentRemoved} out of {totalNeighborhoods} possible neighborhoods for consideration, while your commute time selection of {commuteValue} minutes removed {numCommuteRemoved} out of {totalNeighborhoods} possible neighborhoods.
+						Your rent selection of <b>${rentValue} removed {numRentRemoved} out of {totalNeighborhoods}</b> possible neighborhoods for 
+                        consideration, while your commute time selection of <b>{commuteValue} minutes removed <b>{numCommuteRemoved} out of <b>{totalNeighborhoods}</b> 
+                        possible neighborhoods.
 					</p>
                 <p>
-
                     <span class="neighborhood-name" style="font-weight: bold;">Welcome to the dashboard!</span> You can now explore all the rent and commute data on your own by selecting what to color the map by.
                     When colored by commute time, <span style="text-decoration: underline; font-style: italic;">click</span> on different neighborhoods to get commute time <span style="text-decoration: underline; font-style: italic;">from</span> that neighborhood.
+                </p>
+                <p>
+                    As you continue exploring the dashboard, please also visit the <b>What's next?</b> tab on the top left corner of the page. Here, you will find additional 
+                    information on current proposals and recent bills. You will also learn more about how you can get involved!
                 </p>
             </div>
         {/if}
