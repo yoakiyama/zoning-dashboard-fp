@@ -1160,14 +1160,18 @@
 					<p>
 						Your rent selection of <b>${rentValue} removed {numRentRemoved} out of {totalNeighborhoods}</b> possible neighborhoods for 
                         consideration, while your commute time selection of <b>{commuteValue} minutes removed <b>{numCommuteRemoved} out of <b>{totalNeighborhoods}</b> 
-                        possible neighborhoods.
+                        possible neighborhoods. 
 					</p>
                 <p>
                     <span class="neighborhood-name" style="font-weight: bold;">Welcome to the dashboard!</span> You can now explore all the rent and commute data on your own by selecting what to color the map by.
                     When colored by commute time, <span style="text-decoration: underline; font-style: italic;">click</span> on different neighborhoods to get commute time <span style="text-decoration: underline; font-style: italic;">from</span> that neighborhood.
                 </p>
                 <p>
-                    As you continue exploring the dashboard, please also visit the <b>What's next?</b> tab on the top left corner of the page. Here, you will find additional 
+                    As you adjust the sliders, you may be surprised by how . If your maximum rent and commute time prevent you from working in your workplace neighborhood, 
+                    discover just how much you may need to pay in order to be within a desired commute time. Remember, 
+                </p>
+                <p>
+                    You may be wondering how we can address lease also visit the <b>What's next?</b> tab on the top left corner of the page. Here, you will find additional 
                     information on current proposals and recent bills. You will also learn more about how you can get involved!
                 </p>
             </div>
