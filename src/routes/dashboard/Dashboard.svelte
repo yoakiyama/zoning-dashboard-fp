@@ -18,10 +18,6 @@
     import mapboxgl from 'mapbox-gl';
     import { onMount } from "svelte";
 
-    export let narrativeComplete = false;
-    export let dashboard = false;
-
-
     mapboxgl.accessToken = 'pk.eyJ1IjoiZXB0eXNpbmdlciIsImEiOiJjbHVoanlneWIycm14MmxvZTh2Y3VhYXFkIn0.lkhHKBe-C2_I9v2J-jJ2hg';
     const accessToken = 'pk.eyJ1IjoiZXB0eXNpbmdlciIsImEiOiJjbHVoanlneWIycm14MmxvZTh2Y3VhYXFkIn0.lkhHKBe-C2_I9v2J-jJ2hg';
     let map;
@@ -80,9 +76,9 @@
     let minRentAll = 0;
     let minSalary, maxSalary;
 
+    let dashboard = false;
     let showPopup = true;
     let showSidePanel = false;
-    let showClosing = false;
 
     let rentValue = 1500;
     let selectedRent = 6000;
@@ -155,12 +151,6 @@
         showPopup = false;
     }
 
-    function completeNarrative() {
-        showClosing = false;
-        narrativeComplete = true;
-        colorDashboard();
-        updateMapColoring(selectedOption);
-    }
 
     onMount(async () => {
         const initialState = { lng: lng, lat: lat, zoom: zoom };
@@ -431,9 +421,12 @@
                 if (commuteState[feature.id]){
                     workingNeighborhood = feature.properties.neighborhood;
                     commuteSlider = null;
-                    selectedRent = rentValue;
-                    selectedCommute = commuteValue;
-                    showClosing = true;
+                    selectedRent = 2000;
+                    selectedCommute = 60;
+                    dashboard = true;
+                    showSidePanel = true;
+                    colorDashboard();
+                    updateMapColoring(selectedOption);
                 } else {
                     console.log("you can't click that neighborhood")
                 }
@@ -991,11 +984,6 @@
 
     // Shrink map width if side panel is active
     $: {
-        if(dashboard) {
-            showSidePanel = true;
-        }
-    }
-    $: {
         if (showSidePanel) {
             mapWidth = "70%";
             sidebarWidth = "26%";
@@ -1137,22 +1125,14 @@
                 work in <span class="neighborhood-name" style="font-weight: bold; color: hsl(200, 900%, 30%)">{workingNeighborhood}</span>!</p>
         </div>
         {/if}
-        {#if showClosing && showPopup}
-        <div class='instruction'>
-            <p>
-                This completes the narrative tour of our dashboard, next we'd like to show you some external resources in case you're
-                wondering what you can do to improve your community's access to high-paying jobs without having to compromise by
-                either spending more money on rent or spending more time commuting to work.
-            </p>
-            <div class="buttonDiv">
-                <button on:click={completeNarrative}>Continue</button>
-            </div>
-        </div>
-    {/if}
         {#if dashboard && showPopup}
             <div class='instruction'>
                 <button class="closeButton" on:click={closePopup}>X</button>
                 <p>
+                    This completes the narrative tour of our dashboard, next we'd like to show you some external resources in case you're
+                    wondering what you can do to improve your community's access to high-paying jobs without having to compromise by
+                    either spending more money on rent or spending more time commuting to work.
+
                     <span class="neighborhood-name" style="font-weight: bold;">Welcome to the dashboard!</span> You can now explore all the rent and commute data on your own by selecting what to color the map by.
                     When colored by commute time, <span style="text-decoration: underline; font-style: italic;">click</span> on different neighborhoods to get commute time <span style="text-decoration: underline; font-style: italic;">from</span> that neighborhood.
                 </p>
