@@ -1156,13 +1156,12 @@
 
         {#if dashboard && showPopup}
             <div class='instruction'>
-                <button class="closeButton" on:click={closePopup}>X</button>
-					<p>
-                        Welcome to the dashboard!
-                        Your <b>rent selection of ${rentValue} removed {numRentRemoved} out of {totalNeighborhoods} possible neighborhoods</b> for
-                        consideration, while your <b>commute time selection of {commuteValue} minutes removed <b>{numCommuteRemoved} out of <b>{totalNeighborhoods}</b>
-                        possible neighborhoods.
-					</p>
+                <p>
+                    Welcome to the dashboard!
+                    Your <b>rent selection of ${rentValue} removed {numRentRemoved} out of {totalNeighborhoods} possible neighborhoods</b> for
+                    consideration, while your <b>commute time selection of {commuteValue} minutes removed <b>{numCommuteRemoved} out of <b>{totalNeighborhoods}</b>
+                    possible neighborhoods.
+                </p>
                 <p>
                     You can now explore all the rent and commute data on your own by selecting what to color the map by. To change where to live, select "Color by Rent".
                     To change where to work, select "Color by Salary" or "Color by Commute Time".
