@@ -11,7 +11,6 @@
     import ColorLegend from './color_legend.svelte';
     import { legend, fetchRentData, fetchCommuteData, fetchRentByBedData, Dashboard } from '$lib/index';
     import Dropdown from './dropdown.svelte';
-    // import { Plotly } from 'plotly.js-dist';
 
     import * as d3 from "d3";
     import '../../../node_modules/mapbox-gl/dist/mapbox-gl.css';
@@ -111,7 +110,8 @@
 
     let mapWidth = "100%";
     let sidebarWidth = "0%";
-    let rentBarPlotWidth = "25%";
+    // const viewportWidth = window.innerWidth; // Gets the width of the viewport
+    const sidebarPlotlyWidth = 0.25;
 
     // Color values
     // let rentMinColor = 'hsla(135, 100%, 90%, 0.8)';
@@ -638,7 +638,9 @@
     }
 
 
-    function plotRentBar(rentByBed, neighborhood) {
+    function plotRentBar(rentByBed, neighborhood, plotWidthPerc) {
+        var containerWidth = window.innerWidth;
+        var plotWidth = containerWidth * plotWidthPerc;
         // Delete old plot if it exists
         const chartExists = document.getElementById('rentBarPlot');
         if (chartExists) {
@@ -660,12 +662,16 @@
             yaxis: {
                 title: "Average rent",
                 range: [minRentAll, maxRentAll]
-            }
+            },
+            width: plotWidth,
+            autosize: false
         };
-        Plotly.newPlot('rentBarPlot', plotData, layout,  {responsive: true});
+        Plotly.newPlot('rentBarPlot', plotData, layout);
     }
 
-    function plotSalaryBarPlot(targetNode, livingNeighborhood, workingNeighborhood) {
+    function plotSalaryBarPlot(targetNode, livingNeighborhood, workingNeighborhood, plotWidthPerc) {
+        var containerWidth = window.innerWidth;
+        var plotWidth = containerWidth * plotWidthPerc;
         if (targetNode === null) {
             return
         }
@@ -700,7 +706,11 @@
             },
         }];
         let layout = {
-            title: 'Average salaries by neighborhood',
+            title: {
+                text: 'Average salaries by neighborhood',
+                x: 0.5,
+                xanchor: 'center'
+            },
             xaxis: {
                 title: "Neighborhood",
                 automargin: true,
@@ -709,8 +719,10 @@
                 title: "Average salary",
                 range: [0, ymax]
             },
+            width: plotWidth,
+            autosize: false
         };
-        Plotly.newPlot(targetNode, plotData, layout, {responsive: true});
+        Plotly.newPlot(targetNode, plotData, layout);
     }
 
     function addColorLegend(
@@ -991,15 +1003,18 @@
                     // const [minRentAll, maxRentAll] = fetchMinMaxAllRentData()
                     // rentByBed = fetchRentByBedData(clickedNeighborhood);
                     let rentByBed = await fetchRentByBedData(clickedNeighborhood);
-                    plotRentBar(rentByBed, clickedNeighborhood)
+                    plotRentBar(rentByBed, clickedNeighborhood, sidebarPlotlyWidth)
                 } catch (error) {
                     console.error('Error processing rent by bedroom:', error);
                 }
             })();
-            plotSalaryBarPlot(salaryPlotElement, clickedNeighborhood, workingNeighborhood);
+            plotSalaryBarPlot(salaryPlotElement, clickedNeighborhood, workingNeighborhood, sidebarPlotlyWidth);
         }
     }
+
 </script>
+
+
 <div class="map-wrap">
     <div class="map" bind:this={mapContainer} style="--width:{mapWidth}">
         <!-- Sliders and Color Bars (contained within map)-->
@@ -1141,8 +1156,8 @@
             Given a max rent of ${rentValue} and max commute time of {commuteValue} minutes, you've
             chosen to live in {clickedNeighborhood} and work in {workingNeighborhood}.
         </p>
-        <div id="rentBarPlot"/>
-        <div id="salaryBarPlot" bind:this={salaryPlotElement}/>
+        <div id="rentBarPlot"></div>
+        <div id="salaryBarPlot" bind:this={salaryPlotElement}></div>
     </div>
     {/if}
 
@@ -1161,28 +1176,22 @@
     .sidebar {
         position: absolute;
         width: var(--width);
+        /* width: calc(100% - var(--map-width) - 2%); */
         height: 100%;
         transition: 300ms;
         left: calc(var(--map-width) + 2%);
-        display: grid;
-        /* grid-template-columns: 1fr;
-        grid-template-rows: repeat(1fr, 2); */
-        grid-template-rows: auto; /* Automatically size rows based on content */
-        align-content: start;
         overflow-y: auto;
-        overflow-x: clip;
+        overflow-x: hidden;
 
         #sidebarText {
             transition: 300ms;
+            width: 100%;
+            word-wrap: break-word;
         }
 
-        #rentBarPlot {
-            transition: 300ms;
-            width: 100%;
-        }
+        #rentBarPlot,
         #salaryBarPlot {
             transition: 300ms;
-            width: 100%;
         }
     }
 
