@@ -1167,7 +1167,7 @@
                     You might be surprised at how restrictive your residential and employments options are based on your ideal rent price and commute time. To learn more about the causes behind the housing crisis, as well as proposed solutions and ways to get involved, visit the "What's next?" tab at the top of the dashboard.
                 </p>
                 <p>
-                    As you continue exploring the dashboard, please also visit the <b>What's next?</b> tab on the top left corner of the page. Here, you will find additional 
+                    As you continue exploring the dashboard, please also visit the <b>What's next?</b> tab on the top left corner of the page. Here, you will find additional
                     information on current proposals and recent bills. You will also learn more about how you can get involved!
                 </p>
             </div>
