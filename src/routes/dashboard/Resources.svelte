@@ -17,7 +17,7 @@
     of new legislations that change the status quo, but if we want to alleviate the current situation, we have to start somewhere, and we hope you might
     now be more motivated to think holistcally about future legislation before reacting critically. Below we list some current and proposed legislations
     if you're interested in learning more, but please also feel free to continue to explore the fully-featured dashboard by clicking on the "Dashboard"
-    tab above.
+    tab above. If you'd like to return to the home page, please visit this <a href="https://yoakiyama.github.io/zoning-dashboard-fp/">link</a>.
 </p>
 
 <h2>Further resources: learn how you can get involved</h2>
