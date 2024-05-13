@@ -1285,11 +1285,13 @@
         padding: 20px;
         background-color: rgba(255, 255, 255, 0.95); /* Less transparent white background */
         border-radius: 8px;
-        max-width: 400px;
+        max-width: 35%;
+        max-height: 85%;
         width: 90%; /* Maximum width or percentage-based width */
         box-sizing: border-box;
         text-align: left;
         font-size: 16px;
+        overflow-y: auto;
     }
     .buttonDiv {
         text-align: center;
