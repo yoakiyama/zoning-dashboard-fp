@@ -34,7 +34,29 @@
 
 <p><a href="https://www.progressivemass.com/issues/transfer-fee-2023-action/#about">Local Option Transfer Fees bill</a>: proposed state-wide bills that impose transfer fees on large real estate sales to deter housing speculation</p>
 
-<p><a href="https://www.topa4ma.org/">Tenant Opportunity to Purchase Act (TOPA)</a>: proposed state-wide bills that gives tenants the right to purchase property instead of being displaced upon foreclosures or short sales</p>
+   <a href="https://www.topa4ma.org/">Tenant Opportunity to Purchase Act (TOPA)</a>
+    <ul>
+        <li>
+            A proposed state-wide bill that would give municipalities the ability to adopt a "tenant opportunity to purchase".
+        </li>
+        <li>
+            This right would allow tenants to make a first offer to purchase property they live in when a landlord looks to sell the property,
+            giving tenant associations the opportunity to collectively purchase their homes instead of being displaced in the event of a sale.
+        </li>
+        <li>
+            While tenant opportunities to purchase are cost-neutral, i.e. they neither bring in revenue or require expenditure from the government,
+            they can help maintain a stock of affordable housing.
+        </li>
+        <li>
+            By allowing tenant associations to make offers on the buildings they live in, property owners can still sell their properties at
+            fair market prices, but without the likely subsequent increase in rent costs that often comes with corporate ownership of rental
+            properties.
+        </li>
+        <li>
+            By prseserving stock of affordable housing and avoiding displacement of tenants, TOPA could help prevent rental cost increases,
+            and in the long term be a valuable contributor to allowing individuals to live closer to their work while paying a reasonable rent.
+        </li>
+    </ul>
 </div>
 
 <style>
