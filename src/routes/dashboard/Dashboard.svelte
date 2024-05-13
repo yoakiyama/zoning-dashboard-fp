@@ -104,6 +104,10 @@
     let salaryColor = false;
     let rentVar = 'avg_per_bed';
 
+    let numRentRemoved = 0;
+    let numCommuteRemoved = 0;
+    let totalNeighborhoods = 36;
+
     // slider states
     let rentSlider = true;
     let commuteSlider = null;
@@ -132,7 +136,7 @@
         selectedRent = rentValue;
         // Make rent slider disappear
         rentSlider = null;
-        console.log(selectedRent, rentValue)
+        console.log(selectedRent, rentValue);
     }
 
     function handleCommuteEnter() {
@@ -141,6 +145,7 @@
         // Make rent slider disappear
         commuteSlider = null;
         console.log(selectedCommute, commuteValue)
+        calculatePersonalizedStats();
     }
 
     function toggleTransitVisibility(event) {
@@ -756,6 +761,29 @@
         });
     }
 
+    function calculatePersonalizedStats() {
+        var seen = new Set();
+        numRentRemoved = 0;
+        rentData.forEach(function(feature) {
+            var isRentBelowSelected = feature.properties.avg_per_bed < selectedRent;
+            if(!seen.has(feature.properties.neighborhood) && !isRentBelowSelected){
+                numRentRemoved += 1;
+            }
+            seen.add(feature.properties.neighborhood);
+        });
+
+        seen = new Set();
+        numCommuteRemoved = 0;
+        var features = map.querySourceFeatures('Boston_Cambridge_Commute');
+        features.forEach(function(feature) {
+            var isCommuteBelowSelected = feature.properties[clickedNeighborhood] <= selectedCommute;
+            if(!seen.has(feature.properties.neighborhood) && !isCommuteBelowSelected){
+                numCommuteRemoved += 1;
+            }
+            seen.add(feature.properties.neighborhood);
+        });
+    }
+
     // Coloring of neighborhoods by rent after selecting rent
     $: {
         if (map && rentFillLayerId && rentColor && rentLoaded) {
@@ -1140,9 +1168,7 @@
         {#if showClosing && showPopup}
         <div class='instruction'>
             <p>
-                This completes the narrative tour of our dashboard, next we'd like to show you some external resources in case you're
-                wondering what you can do to improve your community's access to high-paying jobs without having to compromise by
-                either spending more money on rent or spending more time commuting to work.
+                Your rent selection of ${rentValue} removed {numRentRemoved} out of {totalNeighborhoods} possible neighborhoods for consideration, while your commute time selection of {commuteValue} minutes removed {numCommuteRemoved} out of {totalNeighborhoods} possible neighborhoods.
             </p>
             <div class="buttonDiv">
                 <button on:click={completeNarrative}>Continue</button>
