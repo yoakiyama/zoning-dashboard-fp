@@ -1158,12 +1158,13 @@
             <div class='instruction'>
                 <button class="closeButton" on:click={closePopup}>X</button>
 					<p>
-						Your rent selection of ${rentValue} removed {numRentRemoved} out of {totalNeighborhoods} possible neighborhoods for consideration, while your commute time selection of {commuteValue} minutes removed {numCommuteRemoved} out of {totalNeighborhoods} possible neighborhoods.
+						<span class="neighborhood-name" style="font-weight: bold;">Welcome to the dashboard!</span> Your rent selection of ${rentValue} removed {numRentRemoved} out of {totalNeighborhoods} possible neighborhoods for consideration, while your commute time selection of {commuteValue} minutes removed {numCommuteRemoved} out of {totalNeighborhoods} possible neighborhoods.
 					</p>
                 <p>
-
-                    <span class="neighborhood-name" style="font-weight: bold;">Welcome to the dashboard!</span> You can now explore all the rent and commute data on your own by selecting what to color the map by.
-                    When colored by commute time, <span style="text-decoration: underline; font-style: italic;">click</span> on different neighborhoods to get commute time <span style="text-decoration: underline; font-style: italic;">from</span> that neighborhood.
+                    You can now explore all the rent and commute data on your own by selecting what to color the map by. To change where to live, select "Color by Rent". To change where to work, select "Color by Salary" or "Color by Commute Time".
+                </p>
+                <p>
+                    You might be surprised at how restrictive your residential and employments options are based on your ideal rent price and commute time. To learn more about the causes behind the housing crisis, as well as proposed solutions and ways to get involved, visit the "What's next?" tab at the top of the dashboard.
                 </p>
             </div>
         {/if}
