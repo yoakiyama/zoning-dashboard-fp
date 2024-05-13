@@ -27,12 +27,12 @@
 
 <p><a href="https://www.mapc.org/get-involved/legislative-priorities/#housing">MAPC Legislative Priorities</a>:</p>
 <ul>
-    <li>The Metropolitan Area Planning Commission's (MAPC) housing legislative agenda includes initiatives and recommenations for updates to 
+    <li>The Metropolitan Area Planning Commission's (MAPC) housing legislative agenda includes initiatives and recommenations for updates to
         housing construction, zoning, subsidies, transportation, and renter protections.</li>
-    <li>Here, you can find important information about the MAPC's Fiscal and Budget Priorities, which include the Massachusetts Rental Voucher Program (MRVP) 
-        and Massachusetts Bay Transportation Authority (MBTA). The MRVP provides rent vouchers, which can be an important resource for highly 
-        cost-burdened households (those who are paying over 50% of their income in rent) and homeless families. The MBTA is systematically underfunded, 
-        which has led to widespread safety concerns as well as common and substantial delays. The MAPC will focus on advocating for additional funding for the MBTA 
+    <li>Here, you can find important information about the MAPC's Fiscal and Budget Priorities, which include the Massachusetts Rental Voucher Program (MRVP)
+        and Massachusetts Bay Transportation Authority (MBTA). The MRVP provides rent vouchers, which can be an important resource for highly
+        cost-burdened households (those who are paying over 50% of their income in rent) and homeless families. The MBTA is systematically underfunded,
+        which has led to widespread safety concerns as well as common and substantial delays. The MAPC will focus on advocating for additional funding for the MBTA
         to address repairs and ensure regular service.
     </li>
 </ul>
@@ -40,64 +40,85 @@
 <p><a href="https://www.mbta.com/projects">Massachusetts Bay Transportation Authority (MBTA) projects page</a>:</p>
 <ul>
     <li>Here, you can find all ongoing, recently completed, and contract awarded MBTA projects.</li>
-    <li>You can filter by transportation type (subway, bus, rail, or ferry), as well as the specific line for the subway in order to 
+    <li>You can filter by transportation type (subway, bus, rail, or ferry), as well as the specific line for the subway in order to
         find information relevant to your commute.</li>
     <li>Every project page details its goals, budget, status, and projected completion date.</li>
-    <li>You can also read more about the MBTA's Capital Investment Plan for fiscal year 2025 to 2029. This plan is updated annually in coordination with 
-        MassDOT and the <a href="https://www.ctps.org/">Boston Region Metropolitan Planning Organization</a>. To get involved, check out the 
+    <li>You can also read more about the MBTA's Capital Investment Plan for fiscal year 2025 to 2029. This plan is updated annually in coordination with
+        MassDOT and the <a href="https://www.ctps.org/">Boston Region Metropolitan Planning Organization</a>. To get involved, check out the
         <a href="https://www.ctps.org/calendar/month">MPO's meeting calendar</a>.</li>
 </ul>
 
 <p><a href="https://www.mass.gov/info-details/multi-family-zoning-requirement-for-mbta-communities">MBTA Communities Act</a>: </p>
 <ul>
-    <li>The MBTA Communities Act was adopted in January 2021, and requires 177 Cities and Towns to establish at least 1 district within a 
+    <li>The MBTA Communities Act was adopted in January 2021, and requires 177 Cities and Towns to establish at least 1 district within a
         half mile of public transportation (commuter rail, bus station, ferry terminal or subway) in which multi-family housing is permitted.
     </li>
-    <li>The act also provides technical assistence via grant money to municipal planners. 
+    <li>The act also provides technical assistence via grant money to municipal planners.
         Since August 2022, over $6 million in technical assistance has been provided to 156 municipalities.</li>
-    <li>By upzoning around public transportation stations, the MBTA Communities Act should provide greater housing supply to these regions and increase accessibility to 
+    <li>By upzoning around public transportation stations, the MBTA Communities Act should provide greater housing supply to these regions and increase accessibility to
         transportation.</li>
 </ul>
 
 
 <p><a href="https://www.mass.gov/news/healey-driscoll-administration-unveils-4-billion-affordable-homes-act-to-increase-production-and-lower-costs">Affordable Homes Act</a>:</p>
 <ul>
-    <li>Affordable Homes Act includes $4 billion in capital spending authorizations and 28 policy changes to address the 
+    <li>Affordable Homes Act includes $4 billion in capital spending authorizations and 28 policy changes to address the
         critical housing supply shortage.</li>
-    <li>Crucially, it will fund the creation of more than 40,000 homes, including more than 22,000 new homes for low-income households 
+    <li>Crucially, it will fund the creation of more than 40,000 homes, including more than 22,000 new homes for low-income households
         and more than 12,000 homes for middle-income households.</li>
-    <li>It will also rehabilitate or make improvements improvements to 12,000 homes for low-income households, provide support for more than 11,000 moderate income 
+    <li>It will also rehabilitate or make improvements improvements to 12,000 homes for low-income households, provide support for more than 11,000 moderate income
         households, and fund accessibility improvements for approximately 4,500 homes.</li>
-    <li>By increasing housing supply, this multi-billion dollar initiative may provide renters with more affordable options, alleviating the trade-off between rent cost 
+    <li>By increasing housing supply, this multi-billion dollar initiative may provide renters with more affordable options, alleviating the trade-off between rent cost
         and commute time.</li>
     <li>As stated in the website, you can <a href="https://malegislature.gov/Search/FindMyLegislator">contact your legislative representative</a> to voice your support</li>
 </ul>
 
-<p><a href="https://www.progressivemass.com/issues/transfer-fee-2023-action/#about">Local Option Transfer Fees bill</a>: proposed state-wide bills that impose transfer fees on large real estate sales to deter housing speculation</p>
+<a href="https://www.progressivemass.com/issues/transfer-fee-2023-action/#about">Local Option Transfer Fees bill</a>
+<ul>
+    <li>
+        A proposed state-wide bills that would impose transfer fees on real estate transactions above $1 million, to deter housing speculation.
+    </li>
+    <li>
+        The Greater Boston area has seen a growing trend of speculative investment in its housing market over the last couple decades, bringing with it
+        the characteristic "flipping" of properties that's common in real estate speculation.
+    </li>
+    <li>
+        Rapid changes in ownership of properties for investment purposes can both drive up property costs as well as displace existing tenants, while
+        bringing little value to the actual residents of Boston and its surrounding communities, as profits primarily go to large-scale investing firms.
+    </li>
+    <li>
+        A tranfer fee would generate revenue on large real estate transactions, which would then be reinvested into the community to create more
+        affordable housing, while also acting as a direct deterrent to speculative investment.
+    </li>
+    <li>
+        By both reducing speculative investment and also directly investing in affordable housing, the Local Option Transfer Fees bill could
+        drive down rental costs, including yours!
+    </li>
+</ul>
 
-   <a href="https://www.topa4ma.org/">Tenant Opportunity to Purchase Act (TOPA)</a>
-    <ul>
-        <li>
-            A proposed state-wide bill that would give municipalities the ability to adopt a "tenant opportunity to purchase".
-        </li>
-        <li>
-            This right would allow tenants to make a first offer to purchase property they live in when a landlord looks to sell the property,
-            giving tenant associations the opportunity to collectively purchase their homes instead of being displaced in the event of a sale.
-        </li>
-        <li>
-            While tenant opportunities to purchase are cost-neutral, i.e. they neither bring in revenue or require expenditure from the government,
-            they can help maintain a stock of affordable housing.
-        </li>
-        <li>
-            By allowing tenant associations to make offers on the buildings they live in, property owners can still sell their properties at
-            fair market prices, but without the likely subsequent increase in rent costs that often comes with corporate ownership of rental
-            properties.
-        </li>
-        <li>
-            By prseserving stock of affordable housing and avoiding displacement of tenants, TOPA could help prevent rental cost increases,
-            and in the long term be a valuable contributor to allowing individuals to live closer to their work while paying a reasonable rent.
-        </li>
-    </ul>
+<a href="https://www.topa4ma.org/">Tenant Opportunity to Purchase Act (TOPA)</a>
+<ul>
+    <li>
+        A proposed state-wide bill that would give municipalities the ability to adopt a "tenant opportunity to purchase".
+    </li>
+    <li>
+        This right would allow tenants to make a first offer to purchase property they live in when a landlord looks to sell the property,
+        giving tenant associations the opportunity to collectively purchase their homes instead of being displaced in the event of a sale.
+    </li>
+    <li>
+        While tenant opportunities to purchase are cost-neutral, i.e. they neither bring in revenue or require expenditure from the government,
+        they can help maintain a stock of affordable housing.
+    </li>
+    <li>
+        By allowing tenant associations to make offers on the buildings they live in, property owners can still sell their properties at
+        fair market prices, but without the likely subsequent increase in rent costs that often comes with corporate ownership of rental
+        properties.
+    </li>
+    <li>
+        By prseserving stock of affordable housing and avoiding displacement of tenants, TOPA could help prevent rental cost increases,
+        and in the long term be a valuable contributor to allowing individuals to live closer to their work while paying a reasonable rent.
+    </li>
+</ul>
 </div>
 
 <style>
