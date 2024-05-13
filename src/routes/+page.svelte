@@ -38,11 +38,11 @@
     const commuteData = [34.39917824173928, 26.044504577120158, 24.317708803611737, 31.863385464581416, 36.20528355271251, 36.10821016073015, 25.010931003877236, 39.122020692832905, 33.827945050809184, 41.76362605953085, 37.19913902253735, 33.63867321698502, 30.37513130252101, 29.185083930231286, 36.87379439464428]
 
     const rentBurdenData = [
-        {category: "Single parent w/children", percentage: 72},
-        {category: "Living alone", percentage: 61},
-        {category: "Couple w/children", percentage: 42},
-        {category: "Family w/o children", percentage: 38},
-        {category: "Non-family roommates", percentage: 34}
+        {category: "Single parent w/children", percentage: 0.72},
+        {category: "Living alone", percentage: 0.61},
+        {category: "Couple w/children", percentage: 0.42},
+        {category: "Family w/o children", percentage: 0.38},
+        {category: "Non-family roommates", percentage: 0.34}
     ];
     rentBurdenData.reverse();
 
@@ -60,7 +60,7 @@
         x: rentBurdenData.map(d => d.percentage),
         y: rentBurdenData.map(d => d.category),
         orientation: 'h', 
-        text: rentBurdenData.map(d => `${d.percentage}%`), 
+        text: rentBurdenData.map(d => `${d.percentage * 100}%`), 
         textposition: 'auto',
         marker: {
             line: {
@@ -72,7 +72,7 @@
         title: 'Percentage of household types that are rent burdened',
         xaxis: {
             title: 'Percentage',
-            tickformat: ',.0%'  // Format the x-axis ticks as percentages
+            tickformat: '%'  // Format the x-axis ticks as percentages
         },
         yaxis: {
             title: '',
