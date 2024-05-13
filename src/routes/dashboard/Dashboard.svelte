@@ -1158,27 +1158,30 @@
             <div class='instruction'>
                 <button class="closeButton" on:click={closePopup}>X</button>
 					<p>
-                        Welcome to the dashboard! 
-                        Your <b>rent selection of ${rentValue} removed {numRentRemoved} out of {totalNeighborhoods} possible neighborhoods</b> for 
-                        consideration, while your <b>commute time selection of {commuteValue} minutes removed <b>{numCommuteRemoved} out of <b>{totalNeighborhoods}</b> 
-                        possible neighborhoods. 
+                        Welcome to the dashboard!
+                        Your <b>rent selection of ${rentValue} removed {numRentRemoved} out of {totalNeighborhoods} possible neighborhoods</b> for
+                        consideration, while your <b>commute time selection of {commuteValue} minutes removed <b>{numCommuteRemoved} out of <b>{totalNeighborhoods}</b>
+                        possible neighborhoods.
 					</p>
                 <p>
-                    You can now explore all the rent and commute data on your own by selecting what to color the map by. To change where to live, select "Color by Rent". 
+                    You can now explore all the rent and commute data on your own by selecting what to color the map by. To change where to live, select "Color by Rent".
                     To change where to work, select "Color by Salary" or "Color by Commute Time".
                 </p>
                 <p>
-                    As you adjust the sliders, you may be surprised by how restrictive your residential and employments options are based on your ideal rent price and commute time. 
-                    If your maximum rent and commute time prevent you from working in your workplace neighborhood, 
-                    discover just how much you may need to pay in order to be within a desired commute time. Remember, if you need to pay <b>over 30% of your monthly pre-tax income 
+                    As you adjust the sliders, you may be surprised by how restrictive your residential and employments options are based on your ideal rent price and commute time.
+                    If your maximum rent and commute time prevent you from working in your workplace neighborhood,
+                    discover just how much you may need to pay in order to be within a desired commute time. Remember, if you need to pay <b>over 30% of your monthly pre-tax income
                     on rent, you are considered rent burdened</b>. While this may be alarming, this is unfortunately the norm, as <b>over 50% of Boston residents are rent burdened</b>.
                 </p>
                 <p>
-                    In order to find out about current bills and proposals aimed at addressing the Boston housing crisis and improving public transportation, 
-                    please visit the <b>What's next?</b> tab on the top left corner of the page. Here, you will find additional information on current proposals and recent bills. 
-                    You will also learn more about how you can get involved! Do not worry about losing the current state of your dashboard. 
+                    In order to find out about current bills and proposals aimed at addressing the Boston housing crisis and improving public transportation,
+                    please visit the <b>What's next?</b> tab on the top left corner of the page. Here, you will find additional information on current proposals and recent bills.
+                    You will also learn more about how you can get involved! Do not worry about losing the current state of your dashboard.
                     You may always return to the Dashboard tab to continue exploring the data.
                 </p>
+                <div class="buttonDiv">
+                    <button on:click={closePopup}>Continue</button>
+                </div>
             </div>
         {/if}
     </div>
